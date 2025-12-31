@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot Admin - OryggiAI Cloud</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand img { height: 36px; }
+        .nav-brand h1 { font-size: 18px; font-weight: 600; color: #fff; }
+        .nav-brand span { color: #3b82f6; }
+
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+        .nav-link.active { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .nav-link .material-symbols-outlined { font-size: 20px; }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #22c55e;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 64px;
+            padding: 24px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .stat-card .icon.blue { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .stat-card .icon.green { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        .stat-card .icon.purple { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+        .stat-card .icon.orange { background: rgba(249, 115, 22, 0.15); color: #f97316; }
+
+        .stat-card .label { font-size: 13px; color: #64748b; margin-bottom: 4px; }
+        .stat-card .value { font-size: 32px; font-weight: 700; color: #fff; }
+        .stat-card .trend { font-size: 12px; color: #22c55e; margin-top: 8px; }
+
+        /* Tenants Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .refresh-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            color: #3b82f6;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover { background: rgba(59, 130, 246, 0.2); }
+        .refresh-btn.loading .material-symbols-outlined { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Tenants Table */
+        .tenants-table {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 120px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 120px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .table-row:hover { background: rgba(255, 255, 255, 0.03); }
+        .table-row:last-child { border-bottom: none; }
+
+        .tenant-info { display: flex; flex-direction: column; gap: 2px; }
+        .tenant-name { font-weight: 500; color: #fff; }
+        .tenant-email { font-size: 12px; color: #64748b; }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.online {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .status-badge.offline {
+            background: rgba(100, 116, 139, 0.15);
+            color: #64748b;
+        }
+
+        .status-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .metric { font-size: 14px; color: #e2e8f0; }
+        .metric.success { color: #22c55e; }
+
+        .view-btn {
+            padding: 6px 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            color: #3b82f6;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover { background: rgba(59, 130, 246, 0.2); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title { font-size: 18px; font-weight: 600; color: #fff; }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .query-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .query-question {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .query-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .query-label.q { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .query-label.a { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+
+        .query-text { color: #e2e8f0; font-size: 14px; line-height: 1.5; }
+
+        .query-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Loading */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state .material-symbols-outlined {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .table-header, .table-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .table-header > *:nth-child(n+3),
+            .table-row > *:nth-child(n+3) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-brand">
+            <img src="/dashboard/oryggi-logo.png" alt="OryggiAI" onerror="this.style.display='none'">
+            <h1>Oryggi<span>AI</span> Cloud</h1>
+        </div>
+        <div class="nav-links">
+            <a href="/dashboard/" class="nav-link">
+                <span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+            <a href="/dashboard/chatbot-admin.html" class="nav-link active">
+                <span class="material-symbols-outlined">smart_toy</span>
+                AI Chatbot
+            </a>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span id="system-status">Connecting...</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon blue">
+                    <span class="material-symbols-outlined">business</span>
+                </div>
+                <div class="label">Total Tenants</div>
+                <div class="value" id="stat-tenants">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon green">
+                    <span class="material-symbols-outlined">wifi</span>
+                </div>
+                <div class="label">Online Now</div>
+                <div class="value" id="stat-online">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon purple">
+                    <span class="material-symbols-outlined">chat</span>
+                </div>
+                <div class="label">Total Queries</div>
+                <div class="value" id="stat-queries">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon orange">
+                    <span class="material-symbols-outlined">check_circle</span>
+                </div>
+                <div class="label">Success Rate</div>
+                <div class="value" id="stat-success">--</div>
+            </div>
+        </div>
+
+        <!-- Tenants Section -->
+        <div class="section-header">
+            <h2 class="section-title">Tenant Overview</h2>
+            <button class="refresh-btn" onclick="refreshData()">
+                <span class="material-symbols-outlined">refresh</span>
+                Refresh
+            </button>
+        </div>
+
+        <div class="tenants-table">
+            <div class="table-header">
+                <div>Tenant</div>
+                <div>Status</div>
+                <div>Questions</div>
+                <div>Answers</div>
+                <div>Success</div>
+                <div>Actions</div>
+            </div>
+            <div id="tenants-body">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <span>Loading tenants...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Query History Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Query History</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Using HTTP since this page will be served from port 3000
+        const CHATBOT_API_BASE = 'http://103.197.77.163:3000';
+        const ADMIN_API_KEY = 'your-secure-admin-api-key-change-in-production';
+
+        let tenantsData = [];
+
+        // Fetch analytics
+        async function fetchAnalytics() {
+            try {
+                const response = await fetch(`${CHATBOT_API_BASE}/api/admin/analytics`, {
+                    headers: { 'X-Admin-API-Key': ADMIN_API_KEY }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('stat-tenants').textContent = data.total_tenants || 0;
+                    document.getElementById('stat-online').textContent = data.online_tenants || 0;
+                    document.getElementById('stat-queries').textContent = data.total_queries || 0;
+                    document.getElementById('stat-success').textContent =
+                        (data.success_rate ? data.success_rate.toFixed(1) : 0) + '%';
+                    document.getElementById('system-status').textContent = 'System Online';
+                }
+            } catch (error) {
+                console.error('Failed to fetch analytics:', error);
+                document.getElementById('system-status').textContent = 'Connection Error';
+            }
+        }
+
+        // Fetch tenants
+        async function fetchTenants() {
+            const body = document.getElementById('tenants-body');
+            body.innerHTML = '<div class="loading-state"><div class="spinner"></div><span>Loading tenants...</span></div>';
+
+            try {
+                const response = await fetch(`${CHATBOT_API_BASE}/api/admin/tenants?limit=100`, {
+                    headers: { 'X-Admin-API-Key': ADMIN_API_KEY }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    tenantsData = data.tenants || [];
+                    renderTenants();
+                } else {
+                    body.innerHTML = '<div class="empty-state"><span class="material-symbols-outlined">error</span><p>Failed to load tenants</p></div>';
+                }
+            } catch (error) {
+                console.error('Failed to fetch tenants:', error);
+                body.innerHTML = '<div class="empty-state"><span class="material-symbols-outlined">cloud_off</span><p>Unable to connect to API</p><p style="font-size: 12px; margin-top: 8px;">Make sure you are accessing this page from http://103.197.77.163:3000</p></div>';
+            }
+        }
+
+        // Render tenants table
+        function renderTenants() {
+            const body = document.getElementById('tenants-body');
+
+            if (tenantsData.length === 0) {
+                body.innerHTML = '<div class="empty-state"><span class="material-symbols-outlined">group_off</span><p>No tenants found</p></div>';
+                return;
+            }
+
+            body.innerHTML = tenantsData.map(tenant => `
+                <div class="table-row" onclick="viewTenant('${tenant.id}')">
+                    <div class="tenant-info">
+                        <span class="tenant-name">${escapeHtml(tenant.name)}</span>
+                        <span class="tenant-email">${escapeHtml(tenant.email)}</span>
+                    </div>
+                    <div>
+                        <span class="status-badge ${tenant.is_online ? 'online' : 'offline'}">
+                            <span class="dot"></span>
+                            ${tenant.is_online ? 'Online' : 'Offline'}
+                        </span>
+                    </div>
+                    <div class="metric">${tenant.questions_asked || 0}</div>
+                    <div class="metric">${tenant.answers_given || 0}</div>
+                    <div class="metric success">${tenant.success_rate ? tenant.success_rate.toFixed(1) : 0}%</div>
+                    <div>
+                        <button class="view-btn" onclick="event.stopPropagation(); viewTenant('${tenant.id}')">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // View tenant details
+        async function viewTenant(tenantId) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            const tenant = tenantsData.find(t => t.id === tenantId);
+            title.textContent = tenant ? `${tenant.name} - Query History` : 'Query History';
+            body.innerHTML = '<div class="loading-state"><div class="spinner"></div><span>Loading...</span></div>';
+            modal.classList.add('active');
+
+            try {
+                const response = await fetch(`${CHATBOT_API_BASE}/api/admin/tenants/${tenantId}`, {
+                    headers: { 'X-Admin-API-Key': ADMIN_API_KEY }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderTenantDetails(data);
+                } else {
+                    body.innerHTML = '<div class="empty-state"><p>Failed to load details</p></div>';
+                }
+            } catch (error) {
+                body.innerHTML = '<div class="empty-state"><p>Connection error</p></div>';
+            }
+        }
+
+        // Render tenant details
+        function renderTenantDetails(data) {
+            const body = document.getElementById('modal-body');
+            const queries = data.query_history || [];
+
+            if (queries.length === 0) {
+                body.innerHTML = '<div class="empty-state"><span class="material-symbols-outlined">chat_bubble</span><p>No queries yet</p></div>';
+                return;
+            }
+
+            body.innerHTML = queries.map(q => `
+                <div class="query-item">
+                    <div class="query-question">
+                        <span class="query-label q">Q</span>
+                        <span class="query-text">${escapeHtml(q.question || q.query || 'N/A')}</span>
+                    </div>
+                    <div class="query-question">
+                        <span class="query-label a">A</span>
+                        <span class="query-text">${escapeHtml(q.response || q.answer || 'No response')}</span>
+                    </div>
+                    <div class="query-meta">
+                        <span>Status: ${q.status || 'unknown'}</span>
+                        <span>Time: ${q.created_at ? new Date(q.created_at).toLocaleString() : 'N/A'}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Refresh data
+        function refreshData() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.classList.add('loading');
+
+            Promise.all([fetchAnalytics(), fetchTenants()])
+                .finally(() => btn.classList.remove('loading'));
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        // Close modal on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initial load
+        fetchAnalytics();
+        fetchTenants();
+
+        // Auto-refresh every 30 seconds
+        setInterval(fetchAnalytics, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+{
+  "vw_RawPunchDetail": {
+    "view_name": "vw_RawPunchDetail",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "AllEmployeeUnion": {
+    "view_name": "AllEmployeeUnion",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "View_Contractor_Detail": {
+    "view_name": "View_Contractor_Detail",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "View_Employee_Terminal_Authentication_Relation": {
+    "view_name": "View_Employee_Terminal_Authentication_Relation",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "View_Visitor_EnrollmentDetail": {
+    "view_name": "View_Visitor_EnrollmentDetail",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "vw_EmployeeMaster_Vms": {
+    "view_name": "vw_EmployeeMaster_Vms",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "Vw_TerminalDetail_VMS": {
+    "view_name": "Vw_TerminalDetail_VMS",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "vw_VisitorBasicDetail": {
+    "view_name": "vw_VisitorBasicDetail",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  },
+  "View_EmployeeByUserGroupPolicy": {
+    "view_name": "View_EmployeeByUserGroupPolicy",
+    "exists": false,
+    "columns": [],
+    "column_count": 0,
+    "sample_data_available": false,
+    "view_definition": null,
+    "base_tables": []
+  }
+}

@@ -1,0 +1,618 @@
+{
+  "metadata": {
+    "description": "Quality testing benchmark for RAG-based SQL generation",
+    "version": "1.0",
+    "created": "2025-11-27",
+    "scoring_system": {
+      "excellent": "100% - Perfect SQL, correct results, efficient query",
+      "good": "80% - Correct SQL with minor inefficiencies",
+      "acceptable": "60% - SQL works but suboptimal approach",
+      "poor": "40% - SQL has errors but shows understanding",
+      "failed": "0% - Completely wrong or no response"
+    },
+    "total_test_cases": 50
+  },
+
+  "test_categories": {
+    "basic_counts": {
+      "description": "Simple counting queries",
+      "difficulty": "Easy",
+      "weight": 10
+    },
+    "filtering": {
+      "description": "Queries with WHERE conditions",
+      "difficulty": "Easy",
+      "weight": 10
+    },
+    "aggregations": {
+      "description": "GROUP BY, SUM, AVG queries",
+      "difficulty": "Medium",
+      "weight": 15
+    },
+    "date_operations": {
+      "description": "Date filtering and calculations",
+      "difficulty": "Medium",
+      "weight": 15
+    },
+    "multi_condition": {
+      "description": "Complex WHERE with multiple conditions",
+      "difficulty": "Medium",
+      "weight": 15
+    },
+    "business_logic": {
+      "description": "Queries requiring domain knowledge",
+      "difficulty": "Hard",
+      "weight": 20
+    },
+    "complex_analysis": {
+      "description": "Subqueries, window functions, complex aggregations",
+      "difficulty": "Hard",
+      "weight": 15
+    }
+  },
+
+  "test_cases": [
+    {
+      "id": "TC001",
+      "category": "basic_counts",
+      "question": "How many employees are there?",
+      "expected_sql": "SELECT COUNT(*) as TotalEmployees FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1",
+      "evaluation_criteria": [
+        "Uses vw_EmployeeMaster_Vms view",
+        "Filters Active = 1",
+        "Returns count"
+      ],
+      "acceptable_variations": [
+        "Using EmployeeMaster table directly is acceptable but less optimal"
+      ]
+    },
+    {
+      "id": "TC002",
+      "category": "basic_counts",
+      "question": "How many students are enrolled?",
+      "expected_sql": "SELECT COUNT(*) as TotalStudents FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND Role = 'Student'",
+      "evaluation_criteria": [
+        "Filters by Role = 'Student'",
+        "Filters Active = 1"
+      ]
+    },
+    {
+      "id": "TC003",
+      "category": "basic_counts",
+      "question": "How many departments are there?",
+      "expected_sql": "SELECT COUNT(DISTINCT Dname) as DepartmentCount FROM dbo.vw_EmployeeMaster_Vms WHERE Dname IS NOT NULL",
+      "evaluation_criteria": [
+        "Uses DISTINCT or counts from DeptMaster"
+      ],
+      "acceptable_variations": [
+        "SELECT COUNT(*) FROM DeptMaster is also acceptable"
+      ]
+    },
+    {
+      "id": "TC004",
+      "category": "filtering",
+      "question": "List all employees in Computer Science department",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, DesName FROM dbo.vw_EmployeeMaster_Vms WHERE Dname = 'Computer Science' AND Active = 1",
+      "evaluation_criteria": [
+        "Filters by Dname",
+        "Filters Active = 1",
+        "Returns relevant columns"
+      ]
+    },
+    {
+      "id": "TC005",
+      "category": "filtering",
+      "question": "Find employee with ID EMP001",
+      "expected_sql": "SELECT * FROM dbo.vw_EmployeeMaster_Vms WHERE CorpEmpCode = 'EMP001'",
+      "evaluation_criteria": [
+        "Uses CorpEmpCode for search",
+        "Exact match"
+      ]
+    },
+    {
+      "id": "TC006",
+      "category": "filtering",
+      "question": "Show all male employees",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, Dname FROM dbo.vw_EmployeeMaster_Vms WHERE Sex = 1 AND Active = 1",
+      "evaluation_criteria": [
+        "Knows Sex = 1 means Male",
+        "Filters Active"
+      ]
+    },
+    {
+      "id": "TC007",
+      "category": "filtering",
+      "question": "List employees who joined in 2024",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, DateofJoin FROM dbo.vw_EmployeeMaster_Vms WHERE YEAR(DateofJoin) = 2024 AND Active = 1",
+      "evaluation_criteria": [
+        "Uses YEAR() function or date range",
+        "Correct year filtering"
+      ]
+    },
+    {
+      "id": "TC008",
+      "category": "aggregations",
+      "question": "How many employees are in each department?",
+      "expected_sql": "SELECT Dname, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname ORDER BY EmployeeCount DESC",
+      "evaluation_criteria": [
+        "GROUP BY Dname",
+        "COUNT aggregation",
+        "Filters Active"
+      ]
+    },
+    {
+      "id": "TC009",
+      "category": "aggregations",
+      "question": "Show employee count by designation",
+      "expected_sql": "SELECT DesName, COUNT(*) as Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY DesName ORDER BY Count DESC",
+      "evaluation_criteria": [
+        "GROUP BY DesName",
+        "COUNT aggregation"
+      ]
+    },
+    {
+      "id": "TC010",
+      "category": "aggregations",
+      "question": "What is the gender distribution of employees?",
+      "expected_sql": "SELECT CASE WHEN Sex = 1 THEN 'Male' ELSE 'Female' END as Gender, COUNT(*) as Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Sex",
+      "evaluation_criteria": [
+        "Converts Sex to readable format",
+        "GROUP BY Sex"
+      ]
+    },
+    {
+      "id": "TC011",
+      "category": "date_operations",
+      "question": "Who is present today?",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, InTime FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND Status = 'Present'",
+      "evaluation_criteria": [
+        "Uses vw_CompleteAttendanceReport",
+        "Filters today's date",
+        "Filters Status = 'Present'"
+      ]
+    },
+    {
+      "id": "TC012",
+      "category": "date_operations",
+      "question": "How many people were absent yesterday?",
+      "expected_sql": "SELECT COUNT(*) as AbsentCount FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE()-1 AS DATE) AND Status = 'Absent'",
+      "evaluation_criteria": [
+        "Calculates yesterday's date",
+        "Filters Status = 'Absent'"
+      ]
+    },
+    {
+      "id": "TC013",
+      "category": "date_operations",
+      "question": "Show attendance for the last 7 days",
+      "expected_sql": "SELECT ATDate, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE)) GROUP BY ATDate ORDER BY ATDate",
+      "evaluation_criteria": [
+        "Uses DATEADD for date range",
+        "Groups by date",
+        "Shows attendance summary"
+      ]
+    },
+    {
+      "id": "TC014",
+      "category": "multi_condition",
+      "question": "Show employees in IT department who joined after 2023",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, DateofJoin FROM dbo.vw_EmployeeMaster_Vms WHERE Dname LIKE '%IT%' AND DateofJoin > '2023-01-01' AND Active = 1",
+      "evaluation_criteria": [
+        "Combines department filter",
+        "Combines date filter",
+        "Uses AND correctly"
+      ]
+    },
+    {
+      "id": "TC015",
+      "category": "multi_condition",
+      "question": "Find female employees in HR department",
+      "expected_sql": "SELECT CorpEmpCode, EmpName FROM dbo.vw_EmployeeMaster_Vms WHERE Sex = 0 AND Dname LIKE '%HR%' AND Active = 1",
+      "evaluation_criteria": [
+        "Knows Sex = 0 means Female",
+        "Combines gender and department filters"
+      ]
+    },
+    {
+      "id": "TC016",
+      "category": "business_logic",
+      "question": "Who was late today?",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "evaluation_criteria": [
+        "Knows LateArrival > 0 indicates late",
+        "Uses vw_CompleteAttendanceReport",
+        "Filters today"
+      ]
+    },
+    {
+      "id": "TC017",
+      "category": "business_logic",
+      "question": "How many hours did employees work today?",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, WorkDuration/60.0 as WorkHours FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND Status = 'Present'",
+      "evaluation_criteria": [
+        "Knows WorkDuration is in minutes",
+        "Divides by 60 for hours"
+      ]
+    },
+    {
+      "id": "TC018",
+      "category": "business_logic",
+      "question": "Who worked overtime this month?",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, SUM(OT)/60.0 as OvertimeHours FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND OT > 0 GROUP BY CorpEmpCode, EmpName HAVING SUM(OT) > 0",
+      "evaluation_criteria": [
+        "Knows OT is overtime in minutes",
+        "Filters current month",
+        "Aggregates overtime"
+      ]
+    },
+    {
+      "id": "TC019",
+      "category": "business_logic",
+      "question": "What is the attendance percentage this month?",
+      "expected_sql": "SELECT CAST(COUNT(CASE WHEN Status = 'Present' THEN 1 END) * 100.0 / COUNT(*) AS DECIMAL(5,2)) as AttendancePercentage FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND Status NOT IN ('WO', 'Holiday')",
+      "evaluation_criteria": [
+        "Calculates percentage correctly",
+        "Excludes weekends/holidays from total",
+        "Uses current month filter"
+      ]
+    },
+    {
+      "id": "TC020",
+      "category": "business_logic",
+      "question": "Show employees on leave today",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, Status FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND Status IN ('CL', 'EL', 'SL', 'LWP')",
+      "evaluation_criteria": [
+        "Knows leave status codes",
+        "Filters today's date"
+      ]
+    },
+    {
+      "id": "TC021",
+      "category": "filtering",
+      "question": "Search for employees named John",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_EmployeeMaster_Vms WHERE EmpName LIKE '%John%' AND Active = 1",
+      "evaluation_criteria": [
+        "Uses LIKE for partial match",
+        "Searches EmpName field"
+      ]
+    },
+    {
+      "id": "TC022",
+      "category": "aggregations",
+      "question": "Show branch-wise employee distribution",
+      "expected_sql": "SELECT BranchName, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY BranchName ORDER BY EmployeeCount DESC",
+      "evaluation_criteria": [
+        "Groups by BranchName",
+        "Returns counts"
+      ]
+    },
+    {
+      "id": "TC023",
+      "category": "complex_analysis",
+      "question": "Show top 10 employees with most overtime this month",
+      "expected_sql": "SELECT TOP 10 CorpEmpCode, EmpName, SUM(OT)/60.0 as OvertimeHours FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND OT > 0 GROUP BY CorpEmpCode, EmpName ORDER BY OvertimeHours DESC",
+      "evaluation_criteria": [
+        "Uses TOP 10",
+        "Aggregates OT correctly",
+        "Orders by overtime descending"
+      ]
+    },
+    {
+      "id": "TC024",
+      "category": "complex_analysis",
+      "question": "Show department-wise attendance summary for today",
+      "expected_sql": "SELECT Dname, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent, COUNT(CASE WHEN Status IN ('CL','EL','SL') THEN 1 END) as OnLeave FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) GROUP BY Dname",
+      "evaluation_criteria": [
+        "Groups by department",
+        "Uses CASE for conditional counting",
+        "Shows multiple status categories"
+      ]
+    },
+    {
+      "id": "TC025",
+      "category": "date_operations",
+      "question": "How many visitors came this week?",
+      "expected_sql": "SELECT COUNT(*) as VisitorCount FROM dbo.View_Visitor_EnrollmentDetail WHERE Create_Time >= DATEADD(WEEK, DATEDIFF(WEEK, 0, GETDATE()), 0)",
+      "evaluation_criteria": [
+        "Uses View_Visitor_EnrollmentDetail",
+        "Calculates current week start"
+      ]
+    },
+    {
+      "id": "TC026",
+      "category": "filtering",
+      "question": "List all devices/terminals",
+      "expected_sql": "SELECT TerminalID, DomainName, IPAddress, Location, DeviceType, CASE WHEN IsAlive = 1 THEN 'Online' ELSE 'Offline' END as Status FROM dbo.Vw_TerminalDetail_VMS",
+      "evaluation_criteria": [
+        "Uses Vw_TerminalDetail_VMS",
+        "Shows relevant device info"
+      ]
+    },
+    {
+      "id": "TC027",
+      "category": "business_logic",
+      "question": "Show employees who haven't punched in today",
+      "expected_sql": "SELECT e.CorpEmpCode, e.EmpName, e.Dname FROM dbo.vw_EmployeeMaster_Vms e LEFT JOIN dbo.vw_CompleteAttendanceReport a ON e.Ecode = a.ECode AND a.ATDate = CAST(GETDATE() AS DATE) WHERE e.Active = 1 AND (a.Status IS NULL OR a.Status = 'Absent')",
+      "evaluation_criteria": [
+        "Uses LEFT JOIN to find missing records",
+        "Identifies no attendance record"
+      ]
+    },
+    {
+      "id": "TC028",
+      "category": "complex_analysis",
+      "question": "Compare this month's attendance with last month",
+      "expected_sql": "SELECT MONTH(ATDate) as Month, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as PresentCount, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as AbsentCount FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, -1, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)) GROUP BY MONTH(ATDate)",
+      "evaluation_criteria": [
+        "Covers last 2 months",
+        "Groups by month",
+        "Compares attendance"
+      ]
+    },
+    {
+      "id": "TC029",
+      "category": "filtering",
+      "question": "Show employees with blood group O+",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, Dname, BloodGroup FROM dbo.vw_EmployeeMaster_Vms WHERE BloodGroup = 'O+' AND Active = 1",
+      "evaluation_criteria": [
+        "Filters by BloodGroup",
+        "Returns relevant columns"
+      ]
+    },
+    {
+      "id": "TC030",
+      "category": "business_logic",
+      "question": "Who left early today?",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, OutTime, EarlyDeparture FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND EarlyDeparture > 0 ORDER BY EarlyDeparture DESC",
+      "evaluation_criteria": [
+        "Knows EarlyDeparture > 0 indicates left early",
+        "Orders by early departure time"
+      ]
+    },
+    {
+      "id": "TC031",
+      "category": "aggregations",
+      "question": "What is the average work hours per employee this month?",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, AVG(WorkDuration)/60.0 as AvgWorkHours FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND Status = 'Present' GROUP BY CorpEmpCode, EmpName",
+      "evaluation_criteria": [
+        "Uses AVG function",
+        "Converts minutes to hours",
+        "Groups by employee"
+      ]
+    },
+    {
+      "id": "TC032",
+      "category": "filtering",
+      "question": "List employees without email",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, Dname FROM dbo.vw_EmployeeMaster_Vms WHERE (E_mail IS NULL OR E_mail = '') AND Active = 1",
+      "evaluation_criteria": [
+        "Checks for NULL and empty string",
+        "Returns employees missing email"
+      ]
+    },
+    {
+      "id": "TC033",
+      "category": "complex_analysis",
+      "question": "Show attendance trend for the last 30 days",
+      "expected_sql": "SELECT ATDate, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as PresentCount FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(DAY, -30, CAST(GETDATE() AS DATE)) GROUP BY ATDate ORDER BY ATDate",
+      "evaluation_criteria": [
+        "Uses 30 day range",
+        "Groups by date",
+        "Orders chronologically"
+      ]
+    },
+    {
+      "id": "TC034",
+      "category": "business_logic",
+      "question": "How many punches were recorded today?",
+      "expected_sql": "SELECT COUNT(*) as TotalPunches, COUNT(CASE WHEN InOut = 1 THEN 1 END) as InPunches, COUNT(CASE WHEN InOut = 0 THEN 1 END) as OutPunches FROM dbo.vw_RawPunchDetail WHERE CAST(PunchTime AS DATE) = CAST(GETDATE() AS DATE)",
+      "evaluation_criteria": [
+        "Uses vw_RawPunchDetail",
+        "Knows InOut values",
+        "Separates IN/OUT counts"
+      ]
+    },
+    {
+      "id": "TC035",
+      "category": "filtering",
+      "question": "Show all visitors currently inside premises",
+      "expected_sql": "SELECT CorpEmpCode, FName, LName, IN_Time, WhomEmpName, Purpose FROM dbo.View_Visitor_EnrollmentDetail WHERE IN_Time IS NOT NULL AND OUT_Time IS NULL",
+      "evaluation_criteria": [
+        "Checks IN_Time exists",
+        "Checks OUT_Time is NULL"
+      ]
+    },
+    {
+      "id": "TC036",
+      "category": "aggregations",
+      "question": "How many employees joined each year?",
+      "expected_sql": "SELECT YEAR(DateofJoin) as JoiningYear, COUNT(*) as JoinedCount FROM dbo.vw_EmployeeMaster_Vms WHERE DateofJoin IS NOT NULL GROUP BY YEAR(DateofJoin) ORDER BY JoiningYear DESC",
+      "evaluation_criteria": [
+        "Uses YEAR function",
+        "Groups by year",
+        "Orders descending"
+      ]
+    },
+    {
+      "id": "TC037",
+      "category": "business_logic",
+      "question": "Show employees who worked more than 8 hours today",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, WorkDuration/60.0 as WorkHours FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND WorkDuration > 480",
+      "evaluation_criteria": [
+        "Knows 8 hours = 480 minutes",
+        "Filters WorkDuration > 480"
+      ]
+    },
+    {
+      "id": "TC038",
+      "category": "filtering",
+      "question": "List employees who left the organization",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, LeavingDate, LeavingReason FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 0 AND LeavingDate IS NOT NULL ORDER BY LeavingDate DESC",
+      "evaluation_criteria": [
+        "Filters Active = 0",
+        "Shows leaving information"
+      ]
+    },
+    {
+      "id": "TC039",
+      "category": "complex_analysis",
+      "question": "Show monthly absent count for each employee this year",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, MONTH(ATDate) as Month, COUNT(*) as AbsentDays FROM dbo.vw_CompleteAttendanceReport WHERE YEAR(ATDate) = YEAR(GETDATE()) AND Status = 'Absent' GROUP BY CorpEmpCode, EmpName, MONTH(ATDate) ORDER BY CorpEmpCode, Month",
+      "evaluation_criteria": [
+        "Groups by employee and month",
+        "Filters current year",
+        "Counts absent days"
+      ]
+    },
+    {
+      "id": "TC040",
+      "category": "business_logic",
+      "question": "Which shift has the most employees?",
+      "expected_sql": "SELECT TOP 1 Sname, COUNT(*) as EmployeeCount FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) GROUP BY Sname ORDER BY EmployeeCount DESC",
+      "evaluation_criteria": [
+        "Groups by shift name",
+        "Uses TOP 1",
+        "Orders by count descending"
+      ]
+    },
+    {
+      "id": "TC041",
+      "category": "filtering",
+      "question": "Find employees by phone number",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, Telephone1, Dname FROM dbo.vw_EmployeeMaster_Vms WHERE Telephone1 LIKE '%9876%' AND Active = 1",
+      "evaluation_criteria": [
+        "Uses LIKE for partial match",
+        "Searches Telephone1 field"
+      ]
+    },
+    {
+      "id": "TC042",
+      "category": "business_logic",
+      "question": "What is the first punch time today for each employee?",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, MIN(PunchTime) as FirstPunch FROM dbo.vw_RawPunchDetail WHERE CAST(PunchTime AS DATE) = CAST(GETDATE() AS DATE) GROUP BY CorpEmpCode, EmpName",
+      "evaluation_criteria": [
+        "Uses MIN for first punch",
+        "Groups by employee",
+        "Filters today"
+      ]
+    },
+    {
+      "id": "TC043",
+      "category": "complex_analysis",
+      "question": "Show employees with perfect attendance this month (no absences)",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, COUNT(*) as PresentDays FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND Status = 'Present' GROUP BY CorpEmpCode, EmpName HAVING COUNT(*) = (SELECT COUNT(DISTINCT ATDate) FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND Status NOT IN ('WO','Holiday'))",
+      "evaluation_criteria": [
+        "Identifies employees with all present days",
+        "Excludes weekends/holidays from working days",
+        "Uses subquery or HAVING"
+      ]
+    },
+    {
+      "id": "TC044",
+      "category": "filtering",
+      "question": "Show all faculty members",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_EmployeeMaster_Vms WHERE (Role = 'Faculty' OR DesName LIKE '%Professor%' OR DesName LIKE '%Faculty%') AND Active = 1",
+      "evaluation_criteria": [
+        "Filters by role or designation",
+        "Identifies faculty appropriately"
+      ]
+    },
+    {
+      "id": "TC045",
+      "category": "business_logic",
+      "question": "Show weekend off count this month",
+      "expected_sql": "SELECT COUNT(*) as WeekendOffDays FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND Status = 'WO'",
+      "evaluation_criteria": [
+        "Knows Status = 'WO' is weekend off",
+        "Filters current month"
+      ]
+    },
+    {
+      "id": "TC046",
+      "category": "aggregations",
+      "question": "Show average IN time by department",
+      "expected_sql": "SELECT Dname, CAST(DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(InTime AS TIME))), 0) AS TIME) as AvgInTime FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND InTime IS NOT NULL GROUP BY Dname",
+      "evaluation_criteria": [
+        "Calculates average time correctly",
+        "Groups by department"
+      ]
+    },
+    {
+      "id": "TC047",
+      "category": "filtering",
+      "question": "Show active biometric devices",
+      "expected_sql": "SELECT TerminalID, DomainName, IPAddress, Location FROM dbo.Vw_TerminalDetail_VMS WHERE IsAlive = 1 AND DeviceType LIKE '%Biometric%'",
+      "evaluation_criteria": [
+        "Filters IsAlive = 1",
+        "Filters device type"
+      ]
+    },
+    {
+      "id": "TC048",
+      "category": "complex_analysis",
+      "question": "Show employees who are consistently late (late more than 5 times this month)",
+      "expected_sql": "SELECT CorpEmpCode, EmpName, COUNT(*) as LateCount FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND LateArrival > 0 GROUP BY CorpEmpCode, EmpName HAVING COUNT(*) > 5 ORDER BY LateCount DESC",
+      "evaluation_criteria": [
+        "Counts late arrivals",
+        "Uses HAVING for threshold",
+        "Groups by employee"
+      ]
+    },
+    {
+      "id": "TC049",
+      "category": "business_logic",
+      "question": "How many new employees joined this month vs last month?",
+      "expected_sql": "SELECT MONTH(DateofJoin) as Month, COUNT(*) as NewJoinees FROM dbo.vw_EmployeeMaster_Vms WHERE DateofJoin >= DATEADD(MONTH, -1, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)) GROUP BY MONTH(DateofJoin)",
+      "evaluation_criteria": [
+        "Compares two months",
+        "Uses DateofJoin",
+        "Groups by month"
+      ]
+    },
+    {
+      "id": "TC050",
+      "category": "complex_analysis",
+      "question": "Show department-wise headcount with percentage of total",
+      "expected_sql": "SELECT Dname, COUNT(*) as HeadCount, CAST(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER() AS DECIMAL(5,2)) as Percentage FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname ORDER BY HeadCount DESC",
+      "evaluation_criteria": [
+        "Uses window function for total",
+        "Calculates percentage",
+        "Groups by department"
+      ]
+    }
+  ],
+
+  "scoring_rules": {
+    "sql_correctness": {
+      "weight": 40,
+      "criteria": "SQL syntax is valid and would execute without errors"
+    },
+    "result_accuracy": {
+      "weight": 30,
+      "criteria": "Query returns the expected/correct results"
+    },
+    "view_usage": {
+      "weight": 15,
+      "criteria": "Uses appropriate views instead of manual joins when available"
+    },
+    "efficiency": {
+      "weight": 10,
+      "criteria": "Query is reasonably efficient (uses indexes, avoids unnecessary operations)"
+    },
+    "business_logic": {
+      "weight": 5,
+      "criteria": "Correctly interprets domain-specific values (Active, Status, InOut, etc.)"
+    }
+  },
+
+  "common_errors_to_check": [
+    "Missing Active = 1 filter for employee queries",
+    "Using raw tables instead of pre-joined views",
+    "Not converting WorkDuration/OT from minutes",
+    "Wrong date filtering (should use CAST(GETDATE() AS DATE))",
+    "Not knowing Status codes (WO, CL, EL, etc.)",
+    "Wrong InOut values (1=IN, 0=OUT)",
+    "Wrong Sex values (1=Male, 0=Female)",
+    "Missing schema prefix (dbo.)"
+  ]
+}

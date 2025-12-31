@@ -1,0 +1,1 @@
+docker run -d --name oryggi-gateway --restart unless-stopped -e GATEWAY_TOKEN=gw_nQYbEnOnI1KxjJ4OFbyVItGQgQ74SLG-e7JFXNbtjzY -e DB_HOST=host.docker.internal -e DB_PORT=1433 -e DB_DATABASE=Oryggi -e DB_USERNAME=sa -e DB_PASSWORD=admin@123 oryggiai/gateway-agent:latest

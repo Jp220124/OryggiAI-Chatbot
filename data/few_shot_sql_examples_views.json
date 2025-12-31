@@ -1,0 +1,50 @@
+[
+  {
+    "question": "How many employees are in each department?",
+    "sql": "SELECT Dname, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname ORDER BY EmployeeCount DESC"
+  },
+  {
+    "question": "Show me the punch records from yesterday",
+    "sql": "SELECT CorpEmpCode, EmpName, PunchTime, InOut, Location, Authentication FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(DATEADD(day, -1, GETDATE()) AS DATE) ORDER BY PunchTime DESC"
+  },
+  {
+    "question": "List all active employees with their details",
+    "sql": "SELECT CorpEmpCode, EmpName, Dname, SecName, DesName, DateofJoin, PresentCardNo FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 ORDER BY EmpName"
+  },
+  {
+    "question": "Show employees with their biometric enrollment status",
+    "sql": "SELECT CorpEmpCode, EmpName, Dname, Finger, Face, Card FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1"
+  },
+  {
+    "question": "Get punch records for a specific employee",
+    "sql": "SELECT PunchTime, InOut, Location, MachineName, ATDate FROM dbo.vw_RawPunchDetail WHERE CorpEmpCode = 'EMP001' ORDER BY PunchTime DESC"
+  },
+  {
+    "question": "How many punches were manual today?",
+    "sql": "SELECT COUNT(*) as ManualPunchCount FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND IsManual = 1"
+  },
+  {
+    "question": "List employees by department and their designation",
+    "sql": "SELECT Dname, DesName, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname, DesName ORDER BY Dname, EmployeeCount DESC"
+  },
+  {
+    "question": "Show visitors who checked in today",
+    "sql": "SELECT FName, LName, Whom_To_Visit, IN_Time, Purpose, MobileNumner FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE) ORDER BY IN_Time DESC"
+  },
+  {
+    "question": "Get all contractor employees",
+    "sql": "SELECT CorpEmpCode, EmpName, Name as ContractorName, PO_Number FROM dbo.vw_EmployeeMaster_Vms WHERE ContractorID IS NOT NULL AND Active = 1"
+  },
+  {
+    "question": "Show punch records by department for today",
+    "sql": "SELECT Dname, COUNT(*) as PunchCount FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Dname ORDER BY PunchCount DESC"
+  },
+  {
+    "question": "List employees without face biometric",
+    "sql": "SELECT CorpEmpCode, EmpName, Dname, Face FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND Face = 'NO'"
+  },
+  {
+    "question": "Get employee terminal authentication details",
+    "sql": "SELECT CorpEmpCode, IPAddress, Location, AuthenticationName, Schedule_Name FROM dbo.View_Employee_Terminal_Authentication_Relation"
+  }
+]

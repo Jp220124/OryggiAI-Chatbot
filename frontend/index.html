@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OryggiAI - Intelligent Database Assistant</title>
+    <link rel="stylesheet" href="style.css?v=20251217120000">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#E6C200;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
+                        <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
+                        <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
+                    </svg>
+                    <div class="logo-text">
+                        <h1>OryggiAI</h1>
+                        <span class="logo-subtitle">Database Assistant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="connection-card">
+                    <div class="connection-header">
+                        <span class="connection-label">Server Status</span>
+                        <div class="status-indicator">
+                            <span class="status-dot" id="statusDot"></span>
+                            <span class="status-text" id="statusText">Connecting...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Example Queries</h3>
+                    <ul class="example-list" id="exampleList">
+                        <li data-query="How many total employees are in the database?">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span>Total employees count</span>
+                        </li>
+                        <li data-query="Show me the top 5 departments with the most employees">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <span>Top departments by size</span>
+                        </li>
+                        <li data-query="How many employees joined in the last 30 days?">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>Recent hires (30 days)</span>
+                        </li>
+                        <li data-query="Generate an Excel report showing all active employees">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span>Generate employee report</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Session Info</h3>
+                    <div class="session-info">
+                        <div class="info-item">
+                            <span class="info-label">User ID:</span>
+                            <span class="info-value" id="userIdDisplay">admin</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Role:</span>
+                            <span class="info-value" id="userRoleDisplay">ADMIN</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Session:</span>
+                            <span class="info-value session-id" id="sessionIdDisplay">Initializing...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="new-session-btn" id="newSessionBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    New Session
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="main-content">
+            <div class="chat-header">
+                <h2 class="chat-title">Chat</h2>
+                <div class="header-actions">
+                    <button class="action-btn" id="darkModeToggle" title="Toggle dark mode">
+                        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button class="action-btn" id="clearChatBtn" title="Clear chat">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-card">
+                    <div class="welcome-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                    </div>
+                    <h2>Welcome to OryggiAI Database Assistant</h2>
+                    <p>Ask me anything about your employee database in natural language. I can help you query data,
+                        generate reports, and provide insights.</p>
+                    <div class="welcome-features">
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Natural Language Queries
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Excel Reports
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Role-Based Access
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="loading-indicator" id="loadingIndicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="loading-text">Thinking...</span>
+                </div>
+                <form class="chat-input-form" id="chatForm">
+                    <div class="input-wrapper">
+                        <textarea id="questionInput" class="chat-input"
+                            placeholder="Ask a question about your database..." rows="1" required></textarea>
+                        <button type="submit" class="send-btn" id="sendBtn">
+                            <svg class="send-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Action Confirmation Modal -->
+    <div class="modal-overlay" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon warning">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <h3 class="modal-title">Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p class="confirmation-message" id="confirmationMessage">
+                    Are you sure you want to proceed with this action?
+                </p>
+                <div class="action-details" id="actionDetails"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn btn-cancel" id="cancelActionBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Cancel
+                </button>
+                <button class="modal-btn btn-confirm" id="confirmActionBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biometric Enrollment Overlay -->
+    <div class="enrollment-overlay" id="enrollmentOverlay">
+        <div class="enrollment-modal">
+            <div class="enrollment-header">
+                <h3 id="enrollmentTitle">Biometric Enrollment</h3>
+                <span class="enrollment-badge" id="enrollmentBadge">IN PROGRESS</span>
+            </div>
+
+            <div class="enrollment-animation" id="enrollmentAnimation">
+                <!-- Palm Icon (default) -->
+                <div class="biometric-icon palm-icon" id="palmIcon">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="pulse-ring" cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
+                        <circle class="pulse-ring delay-1" cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
+                        <path class="hand-icon" d="M50 20C52.5 20 55 22 55 25V45H60C62.5 45 65 47 65 50V55C65 57.5 62.5 60 60 60H55V65C55 67.5 52.5 70 50 70C47.5 70 45 67.5 45 65V60H40C37.5 60 35 57.5 35 55V50C35 47.5 37.5 45 40 45H45V25C45 22 47.5 20 50 20Z" fill="currentColor"/>
+                        <path class="hand-detail" d="M30 35V55M70 35V55M40 25V40M60 25V40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <!-- Face Icon -->
+                <div class="biometric-icon face-icon" id="faceIcon" style="display: none;">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="pulse-ring" cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
+                        <circle class="pulse-ring delay-1" cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
+                        <circle class="face-outline" cx="50" cy="50" r="30" stroke="currentColor" stroke-width="3" fill="none"/>
+                        <circle cx="40" cy="45" r="4" fill="currentColor"/>
+                        <circle cx="60" cy="45" r="4" fill="currentColor"/>
+                        <path d="M40 60C40 60 45 68 50 68C55 68 60 60 60 60" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <!-- Finger Icon -->
+                <div class="biometric-icon finger-icon" id="fingerIcon" style="display: none;">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="pulse-ring" cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
+                        <circle class="pulse-ring delay-1" cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
+                        <ellipse cx="50" cy="50" rx="20" ry="30" stroke="currentColor" stroke-width="3" fill="none"/>
+                        <path class="fingerprint" d="M50 30C45 30 40 40 40 50C40 60 45 70 50 70" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path class="fingerprint" d="M50 35C47 35 44 42 44 50C44 58 47 65 50 65" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path class="fingerprint" d="M50 40C49 40 48 45 48 50C48 55 49 60 50 60" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="enrollment-status">
+                <p class="status-message" id="enrollmentStatusMsg">Connecting to device...</p>
+                <div class="device-info" id="enrollmentDeviceInfo">
+                    <span class="device-label">Device:</span>
+                    <span class="device-name" id="enrollmentDeviceName">Terminal 1</span>
+                </div>
+            </div>
+
+            <div class="enrollment-countdown" id="enrollmentCountdown">
+                <div class="countdown-bar">
+                    <div class="countdown-progress" id="countdownProgress"></div>
+                </div>
+                <span class="countdown-text" id="countdownText">60 seconds remaining</span>
+            </div>
+
+            <div class="enrollment-instructions">
+                <div class="instruction-step active" id="step1">
+                    <span class="step-number">1</span>
+                    <span class="step-text">Device ready</span>
+                </div>
+                <div class="instruction-step" id="step2">
+                    <span class="step-number">2</span>
+                    <span class="step-text" id="step2Text">Place palm on device</span>
+                </div>
+                <div class="instruction-step" id="step3">
+                    <span class="step-number">3</span>
+                    <span class="step-text">Enrollment complete</span>
+                </div>
+            </div>
+
+            <button class="enrollment-cancel-btn" id="enrollmentCancelBtn">
+                Cancel Enrollment
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js?v=20251217120000"></script>
+</body>
+
+</html>

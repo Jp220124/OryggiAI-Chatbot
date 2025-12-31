@@ -1,0 +1,43 @@
+[32m2025-11-14 15:53:51.643[0m | [1mINFO    [0m | [36mapp.database.connection[0m:[36minitialize[0m:[36m44[0m - [1mInitializing database connection...[0m
+[32m2025-11-14 15:53:51.643[0m | [1mINFO    [0m | [36mapp.database.connection[0m:[36minitialize[0m:[36m45[0m - [1mConnecting to: DESKTOP-UOD2VBS\MSSQLSERVER2022/OryggiDB[0m
+Initializing services...
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine SELECT CAST(SERVERPROPERTY('ProductVersion') AS VARCHAR)
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine SELECT schema_name()
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine [generated in 0.00011s] ()
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine SELECT CAST('test max support' AS NVARCHAR(max))
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine [generated in 0.00011s] ()
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine SELECT 1 FROM fn_listextendedproperty(default, default, default, default, default, default, default)
+2025-11-14 15:53:51,710 INFO sqlalchemy.engine.Engine [generated in 0.00007s] ()
+2025-11-14 15:53:51,774 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-11-14 15:53:51,774 INFO sqlalchemy.engine.Engine SELECT 1
+2025-11-14 15:53:51,774 INFO sqlalchemy.engine.Engine [generated in 0.00048s] ()
+2025-11-14 15:53:51,774 INFO sqlalchemy.engine.Engine ROLLBACK
+[32m2025-11-14 15:53:51.774[0m | [1mINFO    [0m | [36mapp.database.connection[0m:[36minitialize[0m:[36m71[0m - [1m\u2713 Database connection initialized successfully[0m
+[32m2025-11-14 15:53:51.774[0m | [1mINFO    [0m | [36mapp.rag.faiss_manager[0m:[36minitialize[0m:[36m42[0m - [1mInitializing FAISS...[0m
+D:\OryggiAI_Service\Advance_Chatbot\app\rag\faiss_manager.py:48: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  self.embeddings = HuggingFaceEmbeddings(
+[32m2025-11-14 15:53:59.738[0m | [1mINFO    [0m | [36mapp.rag.faiss_manager[0m:[36minitialize[0m:[36m56[0m - [1mLoading existing FAISS index...[0m
+[32m2025-11-14 15:53:59.766[0m | [1mINFO    [0m | [36mapp.rag.faiss_manager[0m:[36minitialize[0m:[36m63[0m - [1m\u2713 FAISS loaded with 1980 embeddings[0m
+[32m2025-11-14 15:53:59.766[0m | [1mINFO    [0m | [36mapp.rag.few_shot_manager[0m:[36minitialize[0m:[36m42[0m - [1mInitializing FewShotManager...[0m
+[32m2025-11-14 15:53:59.766[0m | [1mINFO    [0m | [36mapp.rag.few_shot_manager[0m:[36minitialize[0m:[36m46[0m - [1mLoaded 25 few-shot examples[0m
+[32m2025-11-14 15:54:02.574[0m | [1mINFO    [0m | [36mapp.rag.few_shot_manager[0m:[36minitialize[0m:[36m59[0m - [1mLoading existing few-shot FAISS index...[0m
+[32m2025-11-14 15:54:02.574[0m | [1mINFO    [0m | [36mapp.rag.few_shot_manager[0m:[36minitialize[0m:[36m65[0m - [1m\u2713 Loaded few-shot index with 25 examples[0m
+[32m2025-11-14 15:54:02.574[0m | [1mINFO    [0m | [36mapp.agents.sql_agent[0m:[36mgenerate_sql[0m:[36m49[0m - [1mGenerating SQL for: List all employees with their department names[0m
+[32m2025-11-14 15:54:02.574[0m | [1mINFO    [0m | [36mapp.agents.sql_agent[0m:[36m_retrieve_few_shot_examples[0m:[36m126[0m - [1mRetrieving few-shot examples (top 3)...[0m
+[32m2025-11-14 15:54:02.609[0m | [1mINFO    [0m | [36mapp.rag.few_shot_manager[0m:[36mget_relevant_examples[0m:[36m181[0m - [1m\u2713 Retrieved 3 relevant examples[0m
+[32m2025-11-14 15:54:02.611[0m | [1mINFO    [0m | [36mapp.agents.sql_agent[0m:[36m_retrieve_few_shot_examples[0m:[36m134[0m - [1m\u2713 Retrieved 3 few-shot examples[0m
+[32m2025-11-14 15:54:02.611[0m | [1mINFO    [0m | [36mapp.agents.sql_agent[0m:[36m_retrieve_schema_context[0m:[36m95[0m - [1mRetrieving schema context (top 5)...[0m
+[32m2025-11-14 15:54:02.626[0m | [1mINFO    [0m | [36mapp.rag.faiss_manager[0m:[36mquery_schemas[0m:[36m179[0m - [1m\u2713 Retrieved 5 relevant schemas[0m
+[32m2025-11-14 15:54:02.628[0m | [1mINFO    [0m | [36mapp.agents.sql_agent[0m:[36m_retrieve_schema_context[0m:[36m103[0m - [1m\u2713 Retrieved 5 schema contexts[0m
+[32m2025-11-14 15:54:36.374[0m | [31m[1mERROR   [0m | [36mapp.agents.sql_agent[0m:[36m_call_gemini[0m:[36m222[0m - [31m[1m\u2717 Gemini API call failed: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.[0m
+[32m2025-11-14 15:54:36.374[0m | [31m[1mERROR   [0m | [36mapp.agents.sql_agent[0m:[36mgenerate_sql[0m:[36m81[0m - [31m[1m\u2717 SQL generation failed: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.[0m
+Services initialized
+
+================================================================================
+Question: List all employees with their department names
+Expected Pattern: JOIN
+================================================================================
+ERROR: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.
+
+================================================================================

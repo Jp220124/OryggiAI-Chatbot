@@ -1,0 +1,7 @@
+{
+  "question": "Show me all employees",
+  "user_id": "test_user_001",
+  "user_role": "ADMIN",
+  "format": "pdf",
+  "filename": "test_employees_report.pdf"
+}

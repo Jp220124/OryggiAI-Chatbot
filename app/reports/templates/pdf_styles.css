@@ -1,0 +1,59 @@
+/*
+PDF Report Styles
+Additional styling for WeasyPrint PDF generation
+*/
+
+/* Print-specific styles */
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* Page breaks */
+.page-break {
+    page-break-after: always;
+}
+
+.avoid-break {
+    page-break-inside: avoid;
+}
+
+/* Custom colors */
+:root {
+    --primary-color: #366092;
+    --secondary-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-gray: #f5f5f5;
+    --border-color: #ddd;
+}
+
+/* Table enhancements */
+table {
+    page-break-inside: auto;
+}
+
+tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+}
+
+thead {
+    display: table-header-group;
+}
+
+tfoot {
+    display: table-footer-group;
+}
+
+/* Responsive adjustments */
+@page {
+    orphans: 3;
+    widows: 3;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+}

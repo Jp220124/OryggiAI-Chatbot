@@ -1,0 +1,46 @@
+# Docker ignore file
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Logs
+*.log
+logs/
+
+# Config files (user creates their own)
+config.yaml
+
+# Git
+.git/
+.gitignore
+
+# Tests
+tests/
+pytest_cache/
+.pytest_cache/
+
+# Documentation
+docs/
+*.md
+!README.md

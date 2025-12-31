@@ -1,0 +1,82 @@
+# ============================================================
+# OryggiAI Gateway Agent - Docker Compose
+# ============================================================
+#
+# QUICK START:
+# 1. Copy this file to your server
+# 2. Edit the environment variables below
+# 3. Run: docker-compose up -d
+#
+# That's it! The agent will connect automatically.
+# ============================================================
+
+version: '3.8'
+
+services:
+  oryggi-gateway:
+    build: .
+    # Or use pre-built image:
+    # image: oryggiai/gateway-agent:latest
+    container_name: oryggi-gateway-agent
+    restart: unless-stopped
+
+    # ========================================
+    # EDIT THESE VALUES WITH YOUR SETTINGS
+    # ========================================
+    environment:
+      # Gateway Token (from OryggiAI Dashboard)
+      # Get this from: Dashboard > Gateway > Generate Token
+      - GATEWAY_TOKEN=gw_YOUR_TOKEN_HERE
+
+      # OryggiAI Server URL (using port 3000 directly - IIS/ARR has WebSocket issues)
+      - GATEWAY_SAAS_URL=ws://103.197.77.163:3000/api/gateway/ws
+
+      # Your SQL Server Connection Details
+      - DB_HOST=host.docker.internal    # Use 'host.docker.internal' for localhost SQL Server
+      - DB_PORT=1433
+      - DB_DATABASE=YourDatabaseName    # <-- CHANGE THIS
+      - DB_USERNAME=sa                   # <-- CHANGE THIS
+      - DB_PASSWORD=YourPassword         # <-- CHANGE THIS
+      - DB_USE_WINDOWS_AUTH=false
+
+      # Logging (DEBUG, INFO, WARNING, ERROR)
+      - LOG_LEVEL=INFO
+
+    # Network settings
+    # Use 'host' network mode on Linux to access localhost SQL Server
+    # On Windows/Mac Docker Desktop, use 'host.docker.internal' as DB_HOST
+    # network_mode: host  # Uncomment for Linux
+
+    # For Windows/Mac, use bridge network with extra_hosts
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    # Optional: Mount logs directory
+    volumes:
+      - ./logs:/app/logs
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "print('healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+# ============================================================
+# USAGE EXAMPLES:
+# ============================================================
+#
+# Start the agent:
+#   docker-compose up -d
+#
+# View logs:
+#   docker-compose logs -f
+#
+# Stop the agent:
+#   docker-compose down
+#
+# Restart after config change:
+#   docker-compose down && docker-compose up -d
+#
+# ============================================================

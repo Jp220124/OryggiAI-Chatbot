@@ -1,0 +1,114 @@
+﻿venv\Scripts\python : 2025-11-20 12:43:00.881 | 
+INFO     | app.rag.faiss_manager:initialize:45 - 
+Initializing FAISS...
+At line:1 char:32
++ ... NG='utf-8'; venv\Scripts\python -c 
+"exec(open('test_enriched_schema.p ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2025- 
+   11-20 12:4...lizing FAISS...:String) [], Remot  
+  eException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+D:\OryggiAI_Service\Advance_Chatbot\app\rag\faiss_m
+anager.py:51: LangChainDeprecationWarning: The 
+class `HuggingFaceEmbeddings` was deprecated in 
+LangChain 0.2.2 and will be removed in 1.0. An 
+updated version of the class exists in the 
+:class:`~langchain-huggingface package and should 
+be used instead. To use it run `pip install -U 
+:class:`~langchain-huggingface` and import as 
+`from :class:`~langchain_huggingface import 
+HuggingFaceEmbeddings``.
+  self.embeddings = HuggingFaceEmbeddings(
+2025-11-20 12:43:11.722 | INFO     | 
+app.rag.faiss_manager:initialize:59 - Loading 
+existing FAISS index...
+2025-11-20 12:43:11.789 | INFO     | 
+app.rag.faiss_manager:initialize:66 - Γ£ô FAISS 
+loaded with 1985 embeddings
+2025-11-20 12:43:11.884 | INFO     | 
+app.rag.faiss_manager:query_schemas:182 - Γ£ô 
+Retrieved 5 relevant schemas
+2025-11-20 12:43:11.884 | INFO     | 
+app.agents.sql_agent:generate_sql:50 - Generating 
+SQL for: Generate report showing Employees In and 
+out counts
+2025-11-20 12:43:11.884 | INFO     | app.agents.sql
+_agent:_retrieve_few_shot_examples:127 - 
+Retrieving few-shot examples (top 3)...
+2025-11-20 12:43:11.884 | WARNING  | 
+app.rag.few_shot_manager:get_relevant_examples:157 
+- FewShotManager not initialized
+2025-11-20 12:43:11.884 | INFO     | app.agents.sql
+_agent:_retrieve_few_shot_examples:135 - Γ£ô 
+Retrieved 0 few-shot examples
+2025-11-20 12:43:11.884 | INFO     | 
+app.agents.sql_agent:_retrieve_schema_context:96 - 
+Retrieving schema context (top 5)...
+2025-11-20 12:43:11.897 | INFO     | 
+app.rag.faiss_manager:query_schemas:182 - Γ£ô 
+Retrieved 5 relevant schemas
+2025-11-20 12:43:11.897 | INFO     | 
+app.agents.sql_agent:_retrieve_schema_context:104 
+- Γ£ô Retrieved 5 schema contexts
+2025-11-20 12:43:13.455 | DEBUG    | 
+app.agents.sql_agent:_call_gemini:230 - Response 
+finish_reason: 1
+2025-11-20 12:43:13.455 | DEBUG    | 
+app.agents.sql_agent:_call_gemini:232 - Safety 
+ratings: [category: HARM_CATEGORY_HATE_SPEECH
+probability: NEGLIGIBLE
+, category: HARM_CATEGORY_DANGEROUS_CONTENT
+probability: NEGLIGIBLE
+, category: HARM_CATEGORY_HARASSMENT
+probability: NEGLIGIBLE
+, category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+probability: NEGLIGIBLE
+]
+2025-11-20 12:43:13.455 | INFO     | 
+app.agents.sql_agent:generate_sql:68 - Γ£ô 
+Generated SQL: SELECT
+    COUNT(CASE WHEN IN_Out_Status = 'In' THEN 1 
+ELSE NULL END) AS InCount,
+    COUNT(CASE WHE...
+================================================================================
+TEST QUERY: Generate report showing Employees In and out counts
+================================================================================
+
+[1] Retrieving schema context...
+
+Retrieved 5 relevant schemas:
+
+--- Schema 1: EmployeeMaster ---
+Column: ReportingHeadEcode in table EmployeeMaster. Type: int. Use this for queries about reportingheadecode data.
+
+--- Schema 2: EmployeeMaster_Deleted ---
+Table: EmployeeMaster_Deleted
+Columns (87): Ecode, CorpEmpCode, Active, Gcode, Catcode, DesCode, SecCode, EmpName, GuardianName, DateofBirth, DateofJoin, PresentCardNo, Sex, IsMarried, Qualification, Experience, Address1, Telephone1, E_mail, Address2, Telephone2, BloodGroup, LeavingDate, LeavingReas...
+
+--- Schema 3: EmployeeMaster ---
+Column: IN_Out_Status in table EmployeeMaster. Type: varchar. Use this for queries about in_out_status data.
+
+--- Schema 4: EmployeeMaster ---
+Table: EmployeeMaster
+Primary Key: Ecode
+Columns (86): Ecode, CorpEmpCode, Active, Gcode, Catcode, DesCode, SecCode, EmpName, GuardianName, DateofBirth, DateofJoin, PresentCardNo, Sex, IsMarried, Qualification, Experience, Address1, Telephone1, E_mail, Address2, Telephone2, BloodGroup, LeavingDate, ...
+
+--- Schema 5: EmployeeMaster ---
+Column: PO_Number in table EmployeeMaster. Type: nvarchar. Use this for queries about po_number data.
+
+
+[2] Generating SQL query...
+
+SUCCESS - Generated SQL:
+SELECT
+    COUNT(CASE WHEN IN_Out_Status = 'In' THEN 1 ELSE NULL END) AS InCount,
+    COUNT(CASE WHEN IN_Out_Status = 'Out' THEN 1 ELSE NULL END) AS OutCount
+FROM EmployeeMaster
+
+Explanation: Generated query based on 5 relevant tables
+Tables used: ['EmployeeMaster_Deleted', 'EmployeeMaster']
+
+================================================================================

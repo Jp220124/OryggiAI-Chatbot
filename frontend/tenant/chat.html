@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OryggiAI - Database Chat Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colors - Gold Theme */
+            --primary-gradient-start: #FFD700;
+            --primary-gradient-end: #E6C200;
+            --primary-color: #FFD700;
+            --primary-hover: #E6C200;
+            --primary-dark: #CCAD00;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #FFD700;
+
+            /* Backgrounds */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+
+            /* Text Colors */
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+
+            /* Borders */
+            --border-color: #e2e8f0;
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 20px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+
+            /* Sidebar */
+            --sidebar-width: 320px;
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        /* Database Selector Card */
+        .database-card {
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .database-card-label {
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.7);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .database-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .database-select:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .database-select option {
+            background: white;
+            color: var(--text-primary);
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        /* Example List */
+        .example-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .example-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+        }
+
+        .example-list li:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-hover);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .example-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        .example-list li:hover .example-icon {
+            opacity: 1;
+        }
+
+        .example-list li span {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* Session Info */
+        .session-info {
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .logout-btn:hover {
+            background: var(--error-color);
+            color: white;
+            border-color: var(--error-color);
+        }
+
+        .logout-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg-primary);
+        }
+
+        .chat-header {
+            padding: 20px 32px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .action-btn:hover {
+            background: var(--error-color);
+            color: white;
+            border-color: var(--error-color);
+        }
+
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            max-width: 600px;
+            margin: 40px auto;
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            border-radius: var(--border-radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .welcome-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: white;
+        }
+
+        .welcome-card h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .welcome-card p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .welcome-features {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-xl);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .feature-badge svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--success-color);
+        }
+
+        /* Message Styles */
+        .message {
+            margin-bottom: 24px;
+            animation: messageSlideIn 0.3s ease;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message-user .message-bubble {
+            max-width: 70%;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: #000;
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 4px var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .message-bot {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .message-bot .message-content {
+            max-width: 85%;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .message-bot .answer {
+            font-size: 15px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            white-space: pre-wrap;
+        }
+
+        /* SQL Query Box */
+        .sql-query {
+            background: #1e293b;
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            margin: 16px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sql-query-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sql-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .sql-query pre {
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+
+        /* Results Table */
+        .results-table-container {
+            margin: 16px 0;
+            overflow-x: auto;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .results-table thead {
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: #000;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .results-table thead th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .results-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color var(--transition-fast);
+        }
+
+        .results-table tbody tr:nth-child(even) {
+            background: var(--bg-tertiary);
+        }
+
+        .results-table tbody tr:hover {
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        .results-table tbody td {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            vertical-align: top;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .table-footer {
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Metadata */
+        .metadata {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .metadata-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .metadata-badge svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--primary-color);
+        }
+
+        /* Error Message */
+        .error-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-left: 4px solid var(--error-color);
+            border-radius: var(--border-radius-sm);
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .error-box p {
+            color: #991b1b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Clarification Options */
+        .clarification-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .clarification-option {
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: #1a1a1a;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .clarification-option:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .clarification-message {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 12px;
+        }
+
+        /* Loading Indicator */
+        .loading-indicator {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .loading-indicator.active {
+            display: flex;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Chat Input Area */
+        .chat-input-area {
+            padding: 24px 32px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: all var(--transition-fast);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 52px;
+            max-height: 150px;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .send-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--border-radius-lg);
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            border: none;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .send-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2.5;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-tertiary: #374151;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --text-tertiary: #94a3b8;
+            --border-color: #4a5568;
+        }
+
+        body.dark-mode .message-user .message-bubble {
+            background: linear-gradient(135deg, #4c51bf 0%, #667eea 100%);
+            color: white;
+        }
+
+        body.dark-mode .error-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        body.dark-mode .error-box p {
+            color: #fca5a5;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            :root {
+                --sidebar-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 50vh;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .chat-messages {
+                padding: 20px 16px;
+            }
+
+            .chat-header,
+            .chat-input-area {
+                padding: 16px;
+            }
+
+            .message-user .message-bubble,
+            .message-bot .message-content {
+                max-width: 90%;
+            }
+
+            .welcome-card {
+                margin: 20px auto;
+            }
+
+            .welcome-card h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#E6C200;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
+                        <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
+                        <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
+                    </svg>
+                    <div class="logo-text">
+                        <h1>OryggiAI</h1>
+                        <span class="logo-subtitle">Database Assistant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Database Selector -->
+                <div class="database-card">
+                    <div class="database-card-label">Select Database</div>
+                    <select id="databaseSelect" class="database-select">
+                        <option value="">Loading databases...</option>
+                    </select>
+                </div>
+
+                <!-- Example Queries -->
+                <div class="section">
+                    <h3 class="section-title">Example Queries</h3>
+                    <ul class="example-list" id="exampleList">
+                        <li data-query="Show me all tables in the database">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                            </svg>
+                            <span>Show all tables</span>
+                        </li>
+                        <li data-query="How many records are in each table?">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <span>Record counts by table</span>
+                        </li>
+                        <li data-query="Show me the top 10 most recent entries">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Recent entries</span>
+                        </li>
+                        <li data-query="What columns are in the main table?">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span>Show table columns</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Session Info -->
+                <div class="section">
+                    <h3 class="section-title">Session Info</h3>
+                    <div class="session-info">
+                        <div class="info-item">
+                            <span class="info-label">Database:</span>
+                            <span class="info-value" id="selectedDbName">None selected</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tables:</span>
+                            <span class="info-value" id="tableCount">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-info-card">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">User</div>
+                        <div class="user-role" id="userRole">Member</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="main-content">
+            <div class="chat-header">
+                <h2 class="chat-title">Chat</h2>
+                <div class="header-actions">
+                    <button class="action-btn" id="darkModeToggle" title="Toggle dark mode">
+                        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button class="action-btn" id="clearChatBtn" title="Clear chat">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-card" id="welcomeCard">
+                    <div class="welcome-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                    </div>
+                    <h2>Welcome to OryggiAI Database Assistant</h2>
+                    <p>Ask me anything about your database in natural language. I can help you query data, generate reports, and provide insights.</p>
+                    <div class="welcome-features">
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Natural Language Queries
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            SQL Generation
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Data Insights
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="loading-indicator" id="loadingIndicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="loading-text">Thinking...</span>
+                </div>
+                <div class="input-wrapper">
+                    <textarea id="chatInput" class="chat-input" placeholder="Ask a question about your database..." rows="1"></textarea>
+                    <button class="send-btn" id="sendBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let selectedDatabaseId = null;
+        let isLoading = false;
+
+        // Clarification tracking
+        let pendingClarification = null; // { originalQuestion, clarificationAttempt }
+
+        // Check authentication
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Load user info
+        document.getElementById('userName').textContent = localStorage.getItem('full_name') || 'User';
+        document.getElementById('userRole').textContent = localStorage.getItem('role') || 'Member';
+        const initials = (localStorage.getItem('full_name') || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById('userAvatar').textContent = initials.substring(0, 2);
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = darkModeToggle.querySelector('.sun-icon');
+        const moonIcon = darkModeToggle.querySelector('.moon-icon');
+
+        // Check saved preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            sunIcon.style.display = isDark ? 'none' : 'block';
+            moonIcon.style.display = isDark ? 'block' : 'none';
+        });
+
+        // Load databases
+        async function loadDatabases() {
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/mt/databases`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const data = await response.json();
+                const select = document.getElementById('databaseSelect');
+
+                if (!data.databases || data.databases.length === 0) {
+                    select.innerHTML = '<option value="">No databases available</option>';
+                    return;
+                }
+
+                const readyDatabases = data.databases.filter(db =>
+                    db.analysis_status === 'completed' || db.schema_analyzed === true
+                );
+
+                if (readyDatabases.length === 0) {
+                    select.innerHTML = '<option value="">No databases ready</option>';
+                    return;
+                }
+
+                select.innerHTML = '<option value="">Select a database...</option>' +
+                    readyDatabases.map(db =>
+                        `<option value="${db.id}" data-name="${db.name}" data-tables="${db.table_count || 0}">
+                            ${db.name} (${db.table_count || 0} tables)
+                        </option>`
+                    ).join('');
+
+                // Auto-select first
+                if (readyDatabases.length > 0) {
+                    selectedDatabaseId = readyDatabases[0].id;
+                    select.value = readyDatabases[0].id;
+                    updateSessionInfo(readyDatabases[0]);
+                }
+            } catch (error) {
+                console.error('Failed to load databases:', error);
+                document.getElementById('databaseSelect').innerHTML = '<option value="">Error loading</option>';
+            }
+        }
+
+        function updateSessionInfo(db) {
+            document.getElementById('selectedDbName').textContent = db.name || 'None';
+            document.getElementById('tableCount').textContent = db.table_count || '-';
+        }
+
+        // Database selection
+        document.getElementById('databaseSelect').addEventListener('change', function() {
+            selectedDatabaseId = this.value;
+            const option = this.options[this.selectedIndex];
+            if (option && selectedDatabaseId) {
+                updateSessionInfo({
+                    name: option.dataset.name,
+                    table_count: option.dataset.tables
+                });
+            }
+        });
+
+        // Example queries
+        document.getElementById('exampleList').addEventListener('click', (e) => {
+            const li = e.target.closest('li');
+            if (li && li.dataset.query) {
+                document.getElementById('chatInput').value = li.dataset.query;
+                sendMessage();
+            }
+        });
+
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message || isLoading) return;
+
+            if (!selectedDatabaseId) {
+                addBotMessage('Please select a database first.', { error: true });
+                return;
+            }
+
+            // Hide welcome
+            const welcome = document.getElementById('welcomeCard');
+            if (welcome) welcome.style.display = 'none';
+
+            // Add user message
+            addUserMessage(message);
+            input.value = '';
+            autoResize(input);
+
+            // Show loading
+            document.getElementById('loadingIndicator').classList.add('active');
+            isLoading = true;
+            document.getElementById('sendBtn').disabled = true;
+
+            try {
+                // Build request body - include clarification data if pending
+                const requestBody = {
+                    question: message,
+                    database_id: selectedDatabaseId
+                };
+
+                // If user is responding to a clarification, include the context
+                if (pendingClarification) {
+                    requestBody.clarification_response = message;
+                    requestBody.original_unclear_question = pendingClarification.originalQuestion;
+                    requestBody.clarification_attempt = pendingClarification.clarificationAttempt;
+                    console.log('[CHAT] Sending clarification response:', requestBody);
+                }
+
+                const response = await fetch(`${API_BASE}/api/chat/mt/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                document.getElementById('loadingIndicator').classList.remove('active');
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Check if clarification is needed
+                    if (data.needs_clarification) {
+                        // Store clarification state for next message
+                        pendingClarification = {
+                            originalQuestion: data.original_unclear_question || message,
+                            clarificationAttempt: data.clarification_attempt || 1
+                        };
+                        console.log('[CHAT] Clarification needed:', pendingClarification);
+
+                        // Show clarification question with options if available
+                        let clarificationHtml = data.clarification_question || data.answer;
+                        if (data.clarification_options && data.clarification_options.length > 0) {
+                            clarificationHtml += '<div class="clarification-options">';
+                            data.clarification_options.forEach(opt => {
+                                clarificationHtml += `<button class="clarification-option" onclick="selectClarificationOption('${escapeHtml(opt)}')">${escapeHtml(opt)}</button>`;
+                            });
+                            clarificationHtml += '</div>';
+                        }
+                        addBotMessage(clarificationHtml, { isClarification: true });
+                    } else {
+                        // Clear clarification state on successful query
+                        pendingClarification = null;
+                        addBotMessage(data.answer || 'Query executed.', {
+                            sql: data.sql_query,
+                            results: data.results,
+                            rowCount: data.result_count
+                        });
+                    }
+                } else {
+                    pendingClarification = null; // Clear on error
+                    addBotMessage(data.error || data.answer || 'An error occurred.', { error: true });
+                }
+            } catch (error) {
+                document.getElementById('loadingIndicator').classList.remove('active');
+                pendingClarification = null; // Clear on error
+                addBotMessage('Failed to connect to the server.', { error: true });
+            } finally {
+                isLoading = false;
+                document.getElementById('sendBtn').disabled = false;
+            }
+        }
+
+        // Handle clicking a clarification option
+        function selectClarificationOption(option) {
+            document.getElementById('chatInput').value = option;
+            sendMessage();
+        }
+
+        function addUserMessage(text) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message message-user';
+            div.innerHTML = `<div class="message-bubble">${escapeHtml(text)}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addBotMessage(text, options = {}) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message message-bot';
+
+            let html = '<div class="message-content">';
+
+            if (options.error) {
+                html += `<div class="error-box"><p>${escapeHtml(text)}</p></div>`;
+            } else if (options.isClarification) {
+                // Don't escape HTML for clarification messages (they contain buttons)
+                html += `<div class="answer clarification-message">${text}</div>`;
+            } else {
+                html += `<div class="answer">${escapeHtml(text)}</div>`;
+            }
+
+            if (options.sql) {
+                html += `
+                    <div class="sql-query">
+                        <div class="sql-query-header">
+                            <span class="sql-label">SQL Query</span>
+                            <button class="copy-btn" onclick="copyToClipboard(\`${escapeHtml(options.sql)}\`)">Copy</button>
+                        </div>
+                        <pre>${escapeHtml(options.sql)}</pre>
+                    </div>
+                `;
+            }
+
+            if (options.results && options.results.length > 0) {
+                const columns = Object.keys(options.results[0]);
+                html += `
+                    <div class="results-table-container">
+                        <table class="results-table">
+                            <thead>
+                                <tr>${columns.map(col => `<th>${escapeHtml(col)}</th>`).join('')}</tr>
+                            </thead>
+                            <tbody>
+                                ${options.results.slice(0, 50).map(row => `
+                                    <tr>${columns.map(col => `<td>${escapeHtml(String(row[col] ?? ''))}</td>`).join('')}</tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">${options.rowCount || options.results.length} row(s) returned${options.results.length > 50 ? ' (showing first 50)' : ''}</div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            div.innerHTML = html;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Clear chat
+        document.getElementById('clearChatBtn').addEventListener('click', () => {
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = `
+                <div class="welcome-card" id="welcomeCard">
+                    <div class="welcome-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                    </div>
+                    <h2>Welcome to OryggiAI Database Assistant</h2>
+                    <p>Ask me anything about your database in natural language. I can help you query data, generate reports, and provide insights.</p>
+                    <div class="welcome-features">
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Natural Language Queries
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            SQL Generation
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Data Insights
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Input handlers
+        document.getElementById('chatInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        document.getElementById('sendBtn').addEventListener('click', sendMessage);
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+        }
+
+        document.getElementById('chatInput').addEventListener('input', function() {
+            autoResize(this);
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        // Initialize
+        loadDatabases();
+        document.getElementById('chatInput').focus();
+    </script>
+</body>
+
+</html>

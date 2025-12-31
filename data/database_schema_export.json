@@ -1,0 +1,1963 @@
+{
+  "ids": [
+    "schema_dbo.Access_Schedules",
+    "schema_dbo.Access_Schedules_Terminal_Relation",
+    "schema_dbo.Alert_Master",
+    "schema_dbo.AlertMaster",
+    "schema_dbo.ApplicationSetup",
+    "schema_dbo.AppSetup_Cat_Rel",
+    "schema_dbo.Area_AreaGroup_Relation",
+    "schema_dbo.AreaGroupMaster",
+    "schema_dbo.AreaMaster",
+    "schema_dbo.aspnet_Applications",
+    "schema_dbo.aspnet_Membership",
+    "schema_dbo.aspnet_Paths",
+    "schema_dbo.aspnet_PersonalizationAllUsers",
+    "schema_dbo.aspnet_PersonalizationPerUser",
+    "schema_dbo.aspnet_Profile",
+    "schema_dbo.aspnet_Roles",
+    "schema_dbo.aspnet_SchemaVersions",
+    "schema_dbo.aspnet_Users",
+    "schema_dbo.aspnet_UsersInRoles",
+    "schema_dbo.aspnet_WebEvent_Events",
+    "schema_dbo.Attendance",
+    "schema_dbo.AttendanceRegister",
+    "schema_dbo.AuditLog",
+    "schema_dbo.AuthenticationMaster",
+    "schema_dbo.Biometric",
+    "schema_dbo.BitCompanyRel",
+    "schema_dbo.BitFacilityCodeRel",
+    "schema_dbo.BitMaster",
+    "schema_dbo.BlackListMaster",
+    "schema_dbo.Bonus",
+    "schema_dbo.BranchMaster",
+    "schema_dbo.Card_Master",
+    "schema_dbo.CatMaster",
+    "schema_dbo.ClassSessions",
+    "schema_dbo.CompanyMaster",
+    "schema_dbo.Contractor_Detail",
+    "schema_dbo.ContractorMaster",
+    "schema_dbo.Controller",
+    "schema_dbo.CustomWiegandFormats",
+    "schema_dbo.DataConnectionOutputTypeMaster",
+    "schema_dbo.DeptCategoryRelation",
+    "schema_dbo.DeptMaster",
+    "schema_dbo.DesignationMaster",
+    "schema_dbo.DocumentMaster",
+    "schema_dbo.DocumentUploadmaster",
+    "schema_dbo.Door",
+    "schema_dbo.DutyRoster",
+    "schema_dbo.Ecode_Relation",
+    "schema_dbo.EmpDepartRole",
+    "schema_dbo.EmpESIPFNo",
+    "schema_dbo.Employee_Card_Relation",
+    "schema_dbo.Employee_Terminal_Authentication_Relation",
+    "schema_dbo.Employee_TerminalGroup_Authentication_Relation",
+    "schema_dbo.EmployeeMaster",
+    "schema_dbo.EmployeeMaster_Deleted",
+    "schema_dbo.EmployeePayMaster",
+    "schema_dbo.EmployeeSalaryHeadRelation",
+    "schema_dbo.EmpShiftPatternRelation",
+    "schema_dbo.Escort_Terminal_Status",
+    "schema_dbo.ESI_PF",
+    "schema_dbo.ESIC",
+    "schema_dbo.ESICChalan",
+    "schema_dbo.FingerMaster",
+    "schema_dbo.FireGroup",
+    "schema_dbo.GenSetup",
+    "schema_dbo.GradeMaster",
+    "schema_dbo.GradeSalaryHeadRelation",
+    "schema_dbo.Group",
+    "schema_dbo.GroupAccession",
+    "schema_dbo.GTMSGroupCheckPointRel",
+    "schema_dbo.GTMSTaskGroup",
+    "schema_dbo.HardwareTypeMaster",
+    "schema_dbo.HighLightMaster",
+    "schema_dbo.HolidayDepartmentRelation",
+    "schema_dbo.HolidayMaster",
+    "schema_dbo.ID_Card_Template",
+    "schema_dbo.IDProofMaster",
+    "schema_dbo.IOModuleTypeMaster",
+    "schema_dbo.LabelMaster",
+    "schema_dbo.LdapSettings",
+    "schema_dbo.LeaveAccural",
+    "schema_dbo.LeaveCard",
+    "schema_dbo.LeaveMaster",
+    "schema_dbo.MachineMaster",
+    "schema_dbo.MachinePunch",
+    "schema_dbo.MachineRawPunch",
+    "schema_dbo.MachineRawPunchDL",
+    "schema_dbo.MachineRawPunchExtn",
+    "schema_dbo.MachineRawPunchExtn2",
+    "schema_dbo.MachineRawPunchRT",
+    "schema_dbo.MasterTerminalHardwareTypeRelation",
+    "schema_dbo.Material_Master",
+    "schema_dbo.Meeting_Persons",
+    "schema_dbo.MessageMaster",
+    "schema_dbo.MultiReportingHeadRelation",
+    "schema_dbo.NotificationTypeMaster",
+    "schema_dbo.OryggiErrorLog",
+    "schema_dbo.OryggiService",
+    "schema_dbo.Paritybits",
+    "schema_dbo.PayrollStep1",
+    "schema_dbo.PayrollStep2",
+    "schema_dbo.PaySlip",
+    "schema_dbo.PF",
+    "schema_dbo.PFChalan",
+    "schema_dbo.PinMaster",
+    "schema_dbo.ProtocolMaster",
+    "schema_dbo.PurposeMaster",
+    "schema_dbo.RemarkMaster",
+    "schema_dbo.ReportingHeadMaster",
+    "schema_dbo.ReportTemplate",
+    "schema_dbo.RoleMaster",
+    "schema_dbo.RoundCheckPoint_RTL",
+    "schema_dbo.SalaryHeadMaster",
+    "schema_dbo.ScheduleMaster",
+    "schema_dbo.SectionMaster",
+    "schema_dbo.SeverityMaster",
+    "schema_dbo.ShiftMaster",
+    "schema_dbo.ShiftPattern",
+    "schema_dbo.StatusMaster",
+    "schema_dbo.Subjects",
+    "schema_dbo.Sublect_Card_Relation",
+    "schema_dbo.Task",
+    "schema_dbo.TaskAccessSchedulesRemove",
+    "schema_dbo.TaskGrant",
+    "schema_dbo.TaskRebuildDevice",
+    "schema_dbo.TaskSEMAC",
+    "schema_dbo.TaskUpdateAccessSchedules",
+    "schema_dbo.TaskUpdateDeviceSetting",
+    "schema_dbo.TaskUserRebuild",
+    "schema_dbo.TaskUserRemove",
+    "schema_dbo.TempFinger",
+    "schema_dbo.TemplateFormat",
+    "schema_dbo.TerminalGroupMaster",
+    "schema_dbo.TerminalPolicy",
+    "schema_dbo.TimeSet",
+    "schema_dbo.TimeZone",
+    "schema_dbo.UserESIPF",
+    "schema_dbo.Userfields",
+    "schema_dbo.UserGroupMaster",
+    "schema_dbo.UserGroupPolicy",
+    "schema_dbo.Vedanta_Checklist_Answer",
+    "schema_dbo.Vedanta_Checklist_Major_Observation_RTL",
+    "schema_dbo.Vedanta_Checklist_Minor_Observation_RTL",
+    "schema_dbo.Vedanta_Checklist_Question",
+    "schema_dbo.Vedanta_Major_Observation_Category",
+    "schema_dbo.Vedanta_Minor_Observation_Category",
+    "schema_dbo.Vedanta_Observation_Round",
+    "schema_dbo.Vedanta_Observation_Round_Log",
+    "schema_dbo.Vedanta_Observation_Type",
+    "schema_dbo.Vedanta_Plant_Checkpoint",
+    "schema_dbo.Vedanta_Plant_Location",
+    "schema_dbo.Vedanta_Question_Answer_RTL",
+    "schema_dbo.Vedanta_User_Category_RTL",
+    "schema_dbo.Vistor_Details",
+    "schema_dbo.Weekdays",
+    "schema_dbo.WiegandMaster",
+    "schema_dbo.WiegandSettings",
+    "schema_dbo.WiegandTerminalRel",
+    "view_vw_EmployeeMaster_Vms",
+    "view_vw_RawPunchDetail",
+    "view_AllEmployeeUnion",
+    "view_View_Visitor_EnrollmentDetail",
+    "view_View_Contractor_Detail",
+    "view_View_Employee_Terminal_Authentication_Relation",
+    "view_View_EmployeeByUserGroupPolicy",
+    "view_Vw_TerminalDetail_VMS",
+    "view_vw_VisitorBasicDetail",
+    "view_Employee_Hikvision_Image",
+    "view_Employee_Suprema_Unwarped_Image",
+    "view_Employee_Suprema_warped_Image",
+    "view_Employee_User_Image",
+    "view_GTMS_User_Observation",
+    "view_Vedanta_Admin_Checkpoint",
+    "view_Vedanta_User_Cat_Plant_Checkpoint",
+    "view_Vedanta_User_Cat_Plant_Checkpoint2",
+    "view_Vedanta_User_Plant_Relation",
+    "view_View_All_Alert_Log",
+    "view_View_BDW_MPunch",
+    "view_View_ComapnyMaster",
+    "view_View_EmpDepartRole",
+    "view_View_EmployeeESIPF",
+    "view_View_FACE_V1",
+    "view_View_FingerDetail",
+    "view_View_ForExcelExport",
+    "view_View_Group_By_DCode",
+    "view_View_HalfDayPresent",
+    "view_View_Hospital_VMS_Patient_Details",
+    "table_Access_Schedules",
+    "table_Access_Schedules_Terminal_Relation",
+    "table_Alert_Master",
+    "table_AlertMaster",
+    "table_ApplicationSetup",
+    "table_AppSetup_Cat_Rel",
+    "table_Area_AreaGroup_Relation",
+    "table_AreaGroupMaster",
+    "table_AreaMaster",
+    "table_aspnet_Applications",
+    "table_aspnet_Membership",
+    "table_aspnet_Paths",
+    "table_aspnet_PersonalizationAllUsers",
+    "table_aspnet_PersonalizationPerUser",
+    "table_aspnet_Profile",
+    "table_aspnet_Roles",
+    "table_aspnet_SchemaVersions",
+    "table_aspnet_Users",
+    "table_aspnet_UsersInRoles",
+    "table_aspnet_WebEvent_Events",
+    "table_Attendance",
+    "table_AttendanceRegister",
+    "table_AuditLog",
+    "table_AuthenticationMaster",
+    "table_Biometric",
+    "table_BitCompanyRel",
+    "table_BitFacilityCodeRel",
+    "table_BitMaster",
+    "table_BlackListMaster",
+    "table_Bonus",
+    "table_BranchMaster",
+    "table_Card_Master",
+    "table_CatMaster",
+    "table_ClassSessions",
+    "table_CompanyMaster",
+    "table_Contractor_Detail",
+    "table_ContractorMaster",
+    "table_Controller",
+    "table_CustomWiegandFormats",
+    "table_DataConnectionOutputTypeMaster",
+    "table_DeptCategoryRelation",
+    "table_DeptMaster",
+    "table_DesignationMaster",
+    "table_DocumentMaster",
+    "table_DocumentUploadmaster",
+    "table_Door",
+    "table_DutyRoster",
+    "table_Ecode_Relation",
+    "table_EmpESIPFNo"
+  ],
+  "documents": [
+    "TABLE: dbo.Access_Schedules\n\nPURPOSE:\nThe `Access_Schedules` table defines weekly access schedules, primarily used for controlling entry permissions. Each schedule, identified by `ScheduleID` and named in `Schedule_Name`, specifies access availability for each day of the week (Monday-Sunday). The `varbinary` columns (Monday-Sunday) likely store binary representations of time slots or access permissions for that day. `Remark` provides optional notes. Common queries involve retrieving schedules by ID or name and decoding the daily access permissions to determine valid entry times.\n\nCOLUMNS (10 total):\n  \u2022 ScheduleID (int, NULL)\n  \u2022 Schedule_Name (varchar, NULL)\n  \u2022 Monday (varbinary, NULL)\n  \u2022 Tuesday (varbinary, NULL)\n  \u2022 Wednesday (varbinary, NULL)\n  \u2022 Thursday (varbinary, NULL)\n  \u2022 Friday (varbinary, NULL)\n  \u2022 Saturday (varbinary, NULL)\n  \u2022 Sunday (varbinary, NULL)\n  \u2022 Remark (varchar, NULL)\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.Access_Schedules\n",
+    "TABLE: dbo.Access_Schedules_Terminal_Relation\n\nPURPOSE:\nThe `Access_Schedules_Terminal_Relation` table establishes the relationship between access schedules and specific terminals. It links `ScheduleID` (identifying a defined access schedule) to `TerminalID` (identifying a physical access point). The `Status` column indicates the current state of the schedule's application to the terminal, while `Error` stores any error messages encountered during the application process. Common queries involve retrieving all terminals associated with a specific schedule, or checking the status of a schedule's application across all terminals.\n\nCOLUMNS (4 total):\n  \u2022 ScheduleID (int, NOT NULL)\n  \u2022 TerminalID (int, NOT NULL)\n  \u2022 Status (varchar, NULL)\n  \u2022 Error (varchar, NULL)\n\nPRIMARY KEY: ScheduleID, TerminalID\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.Access_Schedules_Terminal_Relation\n",
+    "TABLE: dbo.Alert_Master\n\nPURPOSE:\nThe `Alert_Master` table stores definitions for system alerts, including their OEM, alert name, `DeviceAlertCode`, and severity (`SeverityID`). It manages alert behavior such as acknowledgement (`Acknowledgement`), automated notifications (email, SMS, snapshot), and integration with third-party systems. Key columns control notification types (`NotificationTypeID`), language (`LanguageID`), and associated terminal groups (`Door_Release_Terminal_GroupID`). Common queries involve retrieving alerts by severity, device code, or enabling status (`IsEnable`) to configure system monitoring and response.\n\nCOLUMNS (19 total):\n  \u2022 ID (bigint, NOT NULL)\n  \u2022 OEM (nvarchar, NULL)\n  \u2022 Alert (nvarchar, NULL)\n  \u2022 Name (nvarchar, NULL)\n  \u2022 DeviceAlertCode (nvarchar, NULL)\n  \u2022 SeverityID (int, NULL)\n  \u2022 NotificationTypeID (int, NULL)\n  \u2022 Acknowledgement (bit, NULL)\n  \u2022 MasterAlert (nvarchar, NULL)\n  \u2022 LanguageID (int, NULL)\n  \u2022 AutoMail (bit, NULL)\n  \u2022 AutoSms (bit, NULL)\n  \u2022 AutoSnap (bit, NULL)\n  \u2022 CameraLive (bit, NULL)\n  \u2022 Door_Release_Terminal_GroupID (int, NULL)\n  \u2022 Mail_Ecode_List (varchar, NULL)\n  \u2022 Remarks (nvarchar, NULL)\n  \u2022 IsEnable (bit, NULL)\n  \u2022 ThirdParty (bit, NULL)\n\nPRIMARY KEY: ID\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.Alert_Master\n",
+    "TABLE: dbo.AlertMaster\n\nPURPOSE:\nThe `AlertMaster` table stores a catalog of alerts within the system. `AlertID` is the unique identifier for each alert. The `Alert` column provides a description of the alert itself, while `Remark` offers additional context or notes about the alert. Common queries would involve retrieving alert details by `AlertID` or listing all available alerts to understand the system's potential warning states. This table is often used as a lookup for alert codes referenced in other tables.\n\nCOLUMNS (3 total):\n  \u2022 AlertID (int, NOT NULL)\n  \u2022 Alert (varchar, NULL)\n  \u2022 Remark (varchar, NULL)\n\nPRIMARY KEY: AlertID\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.AlertMaster\n",
+    "TABLE: dbo.ApplicationSetup\n\nPURPOSE:\nThe `ApplicationSetup` table stores configuration settings for the time and attendance system, defining rules for attendance marking, overtime calculation, and work hour requirements. Key columns include `AppSetupCode` (unique identifier), `BranchCode` (linked to the branch), `MinWorkHourForPresent` (minimum work hours for a full day), and flags like `IshalfDayAllowed`, `OvertimeAllowed`, and `OnePunchPresentMarking`. It also defines permissible late arrival/early departure times and settings for work-off options. Common queries involve retrieving settings for a specific branch or determining overtime eligibility based on configured thresholds.\n\nCOLUMNS (31 total):\n  \u2022 AppSetupCode (int, NOT NULL)\n  \u2022 BranchCode (int, NULL)\n  \u2022 MinWorkHourForPresent (datetime, NULL)\n  \u2022 IshalfDayAllowed (bit, NOT NULL)\n  \u2022 MinWorkHourForHalfDay (datetime, NULL)\n  \u2022 IsShortDayAllowed (bit, NOT NULL)\n  \u2022 MinWorkHourForShortDay (datetime, NULL)\n  \u2022 OvertimeAllowed (bit, NOT NULL)\n  \u2022 MinDurationReqForOverTime (datetime, NULL)\n  \u2022 OnePunchPresentMarking (bit, NOT NULL)\n  \u2022 PermissableLateArrival (datetime, NULL)\n  \u2022 PermissableEarlyDeparture (datetime, NULL)\n  \u2022 FWOAssigned (bit, NOT NULL)\n  \u2022 FirstWo (tinyint, NULL)\n  \u2022 SWOAssigned (bit, NOT NULL)\n  \u2022 SecondWo (tinyint, NULL)\n  \u2022 SecondWOFirst (bit, NULL)\n  \u2022 SecondWOSecond (bit, NULL)\n  \u2022 SecondWOThird (bit, NULL)\n  \u2022 SecondWOFourth (bit, NULL)\n  \u2022 SecondWOFifth (bit, NULL)\n  \u2022 SecondWoType (tinyint, NULL)\n  \u2022 CurrentYear (datetime, NULL)\n  \u2022 EarlyArrivalIgnoured (bit, NULL)\n  \u2022 LateDepartureIgnoured (bit, NULL)\n  \u2022 OverTimeFormula (tinyint, NULL)\n  \u2022 OverTimeThreshold (datetime, NULL)\n  \u2022 DuplicatePunchTime (datetime, NULL)\n  \u2022 IsBreakShiftAllowed (bit, NOT NULL)\n  \u2022 WorkMinuteFomula (tinyint, NULL)\n  \u2022 DeductIntermediate (bit, NULL)\n\nPRIMARY KEY: AppSetupCode\n\nRELATIONSHIPS:\n  \u2022 BranchCode \u2192 BranchMaster.BranchCode\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.ApplicationSetup\n  JOIN with BranchMaster ON dbo.ApplicationSetup.BranchCode\n",
+    "TABLE: dbo.AppSetup_Cat_Rel\n\nPURPOSE:\nThe `AppSetup_Cat_Rel` table stores application setup configurations related to overtime (OT) settings, categorized by gender and GAZ (likely a geographical or organizational zone) status. `AppSetupCode` is a foreign key linking to the application setup. `GAZMaleOT`, `GAZFemaleOT`, `NonGAZMaleOT`, and `NonGAZFemaleOT` columns store datetime values representing the overtime start time for each respective category. Common queries would retrieve overtime start times based on application setup and employee demographics to determine when overtime pay should begin.\n\nCOLUMNS (5 total):\n  \u2022 AppSetupCode (int, NULL)\n  \u2022 GAZMaleOT (datetime, NULL)\n  \u2022 GAZFemaleOT (datetime, NULL)\n  \u2022 NonGAZMaleOT (datetime, NULL)\n  \u2022 NonGAZFemaleOT (datetime, NULL)\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.AppSetup_Cat_Rel\n",
+    "TABLE: dbo.Area_AreaGroup_Relation\n\nPURPOSE:\nThe `Area_AreaGroup_Relation` table defines the many-to-many relationship between areas and area groups. It stores which `AreaID` belongs to which `AreaGroupID`. `AreaGroupID` and `AreaID` are foreign keys referencing the respective area group and area tables. This table is commonly used to query all areas within a specific area group (e.g., `SELECT AreaID FROM Area_AreaGroup_Relation WHERE AreaGroupID = 123`) or to find all area groups an area belongs to.\n\nCOLUMNS (2 total):\n  \u2022 AreaGroupID (int, NOT NULL)\n  \u2022 AreaID (int, NOT NULL)\n\nPRIMARY KEY: AreaGroupID, AreaID\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.Area_AreaGroup_Relation\n",
+    "TABLE: dbo.AreaGroupMaster\n\nPURPOSE:\nThe `AreaGroupMaster` table stores master data for area groups. `AreaGroupID` is the unique identifier for each group, while `AreaGroupIDDisplay` likely represents a user-friendly ID. `AreaGroupName` holds the descriptive name of the area group. `Remark1` and `Remark2` provide optional fields for additional notes. Common queries would involve retrieving area group details by ID or name, often used for categorizing or filtering data related to specific geographic or functional areas.\n\nCOLUMNS (5 total):\n  \u2022 AreaGroupID (int, NOT NULL)\n  \u2022 AreaGroupIDDisplay (int, NOT NULL)\n  \u2022 AreaGroupName (nvarchar, NOT NULL)\n  \u2022 Remark1 (nvarchar, NULL)\n  \u2022 Remark2 (nvarchar, NULL)\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.AreaGroupMaster\n",
+    "TABLE: dbo.AreaMaster\n\nPURPOSE:\nThe `AreaMaster` table stores master data for geographical areas. `AreaID` is the unique internal identifier, while `AreaIDDisplay` provides a user-friendly display ID. `AreaName` holds the name of the area. `Remark1` and `Remark2` are optional fields for additional notes or descriptions. This table is commonly used to look up area names by ID or to filter data based on specific areas. Queries often involve selecting `AreaName` based on `AreaID` or grouping data by area.\n\nCOLUMNS (5 total):\n  \u2022 AreaID (int, NOT NULL)\n  \u2022 AreaIDDisplay (int, NOT NULL)\n  \u2022 AreaName (nvarchar, NOT NULL)\n  \u2022 Remark1 (nvarchar, NULL)\n  \u2022 Remark2 (nvarchar, NULL)\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.AreaMaster\n",
+    "TABLE: dbo.aspnet_Applications\n\nPURPOSE:\nThe `aspnet_Applications` table stores metadata about ASP.NET applications using the built-in membership system. It tracks each application's name (`ApplicationName`), a lowercase version for case-insensitive lookups (`LoweredApplicationName`), and a unique identifier (`ApplicationId`) as the primary key. The `Description` column provides optional descriptive text. Common queries involve retrieving an `ApplicationId` based on `ApplicationName` or `LoweredApplicationName`, often used when managing users, roles, and profiles within a specific application context.\n\nCOLUMNS (4 total):\n  \u2022 ApplicationName (nvarchar, NOT NULL)\n  \u2022 LoweredApplicationName (nvarchar, NOT NULL)\n  \u2022 ApplicationId (uniqueidentifier, NOT NULL)\n  \u2022 Description (nvarchar, NULL)\n\nPRIMARY KEY: ApplicationId\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.aspnet_Applications\n",
+    "TABLE: dbo.aspnet_Membership\n\nPURPOSE:\nThe `aspnet_Membership` table stores user authentication and profile information for ASP.NET applications. It links users to applications via `ApplicationId` and `UserId`. Key columns include `Password` (hashed), `PasswordSalt`, `PasswordFormat`, `Email`, `IsApproved`, and `IsLockedOut`. It tracks password attempts (`FailedPasswordAttemptCount`, `FailedPasswordAnswerAttemptCount`) and lockout status. Common queries involve authenticating users, retrieving email addresses, and managing user lockout status based on failed login attempts. The table also stores password reset questions and answers.\n\nCOLUMNS (21 total):\n  \u2022 ApplicationId (uniqueidentifier, NOT NULL)\n  \u2022 UserId (uniqueidentifier, NOT NULL)\n  \u2022 Password (nvarchar, NOT NULL)\n  \u2022 PasswordFormat (int, NOT NULL)\n  \u2022 PasswordSalt (nvarchar, NOT NULL)\n  \u2022 MobilePIN (nvarchar, NULL)\n  \u2022 Email (nvarchar, NULL)\n  \u2022 LoweredEmail (nvarchar, NULL)\n  \u2022 PasswordQuestion (nvarchar, NULL)\n  \u2022 PasswordAnswer (nvarchar, NULL)\n  \u2022 IsApproved (bit, NOT NULL)\n  \u2022 IsLockedOut (bit, NOT NULL)\n  \u2022 CreateDate (datetime, NOT NULL)\n  \u2022 LastLoginDate (datetime, NOT NULL)\n  \u2022 LastPasswordChangedDate (datetime, NOT NULL)\n  \u2022 LastLockoutDate (datetime, NOT NULL)\n  \u2022 FailedPasswordAttemptCount (int, NOT NULL)\n  \u2022 FailedPasswordAttemptWindowStart (datetime, NOT NULL)\n  \u2022 FailedPasswordAnswerAttemptCount (int, NOT NULL)\n  \u2022 FailedPasswordAnswerAttemptWindowStart (datetime, NOT NULL)\n  \u2022 Comment (ntext, NULL)\n\nPRIMARY KEY: UserId\n\nRELATIONSHIPS:\n  \u2022 ApplicationId \u2192 aspnet_Applications.ApplicationId\n  \u2022 UserId \u2192 aspnet_Users.UserId\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.aspnet_Membership\n  JOIN with aspnet_Applications ON dbo.aspnet_Membership.ApplicationId\n",
+    "TABLE: dbo.aspnet_Paths\n\nPURPOSE:\nThe `aspnet_Paths` table stores URL paths used by ASP.NET applications for features like membership and authorization. `PathId` is the unique identifier for each path. `Path` stores the actual URL path, while `LoweredPath` contains the lowercase version for case-insensitive lookups. `ApplicationId` links the path to a specific application in the `aspnet_Applications` table. Common queries involve retrieving paths by `ApplicationId` or searching for a specific path using `LoweredPath` for efficient case-insensitive matching.\n\nCOLUMNS (4 total):\n  \u2022 ApplicationId (uniqueidentifier, NOT NULL)\n  \u2022 PathId (uniqueidentifier, NOT NULL)\n  \u2022 Path (nvarchar, NOT NULL)\n  \u2022 LoweredPath (nvarchar, NOT NULL)\n\nPRIMARY KEY: PathId\n\nRELATIONSHIPS:\n  \u2022 ApplicationId \u2192 aspnet_Applications.ApplicationId\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.aspnet_Paths\n  JOIN with aspnet_Applications ON dbo.aspnet_Paths.ApplicationId\n",
+    "TABLE: dbo.aspnet_PersonalizationAllUsers\n\nPURPOSE:\nThe `aspnet_PersonalizationAllUsers` table stores personalization settings applicable to all users for specific website paths. `PathId` links to the `aspnet_Paths` table, identifying the page. `PageSettings` stores the actual personalization data as an image (BLOB). `LastUpdatedDate` tracks when the settings were last modified. Common queries retrieve the `PageSettings` for a given `PathId` to apply default personalization, or check `LastUpdatedDate` to determine if settings need refreshing.\n\nCOLUMNS (3 total):\n  \u2022 PathId (uniqueidentifier, NOT NULL)\n  \u2022 PageSettings (image, NOT NULL)\n  \u2022 LastUpdatedDate (datetime, NOT NULL)\n\nPRIMARY KEY: PathId\n\nRELATIONSHIPS:\n  \u2022 PathId \u2192 aspnet_Paths.PathId\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.aspnet_PersonalizationAllUsers\n  JOIN with aspnet_Paths ON dbo.aspnet_PersonalizationAllUsers.PathId\n",
+    "TABLE: dbo.aspnet_PersonalizationPerUser\n\nPURPOSE:\nThe `aspnet_PersonalizationPerUser` table stores user-specific personalization settings for web pages within an ASP.NET application. `Id` is the unique identifier for each record. `PathId` links to the specific page (URL) in `aspnet_Paths`, and `UserId` links to the user in `aspnet_Users`. `PageSettings` stores the actual personalization data as a binary image. `LastUpdatedDate` tracks when the settings were last modified. Common queries retrieve a user's settings for a specific page or find recently updated personalization data.\n\nCOLUMNS (5 total):\n  \u2022 Id (uniqueidentifier, NOT NULL)\n  \u2022 PathId (uniqueidentifier, NULL)\n  \u2022 UserId (uniqueidentifier, NULL)\n  \u2022 PageSettings (image, NOT NULL)\n  \u2022 LastUpdatedDate (datetime, NOT NULL)\n\nPRIMARY KEY: Id\n\nRELATIONSHIPS:\n  \u2022 PathId \u2192 aspnet_Paths.PathId\n  \u2022 UserId \u2192 aspnet_Users.UserId\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.aspnet_PersonalizationPerUser\n  JOIN with aspnet_Paths ON dbo.aspnet_PersonalizationPerUser.PathId\n",
+    "TABLE: dbo.aspnet_Profile\n\nPURPOSE:\nThe `aspnet_Profile` table stores user profile data for ASP.NET applications. It links to the `aspnet_Users` table via `UserId`. User profile properties are stored in a denormalized format: `PropertyNames`, `PropertyValuesString`, and `PropertyValuesBinary` hold property names and corresponding string or binary values. `LastUpdatedDate` tracks when the profile was last modified. Common queries involve retrieving user profile data based on `UserId` or filtering profiles by `LastUpdatedDate`. The table facilitates storing custom user attributes beyond basic user information.\n\nCOLUMNS (5 total):\n  \u2022 UserId (uniqueidentifier, NOT NULL)\n  \u2022 PropertyNames (ntext, NOT NULL)\n  \u2022 PropertyValuesString (ntext, NOT NULL)\n  \u2022 PropertyValuesBinary (image, NOT NULL)\n  \u2022 LastUpdatedDate (datetime, NOT NULL)\n\nPRIMARY KEY: UserId\n\nRELATIONSHIPS:\n  \u2022 UserId \u2192 aspnet_Users.UserId\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.aspnet_Profile\n  JOIN with aspnet_Users ON dbo.aspnet_Profile.UserId\n",
+    "TABLE: dbo.aspnet_Roles\n\nPURPOSE:\nThe `aspnet_Roles` table stores roles within an ASP.NET application, associating them with specific applications. `RoleId` is the unique identifier for each role, while `RoleName` and `LoweredRoleName` store the role's name (case-sensitive and lowercase versions, respectively). `Description` provides optional details about the role. `ApplicationId` links the role to a specific application in the `aspnet_Applications` table. Common queries involve retrieving roles for a given application or finding a role by its name.\n\nCOLUMNS (5 total):\n  \u2022 ApplicationId (uniqueidentifier, NOT NULL)\n  \u2022 RoleId (uniqueidentifier, NOT NULL)\n  \u2022 RoleName (nvarchar, NOT NULL)\n  \u2022 LoweredRoleName (nvarchar, NOT NULL)\n  \u2022 Description (nvarchar, NULL)\n\nPRIMARY KEY: RoleId\n\nRELATIONSHIPS:\n  \u2022 ApplicationId \u2192 aspnet_Applications.ApplicationId\n\nCOMMON QUERIES:\n  SELECT * FROM dbo.aspnet_Roles\n  JOIN with aspnet_Applications ON dbo.aspnet_Roles.ApplicationId\n",
+    "TABLE: dbo.aspnet_SchemaVersions\n\nCOLUMNS:\n  \u2022 Feature (nvarchar)\n  \u2022 CompatibleSchemaVersion (nvarchar)\n  \u2022 IsCurrentVersion (bit)\n",
+    "TABLE: dbo.aspnet_Users\n\nCOLUMNS:\n  \u2022 ApplicationId (uniqueidentifier)\n  \u2022 UserId (uniqueidentifier)\n  \u2022 UserName (nvarchar)\n  \u2022 LoweredUserName (nvarchar)\n  \u2022 MobileAlias (nvarchar)\n  \u2022 IsAnonymous (bit)\n  \u2022 LastActivityDate (datetime)\n",
+    "TABLE: dbo.aspnet_UsersInRoles\n\nCOLUMNS:\n  \u2022 UserId (uniqueidentifier)\n  \u2022 RoleId (uniqueidentifier)\n",
+    "TABLE: dbo.aspnet_WebEvent_Events\n\nCOLUMNS:\n  \u2022 EventId (char)\n  \u2022 EventTimeUtc (datetime)\n  \u2022 EventTime (datetime)\n  \u2022 EventType (nvarchar)\n  \u2022 EventSequence (decimal)\n  \u2022 EventOccurrence (decimal)\n  \u2022 EventCode (int)\n  \u2022 EventDetailCode (int)\n  \u2022 Message (nvarchar)\n  \u2022 ApplicationPath (nvarchar)\n  \u2022 ApplicationVirtualPath (nvarchar)\n  \u2022 MachineName (nvarchar)\n  \u2022 RequestUrl (nvarchar)\n  \u2022 ExceptionType (nvarchar)\n  \u2022 Details (ntext)\n",
+    "TABLE: dbo.Attendance\n\nCOLUMNS:\n  \u2022 attendance_id (int)\n  \u2022 Ecode (int)\n  \u2022 session_id (int)\n  \u2022 status_id (int)\n  \u2022 timestamp (datetime)\n  \u2022 TerminalID (int)\n",
+    "TABLE: dbo.AttendanceRegister\n\nCOLUMNS:\n  \u2022 AtCode (uniqueidentifier)\n  \u2022 ATDate (datetime)\n  \u2022 ECode (int)\n  \u2022 SCode (int)\n  \u2022 LCCode (int)\n  \u2022 Status (varchar)\n  \u2022 ShiftStartTime (datetime)\n  \u2022 ShiftEndTime (datetime)\n  \u2022 LunchStartTime (datetime)\n  \u2022 LunchEndTime (datetime)\n  \u2022 InTime (datetime)\n  \u2022 OutTime (datetime)\n  \u2022 InManual (bit)\n  \u2022 OutManual (bit)\n  \u2022 LunchInTime (datetime)\n  \u2022 LunchOutTime (datetime)\n  \u2022 LateArrival (int)\n  \u2022 EarlyDeparture (int)\n  \u2022 WorkDuration (int)\n  \u2022 LeaveValue (numeric)\n  \u2022 PresentValue (numeric)\n  \u2022 AbsentValue (numeric)\n  \u2022 HoliDayValue (numeric)\n  \u2022 WOValue (numeric)\n  \u2022 OT (int)\n  \u2022 In1 (datetime)\n  \u2022 Out1 (datetime)\n  \u2022 In2 (datetime)\n  \u2022 Out2 (datetime)\n  \u2022 In3 (datetime)\n  \u2022 Out3 (datetime)\n  \u2022 In4 (datetime)\n  \u2022 Out4 (datetime)\n  \u2022 In5 (datetime)\n  \u2022 Out5 (datetime)\n  \u2022 In6 (datetime)\n  \u2022 Out6 (datetime)\n  \u2022 Locked (bit)\n  \u2022 Shift1 (varchar)\n  \u2022 IN_1 (datetime)\n  \u2022 OUT_1 (datetime)\n  \u2022 LA1 (int)\n  \u2022 AD1 (int)\n  \u2022 WH1 (int)\n  \u2022 OT1 (int)\n  \u2022 Status1 (varchar)\n  \u2022 Shift2 (varchar)\n  \u2022 IN_2 (datetime)\n  \u2022 OUT_2 (datetime)\n  \u2022 LA2 (int)\n  \u2022 AD2 (int)\n  \u2022 WH2 (int)\n  \u2022 OT2 (int)\n  \u2022 Status2 (varchar)\n  \u2022 Shift3 (varchar)\n  \u2022 IN_3 (datetime)\n  \u2022 OUT_3 (datetime)\n  \u2022 LA3 (int)\n  \u2022 AD3 (int)\n  \u2022 WH3 (int)\n  \u2022 OT3 (int)\n  \u2022 Status3 (varchar)\n  \u2022 ServerSync (bit)\n  \u2022 Intermediate (int)\n",
+    "TABLE: dbo.AuditLog\n\nCOLUMNS:\n  \u2022 AuditLogID (int)\n  \u2022 LogDetail (varchar)\n  \u2022 MacAddress (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Sno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 DetailType (varchar)\n  \u2022 Ecode (int)\n  \u2022 LogDateTime (datetime)\n  \u2022 OperatorEcode (int)\n  \u2022 Remark (varchar)\n  \u2022 Status (nvarchar)\n  \u2022 Acknowledgement (bit)\n  \u2022 AcknowledgementDateTime (datetime)\n  \u2022 Alert_Level (int)\n  \u2022 Data_1 (nvarchar)\n  \u2022 Data_2 (nvarchar)\n  \u2022 ServerSync (bit)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 Channel (int)\n  \u2022 Role (varchar)\n  \u2022 FilePath (varchar)\n",
+    "TABLE: dbo.AuthenticationMaster\n\nCOLUMNS:\n  \u2022 AuthenticationID (int)\n  \u2022 AuthenticationName (varchar)\n  \u2022 triggercheckfingerbio (bit)\n  \u2022 triggercheckcontactless (bit)\n  \u2022 triggercheckexternalport (bit)\n  \u2022 referencecheckterminal (bit)\n  \u2022 controlcheckfingerbiocontrol (bit)\n  \u2022 schedule_nb (int)\n  \u2022 IsEnable (bit)\n",
+    "TABLE: dbo.Biometric\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 Templete (image)\n  \u2022 TempleteImage (image)\n  \u2022 Format (int)\n  \u2022 FingerID (int)\n  \u2022 CaptureDate (datetime)\n  \u2022 Quality (int)\n  \u2022 OperatorID (int)\n  \u2022 Enable (bit)\n  \u2022 CheckedStatus (bit)\n  \u2022 ServerSync (bit)\n  \u2022 DuplicateEcode (int)\n  \u2022 DuplicateFingerID (int)\n  \u2022 ID (int)\n",
+    "TABLE: dbo.BitCompanyRel\n\nCOLUMNS:\n  \u2022 Ccode (int)\n  \u2022 BitID (int)\n",
+    "TABLE: dbo.BitFacilityCodeRel\n\nCOLUMNS:\n  \u2022 BitID (int)\n  \u2022 FacilityCode (int)\n  \u2022 Ccode (int)\n",
+    "TABLE: dbo.BitMaster\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 Name (nvarchar)\n  \u2022 BitNumber (int)\n",
+    "TABLE: dbo.BlackListMaster\n\nCOLUMNS:\n  \u2022 BlackListID (int)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Documnet1 (image)\n  \u2022 Documnet2 (image)\n  \u2022 Documnet3 (image)\n",
+    "TABLE: dbo.Bonus\n\nCOLUMNS:\n  \u2022 BonusCode (tinyint)\n  \u2022 bonusMinDay (int)\n  \u2022 bonusWageLimit (decimal)\n  \u2022 bonusLimit (decimal)\n  \u2022 bonusArrier (bit)\n  \u2022 bonusRate (decimal)\n  \u2022 graMinY (int)\n  \u2022 graFormula (varchar)\n  \u2022 ECode (int)\n  \u2022 Month (varchar)\n  \u2022 Year (varchar)\n",
+    "TABLE: dbo.BranchMaster\n\nCOLUMNS:\n  \u2022 BranchCode (int)\n  \u2022 BranchName (varchar)\n  \u2022 Location (varchar)\n  \u2022 Ccode (int)\n",
+    "TABLE: dbo.Card_Master\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 CardNo (nvarchar)\n  \u2022 CardType (nvarchar)\n  \u2022 FacilityCode (nvarchar)\n  \u2022 StartBit (int)\n  \u2022 EndBit (int)\n  \u2022 Lenght (int)\n  \u2022 CreateDate (datetime)\n  \u2022 UpdateDate (datetime)\n  \u2022 Remark (nvarchar)\n  \u2022 ServerSync (bit)\n  \u2022 Ecode (int)\n  \u2022 ActiveDate (datetime)\n  \u2022 InActiveDate (datetime)\n",
+    "TABLE: dbo.CatMaster\n\nCOLUMNS:\n  \u2022 CatCode (int)\n  \u2022 CatName (varchar)\n  \u2022 Remark (nvarchar)\n",
+    "TABLE: dbo.ClassSessions\n\nCOLUMNS:\n  \u2022 session_id (int)\n  \u2022 subject_id (int)\n  \u2022 Ecode (int)\n  \u2022 session_datetime (datetime)\n  \u2022 TerminalID (int)\n  \u2022 LastPunchTime (datetime)\n",
+    "TABLE: dbo.CompanyMaster\n\nCOLUMNS:\n  \u2022 Ccode (int)\n  \u2022 CName (varchar)\n  \u2022 Address (varchar)\n  \u2022 PinCode (varchar)\n  \u2022 TelephoneNo (varchar)\n  \u2022 Email (varchar)\n  \u2022 Logo (image)\n",
+    "TABLE: dbo.Contractor_Detail\n\nCOLUMNS:\n  \u2022 ContractorID (int)\n  \u2022 Client_ID (int)\n  \u2022 PO_Number (nvarchar)\n  \u2022 PO_Date (datetime)\n  \u2022 Job_Detail (nvarchar)\n  \u2022 Servce_Start_Date (datetime)\n  \u2022 Servce_End_Date (datetime)\n  \u2022 Max_Labour_Limt (int)\n  \u2022 Status (bit)\n  \u2022 Remark (nvarchar)\n  \u2022 CreatedDate (datetime)\n  \u2022 LastModifiedDate (datetime)\n",
+    "TABLE: dbo.ContractorMaster\n\nCOLUMNS:\n  \u2022 ContractorID (int)\n  \u2022 Contractor_Code (nvarchar)\n  \u2022 Name (nvarchar)\n  \u2022 Address (nvarchar)\n  \u2022 Email (nvarchar)\n  \u2022 Mobile (nvarchar)\n  \u2022 Description (nvarchar)\n",
+    "TABLE: dbo.Controller\n\nCOLUMNS:\n  \u2022 ControllerID (bigint)\n  \u2022 Name (nvarchar)\n  \u2022 Note (nvarchar)\n  \u2022 IsAlive (bit)\n  \u2022 IsTA (bit)\n  \u2022 IP (nvarchar)\n  \u2022 SerialNo (nvarchar)\n  \u2022 Port (int)\n  \u2022 ControllerType (int)\n  \u2022 Department (nvarchar)\n",
+    "TABLE: dbo.CustomWiegandFormats\n\nCOLUMNS:\n  \u2022 CustomWiegandFormatsID (int)\n  \u2022 TerminalID (int)\n  \u2022 Slot (int)\n  \u2022 SlotName (varchar)\n  \u2022 SlotLength (int)\n  \u2022 WiegandIDStartPosition (int)\n  \u2022 WiegandIDLength (int)\n  \u2022 IsEnable (bit)\n",
+    "TABLE: dbo.DataConnectionOutputTypeMaster\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 DataConnectionOutputTypeName (nvarchar)\n  \u2022 MaxReaderCount (int)\n",
+    "TABLE: dbo.DeptCategoryRelation\n\nCOLUMNS:\n  \u2022 DeptCode (int)\n  \u2022 CatCode (int)\n  \u2022 Created_Date (datetime)\n",
+    "TABLE: dbo.DeptMaster\n\nCOLUMNS:\n  \u2022 Dcode (int)\n  \u2022 Dname (varchar)\n  \u2022 BranchCode (int)\n",
+    "TABLE: dbo.DesignationMaster\n\nCOLUMNS:\n  \u2022 DesCode (int)\n  \u2022 DesName (varchar)\n  \u2022 DesName_hindi (nvarchar)\n",
+    "TABLE: dbo.DocumentMaster\n\nCOLUMNS:\n  \u2022 DocumentId (int)\n  \u2022 DocumentName (varchar)\n  \u2022 Description (varchar)\n",
+    "TABLE: dbo.DocumentUploadmaster\n\nCOLUMNS:\n  \u2022 DOCID (bigint)\n  \u2022 ECode (bigint)\n  \u2022 Document1 (varbinary)\n  \u2022 Document1filename (nvarchar)\n  \u2022 Document1content (nvarchar)\n  \u2022 Status (varchar)\n  \u2022 UplodedBy (bigint)\n  \u2022 UplodedDate (datetime)\n  \u2022 UploadRemark (varchar)\n  \u2022 ApprovedBy (bigint)\n  \u2022 ApprovedDate (datetime)\n  \u2022 ApprovedRemark (varchar)\n",
+    "TABLE: dbo.Door\n\nCOLUMNS:\n  \u2022 DoorID (bigint)\n  \u2022 Name (nvarchar)\n  \u2022 ControllerID (int)\n  \u2022 TerminalID (bigint)\n  \u2022 DoorIndex (bigint)\n  \u2022 Note (nvarchar)\n  \u2022 IsTA (bit)\n  \u2022 FireGroupID (int)\n  \u2022 ServerSync (bit)\n",
+    "TABLE: dbo.DutyRoster\n\nCOLUMNS:\n  \u2022 ECode (int)\n  \u2022 ATDate (datetime)\n  \u2022 SCode (int)\n  \u2022 Locked (bit)\n  \u2022 ShiftRemarks (varchar)\n",
+    "TABLE: dbo.Ecode_Relation\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 VisitorDetail_ID (int)\n  \u2022 R_Ecode (int)\n  \u2022 Relation_Type (nvarchar)\n",
+    "TABLE: dbo.EmpDepartRole\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 Dcode (int)\n",
+    "TABLE: dbo.EmpESIPFNo\n\nCOLUMNS:\n  \u2022 EmpESIPFNo (int)\n  \u2022 ECode (int)\n  \u2022 PFNo (varchar)\n  \u2022 ESINo (varchar)\n",
+    "TABLE: dbo.Employee_Card_Relation\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 ECode (int)\n  \u2022 CardNo (nvarchar)\n  \u2022 IssueDate (datetime)\n  \u2022 DeactivateDate (datetime)\n  \u2022 CreateDate (datetime)\n  \u2022 UpdateDate (datetime)\n  \u2022 Status (bit)\n  \u2022 Remark (nvarchar)\n  \u2022 ServerSync (bit)\n",
+    "TABLE: dbo.Employee_Terminal_Authentication_Relation\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 AuthenticationID (int)\n  \u2022 TerminalID (int)\n  \u2022 ScheduleID (int)\n  \u2022 WhiteList (bit)\n  \u2022 VIP_list_flag (bit)\n  \u2022 Expiry_date (datetime)\n  \u2022 DataLocation (varchar)\n  \u2022 Status (varchar)\n  \u2022 Error (varchar)\n  \u2022 Group01 (int)\n  \u2022 Group02 (int)\n  \u2022 Group03 (int)\n  \u2022 Group04 (int)\n  \u2022 BypassTZLevel (int)\n  \u2022 ExpireDateCheck (varchar)\n  \u2022 ExecuteID (varchar)\n  \u2022 ID (int)\n  \u2022 CreateDate (datetime)\n  \u2022 ServerSync (bit)\n  \u2022 JsonData (nvarchar)\n  \u2022 Start_date (datetime)\n",
+    "TABLE: dbo.Employee_TerminalGroup_Authentication_Relation\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 AuthenticationID (int)\n  \u2022 TerminalGroupID (int)\n",
+    "TABLE: dbo.EmployeeMaster\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 Active (bit)\n  \u2022 Gcode (int)\n  \u2022 Catcode (int)\n  \u2022 DesCode (int)\n  \u2022 SecCode (int)\n  \u2022 EmpName (nvarchar)\n  \u2022 GuardianName (nvarchar)\n  \u2022 DateofBirth (datetime)\n  \u2022 DateofJoin (datetime)\n  \u2022 PresentCardNo (varchar)\n  \u2022 Sex (bit)\n  \u2022 IsMarried (bit)\n  \u2022 Qualification (varchar)\n  \u2022 Experience (varchar)\n  \u2022 Address1 (varchar)\n  \u2022 Telephone1 (varchar)\n  \u2022 E_mail (varchar)\n  \u2022 Address2 (nvarchar)\n  \u2022 Telephone2 (varchar)\n  \u2022 BloodGroup (varchar)\n  \u2022 LeavingDate (datetime)\n  \u2022 LeavingReason (varchar)\n  \u2022 Password (varchar)\n  \u2022 Role (varchar)\n  \u2022 DefaultPolicy (bit)\n  \u2022 PermissableLateArrival (datetime)\n  \u2022 PermissbleeEarlyDeparture (datetime)\n  \u2022 MinWorkHourForPresent (datetime)\n  \u2022 IsHalfDayAllowed (bit)\n  \u2022 MinWorkHourForHalfDay (datetime)\n  \u2022 IsShortDayAllowed (bit)\n  \u2022 MinWorkHourForShortDay (datetime)\n  \u2022 OvertimeAllowed (bit)\n  \u2022 MinDurationReqForOvertime (datetime)\n  \u2022 OnePunchPresentMarking (bit)\n  \u2022 FWOAssigned (bit)\n  \u2022 FirstWO (tinyint)\n  \u2022 SWOAssigned (bit)\n  \u2022 SWO (tinyint)\n  \u2022 SWOFirst (bit)\n  \u2022 SWOSecond (bit)\n  \u2022 SWOThird (bit)\n  \u2022 SWOFourth (bit)\n  \u2022 SWOFifth (bit)\n  \u2022 SWOType (tinyint)\n  \u2022 Image (image)\n  \u2022 WorkMinuteFomula (tinyint)\n  \u2022 ESINo (varchar)\n  \u2022 IsBlackListed (bit)\n  \u2022 ReportingHeadEcode (int)\n  \u2022 FP1_ID (int)\n  \u2022 FP2_ID (int)\n  \u2022 DFP_ID (int)\n  \u2022 FName (nvarchar)\n  \u2022 LName (nvarchar)\n  \u2022 IsEnrolled (bit)\n  \u2022 WiegandValue (varchar)\n  \u2022 LoginAuthenticationID (int)\n  \u2022 LastUpdate (datetime)\n  \u2022 UserID (varchar)\n  \u2022 Password2 (varchar)\n  \u2022 queryString (varchar)\n  \u2022 guid (varchar)\n  \u2022 userDefined1 (varchar)\n  \u2022 IN_Out_Status (varchar)\n  \u2022 ContractorID (int)\n  \u2022 Latitude (nvarchar)\n  \u2022 Longitude (nvarchar)\n  \u2022 formatID (nvarchar)\n  \u2022 facilityCode (int)\n  \u2022 ContarctManualEndDate (varchar)\n  \u2022 PO_Number (nvarchar)\n  \u2022 ServerSync (bit)\n  \u2022 emptype (varchar)\n  \u2022 Created_Date (datetime)\n  \u2022 VehicleDetail (nvarchar)\n  \u2022 2DStatus (nvarchar)\n  \u2022 StatusID (int)\n  \u2022 Name_hindi (nvarchar)\n  \u2022 Card_Status (bit)\n  \u2022 Card_Template (nvarchar)\n  \u2022 RoleRights (nvarchar)\n  \u2022 Rights (nvarchar)\n  \u2022 RightsEnable (bit)\n",
+    "TABLE: dbo.EmployeeMaster_Deleted\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 Active (bit)\n  \u2022 Gcode (int)\n  \u2022 Catcode (int)\n  \u2022 DesCode (int)\n  \u2022 SecCode (int)\n  \u2022 EmpName (nvarchar)\n  \u2022 GuardianName (nvarchar)\n  \u2022 DateofBirth (datetime)\n  \u2022 DateofJoin (datetime)\n  \u2022 PresentCardNo (varchar)\n  \u2022 Sex (bit)\n  \u2022 IsMarried (bit)\n  \u2022 Qualification (varchar)\n  \u2022 Experience (varchar)\n  \u2022 Address1 (varchar)\n  \u2022 Telephone1 (varchar)\n  \u2022 E_mail (varchar)\n  \u2022 Address2 (nvarchar)\n  \u2022 Telephone2 (varchar)\n  \u2022 BloodGroup (varchar)\n  \u2022 LeavingDate (datetime)\n  \u2022 LeavingReason (varchar)\n  \u2022 Password (varchar)\n  \u2022 Role (varchar)\n  \u2022 DefaultPolicy (bit)\n  \u2022 PermissableLateArrival (datetime)\n  \u2022 PermissbleeEarlyDeparture (datetime)\n  \u2022 MinWorkHourForPresent (datetime)\n  \u2022 IsHalfDayAllowed (bit)\n  \u2022 MinWorkHourForHalfDay (datetime)\n  \u2022 IsShortDayAllowed (bit)\n  \u2022 MinWorkHourForShortDay (datetime)\n  \u2022 OvertimeAllowed (bit)\n  \u2022 MinDurationReqForOvertime (datetime)\n  \u2022 OnePunchPresentMarking (bit)\n  \u2022 FWOAssigned (bit)\n  \u2022 FirstWO (tinyint)\n  \u2022 SWOAssigned (bit)\n  \u2022 SWO (tinyint)\n  \u2022 SWOFirst (bit)\n  \u2022 SWOSecond (bit)\n  \u2022 SWOThird (bit)\n  \u2022 SWOFourth (bit)\n  \u2022 SWOFifth (bit)\n  \u2022 SWOType (tinyint)\n  \u2022 Image (image)\n  \u2022 WorkMinuteFomula (tinyint)\n  \u2022 ESINo (varchar)\n  \u2022 IsBlackListed (bit)\n  \u2022 ReportingHeadEcode (int)\n  \u2022 FP1_ID (int)\n  \u2022 FP2_ID (int)\n  \u2022 DFP_ID (int)\n  \u2022 FName (nvarchar)\n  \u2022 LName (nvarchar)\n  \u2022 IsEnrolled (bit)\n  \u2022 WiegandValue (varchar)\n  \u2022 LoginAuthenticationID (int)\n  \u2022 LastUpdate (datetime)\n  \u2022 UserID (varchar)\n  \u2022 Password2 (varchar)\n  \u2022 queryString (varchar)\n  \u2022 guid (varchar)\n  \u2022 userDefined1 (varchar)\n  \u2022 IN_Out_Status (varchar)\n  \u2022 ContractorID (int)\n  \u2022 Latitude (nvarchar)\n  \u2022 Longitude (nvarchar)\n  \u2022 formatID (nvarchar)\n  \u2022 facilityCode (int)\n  \u2022 ContarctManualEndDate (varchar)\n  \u2022 PO_Number (nvarchar)\n  \u2022 ServerSync (bit)\n  \u2022 emptype (varchar)\n  \u2022 Created_Date (datetime)\n  \u2022 Deleted_Date (datetime)\n  \u2022 VehicleDetail (nvarchar)\n  \u2022 2DStatus (nvarchar)\n  \u2022 StatusID (int)\n  \u2022 Name_hindi (nvarchar)\n  \u2022 Card_Status (bit)\n  \u2022 Card_Template (nvarchar)\n  \u2022 RoleRights (nvarchar)\n  \u2022 Rights (nvarchar)\n  \u2022 RightsEnable (bit)\n",
+    "TABLE: dbo.EmployeePayMaster\n\nCOLUMNS:\n  \u2022 ECode (int)\n  \u2022 PayMode (varchar)\n  \u2022 BankName (varchar)\n  \u2022 AcNo (varchar)\n  \u2022 CreditedFrom (varchar)\n  \u2022 OverTimeMode (tinyint)\n  \u2022 OverTimeFormula (varchar)\n  \u2022 OverTimeThreshold (datetime)\n  \u2022 SalaryBasedonHours (bit)\n  \u2022 MinimumHours (tinyint)\n",
+    "TABLE: dbo.EmployeeSalaryHeadRelation\n\nCOLUMNS:\n  \u2022 ECode (int)\n  \u2022 SHCode (int)\n  \u2022 GradeValue (decimal)\n  \u2022 Value (decimal)\n  \u2022 IsValuePercent (bit)\n",
+    "TABLE: dbo.EmpShiftPatternRelation\n\nCOLUMNS:\n  \u2022 ESPatternCode (int)\n  \u2022 ECode (int)\n  \u2022 SPCode (int)\n  \u2022 Active (bit)\n  \u2022 EffectiveFrom (datetime)\n  \u2022 EffectiveUpto (datetime)\n  \u2022 RemaningDaysInShift (int)\n  \u2022 Locked (bit)\n",
+    "TABLE: dbo.Escort_Terminal_Status\n\nCOLUMNS:\n  \u2022 EscortEcode (int)\n  \u2022 TerminalID (int)\n  \u2022 LastPunch (datetime)\n  \u2022 LastPunchEcode (int)\n  \u2022 WaitMsgStatus (bit)\n  \u2022 DLocation (varchar)\n",
+    "TABLE: dbo.ESI_PF\n\nCOLUMNS:\n  \u2022 ESI_PFCode (int)\n  \u2022 Month (varchar)\n  \u2022 Year (varbinary)\n  \u2022 CorpCode (varchar)\n  \u2022 SHCode (int)\n  \u2022 BasicValue (decimal)\n  \u2022 CalculatedValue (decimal)\n",
+    "TABLE: dbo.ESIC\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 ESICNo (varchar)\n  \u2022 TotalSalary (decimal)\n  \u2022 ESICValue (decimal)\n  \u2022 Employer_ESI (decimal)\n  \u2022 Month (varchar)\n  \u2022 Year (varchar)\n",
+    "TABLE: dbo.ESICChalan\n\nCOLUMNS:\n  \u2022 ESICChalanId (bigint)\n  \u2022 EmployeeShare (decimal)\n  \u2022 EmployeerShare (decimal)\n  \u2022 EmpPercent (decimal)\n  \u2022 EmployeerPercent (decimal)\n  \u2022 Year (varchar)\n  \u2022 Month (varchar)\n  \u2022 TotalAmt (decimal)\n",
+    "TABLE: dbo.FingerMaster\n\nCOLUMNS:\n  \u2022 FingerID (int)\n  \u2022 FingerName (varchar)\n",
+    "TABLE: dbo.FireGroup\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 GroupName (nvarchar)\n  \u2022 Note (nvarchar)\n",
+    "TABLE: dbo.GenSetup\n\nCOLUMNS:\n  \u2022 GenSetupCode (int)\n  \u2022 BranchCode (int)\n  \u2022 ECode (int)\n  \u2022 Month (varchar)\n  \u2022 Year (varchar)\n  \u2022 PFLimit (decimal)\n  \u2022 EmployerPF (decimal)\n  \u2022 EmployerEPF (decimal)\n  \u2022 EmployerFPF (decimal)\n  \u2022 EmployeePF (decimal)\n  \u2022 EmployeeVPF (decimal)\n  \u2022 PFRound (decimal)\n  \u2022 PAAC02 (decimal)\n  \u2022 PAAC21 (decimal)\n  \u2022 PAAC22 (decimal)\n  \u2022 ESILimit (decimal)\n  \u2022 EmployerESI (decimal)\n  \u2022 EmployeeESI (decimal)\n  \u2022 ESIRound (decimal)\n  \u2022 isESIFixed (bit)\n  \u2022 isPFFixed (bit)\n",
+    "TABLE: dbo.GradeMaster\n\nCOLUMNS:\n  \u2022 Gcode (int)\n  \u2022 Gname (varchar)\n",
+    "TABLE: dbo.GradeSalaryHeadRelation\n\nCOLUMNS:\n  \u2022 SHCode (int)\n  \u2022 Gcode (int)\n  \u2022 Value (decimal)\n  \u2022 IsValuePercent (bit)\n",
+    "TABLE: dbo.Group\n\nCOLUMNS:\n  \u2022 GroupID (bigint)\n  \u2022 Name (nvarchar)\n  \u2022 IsFixed (bit)\n  \u2022 Note (nvarchar)\n",
+    "TABLE: dbo.GroupAccession\n\nCOLUMNS:\n  \u2022 GroupID (bigint)\n  \u2022 DoorID (bigint)\n  \u2022 Accessible (bit)\n  \u2022 TimeZoneID (bigint)\n  \u2022 ServerSync (bit)\n",
+    "TABLE: dbo.GTMSGroupCheckPointRel\n\nCOLUMNS:\n  \u2022 TaskGroupID (int)\n  \u2022 CheckPointID (int)\n",
+    "TABLE: dbo.GTMSTaskGroup\n\nCOLUMNS:\n  \u2022 TaskGroupID (int)\n  \u2022 TaskGroupName (varchar)\n  \u2022 Remarks (varchar)\n  \u2022 PlantID (int)\n",
+    "TABLE: dbo.HardwareTypeMaster\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 HardwareTypeName (nvarchar)\n",
+    "TABLE: dbo.HighLightMaster\n\nCOLUMNS:\n  \u2022 HID (int)\n  \u2022 HighLight (varchar)\n",
+    "TABLE: dbo.HolidayDepartmentRelation\n\nCOLUMNS:\n  \u2022 HDCode (bigint)\n  \u2022 HCode (int)\n  \u2022 DCode (int)\n",
+    "TABLE: dbo.HolidayMaster\n\nCOLUMNS:\n  \u2022 Hcode (int)\n  \u2022 Hname (varchar)\n  \u2022 HDate (datetime)\n",
+    "TABLE: dbo.ID_Card_Template\n\nCOLUMNS:\n  \u2022 Template_ID (bigint)\n  \u2022 _Cmp_Logo (nvarchar)\n  \u2022 Firm_Name (nvarchar)\n  \u2022 _Cmp_Name (nvarchar)\n  \u2022 Firm_Color (nvarchar)\n  \u2022 Firm_Font (nvarchar)\n  \u2022 Template_Size (nvarchar)\n  \u2022 Template_Name (nvarchar)\n  \u2022 Template_Type (nvarchar)\n  \u2022 TemplateBorderColor (nvarchar)\n  \u2022 Template_Color (nvarchar)\n  \u2022 TemplateBackground (image)\n  \u2022 Font_Color (nvarchar)\n  \u2022 Font_Type (nvarchar)\n  \u2022 Font_Size (int)\n  \u2022 Font_Style (nvarchar)\n  \u2022 Employee_ID (nvarchar)\n  \u2022 _EID (nvarchar)\n  \u2022 CardNo_Color (nvarchar)\n  \u2022 CardNo_Font (nvarchar)\n  \u2022 Aadhar (nvarchar)\n  \u2022 _aadhar (nvarchar)\n  \u2022 Aadhar_Font (nvarchar)\n  \u2022 Aadhar_Color (nvarchar)\n  \u2022 Full_Name (nvarchar)\n  \u2022 _Full_Name (nvarchar)\n  \u2022 Full_Name_Color (nvarchar)\n  \u2022 Full_Name_Font (nvarchar)\n  \u2022 Contact_No (nvarchar)\n  \u2022 _Contact_No (nvarchar)\n  \u2022 Contact_Color (nvarchar)\n  \u2022 Contact_Font (nvarchar)\n  \u2022 Address (nvarchar)\n  \u2022 _Address (nvarchar)\n  \u2022 Address_Font (nvarchar)\n  \u2022 Address_Color (nvarchar)\n  \u2022 Image (nvarchar)\n  \u2022 ImgSize (nvarchar)\n  \u2022 QR (nvarchar)\n  \u2022 QrSize (nvarchar)\n  \u2022 Desig (nvarchar)\n  \u2022 _desig (nvarchar)\n  \u2022 Desig_Color (nvarchar)\n  \u2022 Desig_Font (nvarchar)\n  \u2022 _vehicleType (nvarchar)\n  \u2022 _Regd_No (nvarchar)\n  \u2022 Vehicle_Font (nvarchar)\n  \u2022 Vehicle_Color (nvarchar)\n  \u2022 ICNo (nvarchar)\n  \u2022 _ICNo (nvarchar)\n  \u2022 ICNo_Font (nvarchar)\n  \u2022 ICNo_Color (nvarchar)\n  \u2022 SAP_No (nvarchar)\n  \u2022 _SAP_No (nvarchar)\n  \u2022 SAP_No_Color (nvarchar)\n  \u2022 SAP_No_Font (nvarchar)\n  \u2022 Rank (nvarchar)\n  \u2022 _Rank (nvarchar)\n  \u2022 Rank_Font (nvarchar)\n  \u2022 Rank_Color (nvarchar)\n  \u2022 Dept (nvarchar)\n  \u2022 _Dept (nvarchar)\n  \u2022 Dept_Color (nvarchar)\n  \u2022 Dept_Font (nvarchar)\n  \u2022 P_No (nvarchar)\n  \u2022 _P_No (nvarchar)\n  \u2022 P_No_Color (nvarchar)\n  \u2022 P_No_Font (nvarchar)\n  \u2022 BloodGroup (nvarchar)\n  \u2022 _BloodGroup (nvarchar)\n  \u2022 BloodGroup_Color (nvarchar)\n  \u2022 BloodGroup_Font (nvarchar)\n  \u2022 DateOfIssue (nvarchar)\n  \u2022 _DateOfIssue (nvarchar)\n  \u2022 DateOfIssue_Color (nvarchar)\n  \u2022 DateOfIssue_Font (nvarchar)\n  \u2022 Signature (nvarchar)\n  \u2022 _Sign (nvarchar)\n  \u2022 Sign_Color (nvarchar)\n  \u2022 Sign_Font (nvarchar)\n  \u2022 Note (nvarchar)\n  \u2022 _note (nvarchar)\n  \u2022 Note_Color (nvarchar)\n  \u2022 Note_Font (nvarchar)\n  \u2022 Passport (nvarchar)\n  \u2022 _Passport (nvarchar)\n  \u2022 Passport_Color (nvarchar)\n  \u2022 Passport_Font (nvarchar)\n  \u2022 Visa (nvarchar)\n  \u2022 _Visa (nvarchar)\n  \u2022 Visa_Color (nvarchar)\n  \u2022 Visa_Font (nvarchar)\n  \u2022 Rename_FName (nvarchar)\n  \u2022 Rename_ContactNo (nvarchar)\n  \u2022 Rename_Address (nvarchar)\n  \u2022 Rename_Aadhar (nvarchar)\n  \u2022 Rename_Desig (nvarchar)\n  \u2022 Rename_Firm (nvarchar)\n  \u2022 Rename_EID (nvarchar)\n  \u2022 Rename_DOI (nvarchar)\n  \u2022 Rename_ICNo (nvarchar)\n  \u2022 Rename_Rank (nvarchar)\n  \u2022 Rename_Dept (nvarchar)\n  \u2022 Rename_Pno (nvarchar)\n  \u2022 Rename_SAPno (nvarchar)\n  \u2022 Rename_BldGrp (nvarchar)\n  \u2022 Rename_Passport (nvarchar)\n  \u2022 Rename_Visa (nvarchar)\n  \u2022 Rename_Qualification (nvarchar)\n  \u2022 _Cmp_Logo_Size (nvarchar)\n  \u2022 SignPicSize (nvarchar)\n  \u2022 SignPic_Location (nvarchar)\n  \u2022 SignPic (image)\n  \u2022 Name_hindi_Location (nvarchar)\n  \u2022 _Name_hindi_Location (nvarchar)\n  \u2022 Name_hindi_Font (nvarchar)\n  \u2022 Name_hindi_Color (nvarchar)\n  \u2022 Rename_Name_hindi_lbl (nvarchar)\n  \u2022 Desig_hindi_Location (nvarchar)\n  \u2022 _Desig_hindi_Location (nvarchar)\n  \u2022 Desig_hindi_Font (nvarchar)\n  \u2022 Desig_hindi_Color (nvarchar)\n  \u2022 Rename_Desig_hindi_lbl (nvarchar)\n  \u2022 Image2_Location (nvarchar)\n  \u2022 Image2_Size (nvarchar)\n",
+    "TABLE: dbo.IDProofMaster\n\nCOLUMNS:\n  \u2022 IDProofID (int)\n  \u2022 IDProofType (varchar)\n  \u2022 Active (bit)\n",
+    "TABLE: dbo.IOModuleTypeMaster\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 IOModuleTypeName (nvarchar)\n  \u2022 MaxSlaveCount (int)\n",
+    "TABLE: dbo.LabelMaster\n\nCOLUMNS:\n  \u2022 LabelID (int)\n  \u2022 LKey (varchar)\n  \u2022 LValue (nvarchar)\n",
+    "TABLE: dbo.LdapSettings\n\nCOLUMNS:\n  \u2022 Id (int)\n  \u2022 LdapHost (nvarchar)\n  \u2022 LdapPort (int)\n  \u2022 LoginPassword (nvarchar)\n  \u2022 CN (nvarchar)\n  \u2022 OU (nvarchar)\n  \u2022 DC (nvarchar)\n",
+    "TABLE: dbo.LeaveAccural\n\nCOLUMNS:\n  \u2022 LACode (int)\n  \u2022 ECode (int)\n  \u2022 LCode (int)\n  \u2022 LeaveAllowedCYear (decimal)\n  \u2022 LeaveAllowedPYear (decimal)\n  \u2022 LeaveTaken (decimal)\n  \u2022 LeaveYear (datetime)\n",
+    "TABLE: dbo.LeaveCard\n\nCOLUMNS:\n  \u2022 LCCode (int)\n  \u2022 LACode (int)\n  \u2022 Lcode (int)\n  \u2022 ApplicationDate (datetime)\n  \u2022 StartDate (datetime)\n  \u2022 EndDate (datetime)\n  \u2022 LeaveAmount (decimal)\n  \u2022 LeaveAmtType (tinyint)\n  \u2022 DaySegment (tinyint)\n  \u2022 LeaveReason (varchar)\n  \u2022 Status (tinyint)\n  \u2022 ApprovalRejectionDate (datetime)\n  \u2022 ApprovalRejectionBy (varchar)\n  \u2022 ApprovalRejectionReason (varchar)\n  \u2022 CancelationReason (varchar)\n  \u2022 CancelationDate (datetime)\n  \u2022 CancelationBy (varchar)\n  \u2022 Updated (bit)\n  \u2022 Locked (bit)\n",
+    "TABLE: dbo.LeaveMaster\n\nCOLUMNS:\n  \u2022 Lcode (int)\n  \u2022 LshortName (varchar)\n  \u2022 Ldescription (varchar)\n  \u2022 IsOffInclude (bit)\n  \u2022 IsHolidayInclude (bit)\n  \u2022 TreatedAsPresent (bit)\n  \u2022 LeaveLimit (tinyint)\n  \u2022 IsAutoAcuralAllowed (bit)\n  \u2022 IsCarriedForward (bit)\n  \u2022 MaxContinuousLeave (tinyint)\n",
+    "TABLE: dbo.MachineMaster\n\nCOLUMNS:\n  \u2022 MachineID (int)\n  \u2022 DeviceType (varchar)\n  \u2022 TerminalID (int)\n  \u2022 IPAddress (varchar)\n  \u2022 DomainName (varchar)\n  \u2022 PortNo (varchar)\n  \u2022 BaudRate (varchar)\n  \u2022 Password (varchar)\n  \u2022 Path (varchar)\n  \u2022 Location (varchar)\n  \u2022 Connectiontype (int)\n  \u2022 comboAppProtocol (int)\n  \u2022 Sno (nvarchar)\n  \u2022 LKey (nvarchar)\n  \u2022 Create_Date (datetime)\n  \u2022 Created_By (varchar)\n  \u2022 Update_Date (datetime)\n  \u2022 Updated_By (varchar)\n  \u2022 Connection_Status (varchar)\n  \u2022 Configuration (int)\n  \u2022 DataLocation (varchar)\n  \u2022 CardOnly (bit)\n  \u2022 FingerOnly (bit)\n  \u2022 CardAndFinger (bit)\n  \u2022 CardAndFingerAndPin (bit)\n  \u2022 CardAndPin (bit)\n  \u2022 MIFAREStartBlock (int)\n  \u2022 MIFARENoofBlocks (int)\n  \u2022 MIFAREKeyPolicy (int)\n  \u2022 CheckExpiryDate (bit)\n  \u2022 EnableAccessSchedule (bit)\n  \u2022 EnableVIPAuthentication (bit)\n  \u2022 EnableWhiteList (bit)\n  \u2022 func_mode (int)\n  \u2022 sdac_door_unlock_dur (int)\n  \u2022 sdac_max_door_held_open_dur (int)\n  \u2022 sdac_push_btn_mode (int)\n  \u2022 sdac_rte_egress_timeout (int)\n  \u2022 sdac_rte_mode (int)\n  \u2022 tom_mode (bit)\n  \u2022 tom_duration (int)\n  \u2022 audiovolume (int)\n  \u2022 remote_msg_conffeedback_interface (bit)\n  \u2022 send_ethernet_state (bit)\n  \u2022 host_on_no_response (bit)\n  \u2022 remote_msg_ip_confhost_1_ip (varchar)\n  \u2022 remote_msg_ip_confhost_1_port (int)\n  \u2022 bio_security_settingsffd_security_level (int)\n  \u2022 bio_security_settingsmatching_threshold (int)\n  \u2022 enrollacquisition_threshold (int)\n  \u2022 ControllerID (int)\n  \u2022 DoorID (int)\n  \u2022 sc_read_profile (int)\n  \u2022 Dcode (int)\n  \u2022 RackInfo (varchar)\n  \u2022 LastMultiAuthenticationUserList (varchar)\n  \u2022 UserCount (int)\n  \u2022 UserCapacity (int)\n  \u2022 UserMapped (int)\n  \u2022 StartDate (varchar)\n  \u2022 EndDate (varchar)\n  \u2022 LastLogFatchTime (varchar)\n  \u2022 APIKey (varchar)\n  \u2022 UserWithoutMask (bit)\n  \u2022 ImageLog (bit)\n  \u2022 LOG_ACTION_USER_WITHOUT_MASK (bit)\n  \u2022 LOG_ACTION_REJECTED_BY_SCHEDULE (bit)\n  \u2022 LOG_ACTION_USER_RULE_CHECK_FAILURE (bit)\n  \u2022 ReadQRCode (bit)\n  \u2022 ChanelID (varchar)\n  \u2022 ServerSync (bit)\n  \u2022 CameraIPAddress (varchar)\n  \u2022 CameraUserName (varchar)\n  \u2022 CameraPassword (varchar)\n  \u2022 CameraPortNO (varchar)\n  \u2022 CameraCommand (varchar)\n  \u2022 SnapCapture (bit)\n  \u2022 AlertEventCapture (bit)\n  \u2022 NoEventCapture (bit)\n  \u2022 CameraSno (nvarchar)\n  \u2022 CameraLicenseKey (nvarchar)\n  \u2022 Door1 (varchar)\n  \u2022 Door2 (varchar)\n  \u2022 Door3 (varchar)\n  \u2022 Door4 (varchar)\n  \u2022 Door5 (varchar)\n  \u2022 Door6 (varchar)\n  \u2022 Door7 (varchar)\n  \u2022 Door8 (varchar)\n  \u2022 CameraType (varchar)\n  \u2022 TA (bit)\n  \u2022 ClassTA (bit)\n  \u2022 FirmwareVersion (varchar)\n  \u2022 MMLastLogFatchTime (varchar)\n  \u2022 HardwareTypeID (int)\n  \u2022 DataConnectionOutputTypeID (int)\n  \u2022 IOModuleTypeID (int)\n  \u2022 CameraIPUserName (nvarchar)\n  \u2022 CameraIPPassword (nvarchar)\n",
+    "TABLE: dbo.MachinePunch\n\nCOLUMNS:\n  \u2022 CardNo (varchar)\n  \u2022 PunchTime (datetime)\n  \u2022 IsManual (bit)\n  \u2022 InOut (bit)\n  \u2022 MachineID (int)\n  \u2022 RtcProcessed (bit)\n  \u2022 HRExecutiveID (int)\n  \u2022 Action (nvarchar)\n  \u2022 Status (nvarchar)\n  \u2022 fname (nvarchar)\n  \u2022 name (nvarchar)\n  \u2022 AccessLogID (uniqueidentifier)\n  \u2022 nEventLogIdn (int)\n  \u2022 CreateTime (datetime)\n  \u2022 TransactionId (uniqueidentifier)\n  \u2022 ReadStatus (bit)\n  \u2022 ServerSync (bit)\n  \u2022 OutPunchTime (datetime)\n  \u2022 ECode (int)\n  \u2022 Channel (int)\n  \u2022 ID (int)\n  \u2022 Role (varchar)\n  \u2022 Acknowledgement (bit)\n  \u2022 AcknowledgementDateTime (datetime)\n  \u2022 Remark (varchar)\n",
+    "TABLE: dbo.MachineRawPunch\n\nCOLUMNS:\n  \u2022 CardNo (varchar)\n  \u2022 PunchTime (datetime)\n  \u2022 IsManual (bit)\n  \u2022 InOut (bit)\n  \u2022 MachineID (int)\n  \u2022 RtcProcessed (bit)\n  \u2022 HRExecutiveID (int)\n  \u2022 Action (nvarchar)\n  \u2022 Status (nvarchar)\n  \u2022 fname (nvarchar)\n  \u2022 name (nvarchar)\n  \u2022 AccessLogID (uniqueidentifier)\n  \u2022 nEventLogIdn (int)\n  \u2022 CreateTime (datetime)\n  \u2022 TransactionId (uniqueidentifier)\n  \u2022 ReadStatus (bit)\n  \u2022 LogImage (image)\n  \u2022 ServerSync (bit)\n  \u2022 OutPunchTime (datetime)\n  \u2022 ECode (int)\n  \u2022 Channel (int)\n  \u2022 ImageUrl (nvarchar)\n  \u2022 ID (int)\n  \u2022 Role (varchar)\n  \u2022 Acknowledgement (bit)\n  \u2022 AcknowledgementDateTime (datetime)\n  \u2022 Remark (varchar)\n  \u2022 EmployeeName (nvarchar)\n",
+    "TABLE: dbo.MachineRawPunchDL\n\nCOLUMNS:\n  \u2022 CardNo (varchar)\n  \u2022 PunchTime (datetime)\n  \u2022 IsManual (bit)\n  \u2022 InOut (bit)\n  \u2022 MachineID (int)\n  \u2022 RtcProcessed (bit)\n  \u2022 HRExecutiveID (int)\n  \u2022 Action (nvarchar)\n  \u2022 Status (nvarchar)\n  \u2022 fname (nvarchar)\n  \u2022 name (nvarchar)\n  \u2022 AccessLogID (uniqueidentifier)\n  \u2022 nEventLogIdn (int)\n  \u2022 CreateTime (datetime)\n  \u2022 TransactionId (uniqueidentifier)\n  \u2022 ReadStatus (bit)\n  \u2022 ServerSync (bit)\n  \u2022 OutPunchTime (datetime)\n  \u2022 ECode (int)\n  \u2022 Channel (int)\n  \u2022 ID (int)\n  \u2022 Role (varchar)\n  \u2022 Acknowledgement (bit)\n  \u2022 AcknowledgementDateTime (datetime)\n  \u2022 Remark (varchar)\n",
+    "TABLE: dbo.MachineRawPunchExtn\n\nCOLUMNS:\n  \u2022 TransactionId (uniqueidentifier)\n  \u2022 CardNo (varchar)\n  \u2022 PunchTime (datetime)\n  \u2022 TerminalID (int)\n  \u2022 LogImage (image)\n  \u2022 ReadStatus (bit)\n  \u2022 CreateTime (datetime)\n  \u2022 ServerSync (bit)\n  \u2022 ID (int)\n",
+    "TABLE: dbo.MachineRawPunchExtn2\n\nCOLUMNS:\n  \u2022 TransactionId (uniqueidentifier)\n  \u2022 CardNo (varchar)\n  \u2022 Vehicle_No (varchar)\n  \u2022 Gross_wt (int)\n  \u2022 Tare_wt (int)\n  \u2022 Net (int)\n  \u2022 DateTimeIn (datetime)\n  \u2022 DateTimeOut (datetime)\n  \u2022 ServerSync (bit)\n  \u2022 IPAddress (nvarchar)\n  \u2022 Contractor_Code (nvarchar)\n  \u2022 ID (int)\n",
+    "TABLE: dbo.MachineRawPunchRT\n\nCOLUMNS:\n  \u2022 CardNo (varchar)\n  \u2022 PunchTime (datetime)\n  \u2022 IsManual (bit)\n  \u2022 InOut (bit)\n  \u2022 MachineID (int)\n  \u2022 RtcProcessed (bit)\n  \u2022 HRExecutiveID (int)\n  \u2022 Action (nvarchar)\n  \u2022 Status (nvarchar)\n  \u2022 fname (nvarchar)\n  \u2022 name (nvarchar)\n  \u2022 AccessLogID (uniqueidentifier)\n  \u2022 nEventLogIdn (int)\n  \u2022 CreateTime (datetime)\n  \u2022 TransactionId (uniqueidentifier)\n  \u2022 ReadStatus (bit)\n  \u2022 LogImage (image)\n  \u2022 ServerSync (bit)\n  \u2022 OutPunchTime (datetime)\n  \u2022 ECode (int)\n  \u2022 Channel (int)\n  \u2022 ImageUrl (nvarchar)\n  \u2022 ID (int)\n  \u2022 Role (varchar)\n  \u2022 Acknowledgement (bit)\n  \u2022 AcknowledgementDateTime (datetime)\n  \u2022 Remark (varchar)\n  \u2022 PunchDate (date)\n",
+    "TABLE: dbo.MasterTerminalHardwareTypeRelation\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 MasterTerminalID (int)\n  \u2022 TerminalID (int)\n  \u2022 HardwareTypeID (int)\n",
+    "TABLE: dbo.Material_Master\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 Visitor_Details_Id (int)\n  \u2022 Item_Type (nvarchar)\n  \u2022 Item_Details (nvarchar)\n  \u2022 Remark (nvarchar)\n  \u2022 Create_Date (datetime)\n",
+    "TABLE: dbo.Meeting_Persons\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 Visitor_Detail_ID (int)\n  \u2022 Name (nvarchar)\n  \u2022 ID_Proof_Type (nvarchar)\n  \u2022 ID_Proof_Details (nvarchar)\n  \u2022 Create_Time (datetime)\n  \u2022 V_Image (image)\n",
+    "TABLE: dbo.MessageMaster\n\nCOLUMNS:\n  \u2022 MessageID (int)\n  \u2022 Topic (varchar)\n  \u2022 Message (nvarchar)\n",
+    "TABLE: dbo.MultiReportingHeadRelation\n\nCOLUMNS:\n  \u2022 ECode (int)\n  \u2022 ReportingHeadEcode (int)\n  \u2022 Remark (nvarchar)\n",
+    "TABLE: dbo.NotificationTypeMaster\n\nCOLUMNS:\n  \u2022 NotificationTypeID (int)\n  \u2022 Name (varchar)\n  \u2022 Remarks (varchar)\n",
+    "TABLE: dbo.OryggiErrorLog\n\nCOLUMNS:\n  \u2022 LogDateTime (datetime)\n  \u2022 LogMsg (nvarchar)\n  \u2022 LogType (nvarchar)\n  \u2022 SenderMac (nvarchar)\n  \u2022 ErrorLogID (int)\n",
+    "TABLE: dbo.OryggiService\n\nCOLUMNS:\n  \u2022 ServiceID (int)\n  \u2022 ServiceName (varchar)\n  \u2022 LastRun (datetime)\n  \u2022 Remark (nvarchar)\n",
+    "TABLE: dbo.Paritybits\n\nCOLUMNS:\n  \u2022 ParitybitsID (int)\n  \u2022 Slot (int)\n  \u2022 BitPosition (int)\n  \u2022 ParityType (varchar)\n  \u2022 ParityMask (varchar)\n  \u2022 TerminalID (int)\n",
+    "TABLE: dbo.PayrollStep1\n\nCOLUMNS:\n  \u2022 ECode (int)\n  \u2022 Month (varchar)\n  \u2022 Year (varchar)\n  \u2022 StartDate (datetime)\n  \u2022 EndDate (datetime)\n  \u2022 TotWorkingDays (decimal)\n  \u2022 TotWO (decimal)\n  \u2022 TotHolidays (decimal)\n  \u2022 TotPaidLeave (decimal)\n  \u2022 TotShortDay (decimal)\n  \u2022 TotOTDay (decimal)\n  \u2022 TotHalfDay (decimal)\n  \u2022 TotFullDay (decimal)\n  \u2022 TotAbsent (decimal)\n  \u2022 TotOTHours (decimal)\n  \u2022 TotHoursWorked (decimal)\n  \u2022 TotLateArrDays (decimal)\n  \u2022 TotEarlyDeptDay (decimal)\n  \u2022 TotPresent (decimal)\n  \u2022 IsManual (bit)\n  \u2022 IsLocked (bit)\n",
+    "TABLE: dbo.PayrollStep2\n\nCOLUMNS:\n  \u2022 Id (bigint)\n  \u2022 Month (varchar)\n  \u2022 Year (varchar)\n  \u2022 Ecode (int)\n  \u2022 StartDate (datetime)\n  \u2022 EndDate (datetime)\n  \u2022 SHCode (tinyint)\n  \u2022 BasicValue (decimal)\n  \u2022 CalculatedValue (decimal)\n  \u2022 IsLocked (bit)\n",
+    "TABLE: dbo.PaySlip\n\nCOLUMNS:\n  \u2022 Id (int)\n  \u2022 Ecode (int)\n  \u2022 Month (varchar)\n  \u2022 Year (varchar)\n  \u2022 StartDate (datetime)\n  \u2022 EndDate (datetime)\n  \u2022 PayDate (datetime)\n  \u2022 SalaryGrade (varchar)\n  \u2022 TotalEarnings (decimal)\n  \u2022 TotalDeductions (decimal)\n  \u2022 NetPay (decimal)\n  \u2022 DaysWorked (numeric)\n  \u2022 IsVerified (bit)\n",
+    "TABLE: dbo.PF\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 PFNo (varchar)\n  \u2022 BasicSalary (decimal)\n  \u2022 Year (varchar)\n  \u2022 Month (varchar)\n  \u2022 Employer_PFAmt (decimal)\n  \u2022 PFAmt (decimal)\n",
+    "TABLE: dbo.PFChalan\n\nCOLUMNS:\n  \u2022 PFChalanID (bigint)\n  \u2022 EmpAC1Percent (decimal)\n  \u2022 EmployeerAC1Percent (decimal)\n  \u2022 EmpAC1Value (decimal)\n  \u2022 EmployeerAC1Value (decimal)\n  \u2022 AC10Percent (decimal)\n  \u2022 AC10Value (decimal)\n  \u2022 AC2Percent (decimal)\n  \u2022 AC2Value (decimal)\n  \u2022 AC21Percent (decimal)\n  \u2022 AC21Value (decimal)\n  \u2022 AC22Percent (decimal)\n  \u2022 AC22Value (decimal)\n  \u2022 TotalEmpShare (decimal)\n  \u2022 TotalEmployeerShare (decimal)\n  \u2022 Year (varchar)\n  \u2022 Month (varchar)\n",
+    "TABLE: dbo.PinMaster\n\nCOLUMNS:\n  \u2022 PinID (int)\n  \u2022 Ecode (int)\n  \u2022 Pin (int)\n  \u2022 Active (bit)\n  \u2022 ActiveDate (datetime)\n  \u2022 InActiveDate (datetime)\n",
+    "TABLE: dbo.ProtocolMaster\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 ProtocolName (varchar)\n  \u2022 IsEnable (bit)\n  \u2022 HardwareTypeID (int)\n  \u2022 MaxInputCount (int)\n  \u2022 MaxOutputCount (int)\n  \u2022 MaxWiegandReaderCount (int)\n  \u2022 MaxOSDPReaderCount (int)\n  \u2022 MaxWiegandDoorNumber (int)\n  \u2022 MaxOSDPDoorNumber (int)\n",
+    "TABLE: dbo.PurposeMaster\n\nCOLUMNS:\n  \u2022 PurposeID (int)\n  \u2022 PurposeType (varchar)\n",
+    "TABLE: dbo.RemarkMaster\n\nCOLUMNS:\n  \u2022 RemarkID (int)\n  \u2022 Remark (varchar)\n  \u2022 Active (bit)\n",
+    "TABLE: dbo.ReportingHeadMaster\n\nCOLUMNS:\n  \u2022 Ecode (int)\n  \u2022 ReportingHeadEcode (int)\n",
+    "TABLE: dbo.ReportTemplate\n\nCOLUMNS:\n  \u2022 ReportTemplateID (int)\n  \u2022 TemplateName (varchar)\n  \u2022 ReportName (varchar)\n  \u2022 ColumnsIncluded (nvarchar)\n",
+    "TABLE: dbo.RoleMaster\n\nCOLUMNS:\n  \u2022 RoleId (int)\n  \u2022 Role (varchar)\n  \u2022 Template (nvarchar)\n",
+    "TABLE: dbo.RoundCheckPoint_RTL\n\nCOLUMNS:\n  \u2022 RoundID (int)\n  \u2022 CheckPointID (int)\n",
+    "TABLE: dbo.SalaryHeadMaster\n\nCOLUMNS:\n  \u2022 SHCode (int)\n  \u2022 SalaryHead (varchar)\n  \u2022 Description (varchar)\n  \u2022 Type (varchar)\n  \u2022 ExpenseToComp (bit)\n  \u2022 FixedOrCalculated (bit)\n  \u2022 IsRoundable (bit)\n  \u2022 IsBasic (bit)\n",
+    "TABLE: dbo.ScheduleMaster\n\nCOLUMNS:\n  \u2022 ScheduleID (int)\n  \u2022 ScheduleTime (time)\n",
+    "TABLE: dbo.SectionMaster\n\nCOLUMNS:\n  \u2022 SecCode (int)\n  \u2022 SecName (varchar)\n  \u2022 Dcode (int)\n",
+    "TABLE: dbo.SeverityMaster\n\nCOLUMNS:\n  \u2022 SeverityID (int)\n  \u2022 SeverityName (nvarchar)\n  \u2022 Remarks (nvarchar)\n",
+    "TABLE: dbo.ShiftMaster\n\nCOLUMNS:\n  \u2022 Scode (int)\n  \u2022 Sname (varchar)\n  \u2022 StartTime (datetime)\n  \u2022 EndTime (datetime)\n  \u2022 LunchStartTime (datetime)\n  \u2022 LunchEndTime (datetime)\n  \u2022 isRTC (bit)\n  \u2022 EndTimeforOutPunch (datetime)\n  \u2022 IsLunchDeduct (bit)\n  \u2022 StartTimeforOutPunch (datetime)\n",
+    "TABLE: dbo.ShiftPattern\n\nCOLUMNS:\n  \u2022 SPCode (int)\n  \u2022 SPName (varchar)\n  \u2022 SPType (varchar)\n  \u2022 NOShiftsRotation (int)\n  \u2022 NODInEachShift (int)\n  \u2022 ShiftCode1 (int)\n  \u2022 ShiftCode2 (int)\n  \u2022 ShiftCode3 (int)\n  \u2022 ShiftCode4 (int)\n  \u2022 ShiftCode5 (int)\n  \u2022 ShiftCode6 (int)\n  \u2022 ShiftCode7 (int)\n",
+    "TABLE: dbo.StatusMaster\n\nCOLUMNS:\n  \u2022 StatusID (int)\n  \u2022 StatusName (varchar)\n",
+    "TABLE: dbo.Subjects\n\nCOLUMNS:\n  \u2022 subject_id (int)\n  \u2022 subject_name (nvarchar)\n  \u2022 description (nvarchar)\n",
+    "TABLE: dbo.Sublect_Card_Relation\n\nCOLUMNS:\n  \u2022 id (int)\n  \u2022 Ecode (int)\n  \u2022 subject_id (int)\n  \u2022 CardNo (nvarchar)\n  \u2022 Active (bit)\n",
+    "TABLE: dbo.Task\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 FP1 (image)\n  \u2022 FP2 (image)\n  \u2022 FP3 (image)\n  \u2022 FP4 (image)\n  \u2022 FP5 (image)\n  \u2022 FP6 (image)\n  \u2022 FP7 (image)\n  \u2022 FP8 (image)\n  \u2022 FP9 (image)\n  \u2022 FP10 (image)\n  \u2022 FP1Image (image)\n  \u2022 FP2Image (image)\n  \u2022 FP3Image (image)\n  \u2022 FP4Image (image)\n  \u2022 FP5Image (image)\n  \u2022 FP6Image (image)\n  \u2022 FP7Image (image)\n  \u2022 FP8Image (image)\n  \u2022 FP9Image (image)\n  \u2022 FP10Image (image)\n  \u2022 FP1Score (int)\n  \u2022 FP2Score (int)\n  \u2022 FP3Score (int)\n  \u2022 FP4Score (int)\n  \u2022 FP5Score (int)\n  \u2022 FP6Score (int)\n  \u2022 FP7Score (int)\n  \u2022 FP8Score (int)\n  \u2022 FP9Score (int)\n  \u2022 FP10Score (int)\n  \u2022 FP1Remark (varchar)\n  \u2022 FP2Remark (varchar)\n  \u2022 FP3Remark (varchar)\n  \u2022 FP4Remark (varchar)\n  \u2022 FP5Remark (varchar)\n  \u2022 FP6Remark (varchar)\n  \u2022 FP7Remark (varchar)\n  \u2022 FP8Remark (varchar)\n  \u2022 FP9Remark (varchar)\n  \u2022 FP10Remark (varchar)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskAccessSchedulesRemove\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskGrant\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskRebuildDevice\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskSEMAC\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskUpdateAccessSchedules\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskUpdateDeviceSetting\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskUserRebuild\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TaskUserRemove\n\nCOLUMNS:\n  \u2022 TaskID (int)\n  \u2022 TaskType (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Status (varchar)\n  \u2022 CreatedBy (varchar)\n  \u2022 CreatedDateTime (datetime)\n  \u2022 ExecutionDateTime (datetime)\n  \u2022 ExecutedDateTime (datetime)\n  \u2022 Ecode (int)\n  \u2022 Remark (varchar)\n  \u2022 Priority (int)\n  \u2022 MacAddress (varchar)\n  \u2022 ClientSno (varchar)\n  \u2022 TaskMode (varchar)\n  \u2022 DeviceSno (varchar)\n  \u2022 SoftwareVer (varchar)\n  \u2022 Error (varchar)\n",
+    "TABLE: dbo.TempFinger\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 Ecode (int)\n  \u2022 FingerID (int)\n  \u2022 OperatorID (int)\n  \u2022 MatchingTask (bit)\n  \u2022 CurrentVersion (varchar)\n  \u2022 MacAddress (varchar)\n",
+    "TABLE: dbo.TemplateFormat\n\nCOLUMNS:\n  \u2022 Format (int)\n  \u2022 FormatType (varchar)\n",
+    "TABLE: dbo.TerminalGroupMaster\n\nCOLUMNS:\n  \u2022 TerminalGroupID (int)\n  \u2022 TerminalGroupName (nvarchar)\n  \u2022 Remark (nvarchar)\n  \u2022 ServerSync (bit)\n  \u2022 TerminalGroupIDDisplay (int)\n",
+    "TABLE: dbo.TerminalPolicy\n\nCOLUMNS:\n  \u2022 TerminalGroupID (int)\n  \u2022 TerminalID (int)\n  \u2022 ServerSync (bit)\n",
+    "TABLE: dbo.TimeSet\n\nCOLUMNS:\n  \u2022 TimeSetID (int)\n  \u2022 Name (nvarchar)\n  \u2022 IsFixed (bit)\n  \u2022 StartTime (datetime)\n  \u2022 EndTime (datetime)\n  \u2022 Note (nvarchar)\n",
+    "TABLE: dbo.TimeZone\n\nCOLUMNS:\n  \u2022 TimeZoneID (bigint)\n  \u2022 Name (nvarchar)\n  \u2022 IsFixed (bit)\n  \u2022 Note (nvarchar)\n  \u2022 ZoneData (image)\n",
+    "TABLE: dbo.UserESIPF\n\nCOLUMNS:\n  \u2022 UserESIPFCode (tinyint)\n  \u2022 ECode (int)\n  \u2022 Month (varchar)\n  \u2022 Year (varchar)\n  \u2022 basicSalary (decimal)\n  \u2022 totalEmployeePF (decimal)\n  \u2022 totalEmployerPF (decimal)\n  \u2022 totalEmployeeESI (decimal)\n  \u2022 totalEmployerESI (decimal)\n  \u2022 isPFFixed (bit)\n  \u2022 isESIFixed (bit)\n",
+    "TABLE: dbo.Userfields\n\nCOLUMNS:\n  \u2022 UserfieldsID (int)\n  \u2022 Slot (int)\n  \u2022 WiegandName (varchar)\n  \u2022 StartPosition (int)\n  \u2022 WiegandLength (int)\n  \u2022 SuccessValue (int)\n  \u2022 FailureValue (int)\n  \u2022 TerminalID (int)\n",
+    "TABLE: dbo.UserGroupMaster\n\nCOLUMNS:\n  \u2022 UserGroupID (int)\n  \u2022 UserGroupName (nvarchar)\n  \u2022 Remark (nvarchar)\n  \u2022 ServerSync (bit)\n",
+    "TABLE: dbo.UserGroupPolicy\n\nCOLUMNS:\n  \u2022 UserGroupID (int)\n  \u2022 Ecode (int)\n  \u2022 ServerSync (bit)\n",
+    "TABLE: dbo.Vedanta_Checklist_Answer\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 Answer (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n",
+    "TABLE: dbo.Vedanta_Checklist_Major_Observation_RTL\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 MajorID (int)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 QuestionID (int)\n  \u2022 AnswerID (int)\n  \u2022 CheckPointID (int)\n",
+    "TABLE: dbo.Vedanta_Checklist_Minor_Observation_RTL\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 MinorID (int)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 QuestionID (int)\n  \u2022 AnswerID (int)\n  \u2022 CheckPointID (int)\n",
+    "TABLE: dbo.Vedanta_Checklist_Question\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 Question (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 Severity (bit)\n",
+    "TABLE: dbo.Vedanta_Major_Observation_Category\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 CategoryName (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 IsUserInput (bit)\n  \u2022 InputLabel (varchar)\n",
+    "TABLE: dbo.Vedanta_Minor_Observation_Category\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 CategoryName (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 IsUserInput (bit)\n  \u2022 InputLabel (varchar)\n",
+    "TABLE: dbo.Vedanta_Observation_Round\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 SequenceNo (int)\n  \u2022 PlaceCategory (varchar)\n  \u2022 PlaceName (varchar)\n  \u2022 TaskName (varchar)\n  \u2022 TaskTime (varchar)\n  \u2022 TaskDuration (varchar)\n  \u2022 TaskDescription (varchar)\n  \u2022 Repeat (varchar)\n  \u2022 TaskStartDate (datetime)\n  \u2022 RepeatType (varchar)\n  \u2022 Frequency (nchar)\n  \u2022 EndDate (datetime)\n  \u2022 BeforeTolerance (int)\n  \u2022 AfterTolerance (int)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UpdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 Ecode (int)\n  \u2022 PetrollingCategory (varchar)\n  \u2022 ShiftID (int)\n  \u2022 PlantID (int)\n  \u2022 TypeID (int)\n  \u2022 Status (varchar)\n  \u2022 TaskGroupID (int)\n  \u2022 Remarks (varchar)\n  \u2022 ActualStartingTime (datetime)\n  \u2022 ActualEndTime (datetime)\n",
+    "TABLE: dbo.Vedanta_Observation_Round_Log\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 UserID (int)\n  \u2022 ObserTypeID (int)\n  \u2022 QuestionID (int)\n  \u2022 AnswerID (int)\n  \u2022 ObserRoundID (int)\n  \u2022 MajorObserID (int)\n  \u2022 MinorObserID (int)\n  \u2022 Latitude (varchar)\n  \u2022 Longitue (varchar)\n  \u2022 Remark (varchar)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 LogDateTime (datetime)\n  \u2022 Photo (varchar)\n  \u2022 CheckPointID (int)\n  \u2022 MinorValue (varchar)\n  \u2022 MajorValue (varchar)\n  \u2022 PlantID (int)\n  \u2022 CheckPointStartTime (datetime)\n  \u2022 CheckPointDur (int)\n  \u2022 IdleDur (int)\n  \u2022 StartTime (datetime)\n  \u2022 EndTime (datetime)\n  \u2022 UserVarifyStatus (int)\n  \u2022 Status (varchar)\n  \u2022 ClosureRemark (varchar)\n  \u2022 ClosureDate (datetime)\n  \u2022 LoginEcode (int)\n  \u2022 SubmitEcode (int)\n",
+    "TABLE: dbo.Vedanta_Observation_Type\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 TypeName (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n",
+    "TABLE: dbo.Vedanta_Plant_Checkpoint\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 PlantID (int)\n  \u2022 CheckPointName (varchar)\n  \u2022 Call_Sign (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 CheckPointType (varchar)\n  \u2022 Location (varchar)\n  \u2022 Latitude (varchar)\n  \u2022 Longitude (varchar)\n  \u2022 GeofenceType (varchar)\n  \u2022 Radius (varchar)\n  \u2022 Lat_Lng_Lst (varchar)\n  \u2022 Severity (varchar)\n",
+    "TABLE: dbo.Vedanta_Plant_Location\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 PlantName (varchar)\n  \u2022 Location (varchar)\n  \u2022 Latitude (varchar)\n  \u2022 Longitude (varchar)\n  \u2022 GeofenceType (varchar)\n  \u2022 Radius (varchar)\n  \u2022 Lat_Lng_Lst (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n",
+    "TABLE: dbo.Vedanta_Question_Answer_RTL\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 QuestionID (int)\n  \u2022 AnswerID (int)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 CheckPointID (int)\n",
+    "TABLE: dbo.Vedanta_User_Category_RTL\n\nCOLUMNS:\n  \u2022 RecordID (int)\n  \u2022 UserID (int)\n  \u2022 CategoryID (int)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 PlantID (int)\n",
+    "TABLE: dbo.Vistor_Details\n\nCOLUMNS:\n  \u2022 ID (bigint)\n  \u2022 Ecode (int)\n  \u2022 Image (image)\n  \u2022 Whom_To_Visit (int)\n  \u2022 Expected_IN_Time (datetime)\n  \u2022 IN_Time (datetime)\n  \u2022 Expected_OUT_Time (datetime)\n  \u2022 OUT_Time (datetime)\n  \u2022 Purpose (int)\n  \u2022 ID_Proof_Type (int)\n  \u2022 ID_Proof_Detail (nvarchar)\n  \u2022 ID_Proof_Image (image)\n  \u2022 MobileNumner (nvarchar)\n  \u2022 OTP (int)\n  \u2022 Issued_Card_Number (nvarchar)\n  \u2022 Status (nvarchar)\n  \u2022 TermnalGroupID (int)\n  \u2022 Document_Detail (nvarchar)\n  \u2022 Vachel_Number (nvarchar)\n  \u2022 Create_Time (datetime)\n  \u2022 Filter (nvarchar)\n  \u2022 Document_File (nvarchar)\n  \u2022 Created_By (nvarchar)\n  \u2022 Remarks (nvarchar)\n  \u2022 NumberOfVisitors (int)\n  \u2022 VisitorType (nvarchar)\n  \u2022 QRCodeValue (nvarchar)\n  \u2022 Field1 (nvarchar)\n  \u2022 AreaGroupID (int)\n  \u2022 ExtendedBy (time)\n  \u2022 ExtendedReason (varchar)\n",
+    "TABLE: dbo.Weekdays\n\nCOLUMNS:\n  \u2022 DayCode (tinyint)\n  \u2022 DayName (varchar)\n",
+    "TABLE: dbo.WiegandMaster\n\nCOLUMNS:\n  \u2022 ID (int)\n  \u2022 TerminalID (int)\n  \u2022 ProxPortInputFormat (varchar)\n  \u2022 ExternalPortInputFormat (varchar)\n  \u2022 ExternalPortInputType (varchar)\n  \u2022 ReadProfile (varchar)\n  \u2022 EnrollUserID (varchar)\n  \u2022 ActivateWiegandOutput (bit)\n  \u2022 VerificationPass (varchar)\n  \u2022 VerificationFail (varchar)\n  \u2022 IdentificationPass (varchar)\n  \u2022 IdentificationFail (varchar)\n  \u2022 Duress (varchar)\n  \u2022 Tamper (varchar)\n  \u2022 ExternalPortOutputType (varchar)\n  \u2022 SetPulseWidthTo (int)\n  \u2022 SetIntervalTo (int)\n  \u2022 InputDataLine (varchar)\n  \u2022 OutputDataLine (varchar)\n  \u2022 InputClockLine (varchar)\n  \u2022 OutputClockLine (varchar)\n",
+    "TABLE: dbo.WiegandSettings\n\nCOLUMNS:\n  \u2022 WiegandID (int)\n  \u2022 WName (varchar)\n  \u2022 FacilityCode (nvarchar)\n  \u2022 Offset (int)\n  \u2022 CommunicationProtocol (int)\n  \u2022 Flag (int)\n  \u2022 Bits (int)\n  \u2022 ParityEven_Ln (int)\n  \u2022 ParityEven_Loc (int)\n  \u2022 ParityOdd_Ln (int)\n  \u2022 ParityOdd_Loc (int)\n  \u2022 FacilityCode_Ln (int)\n  \u2022 FacilityCode_Loc (int)\n  \u2022 CardHolder_Ln (int)\n  \u2022 CardHolder_Loc (int)\n  \u2022 Ic_Ln (int)\n  \u2022 Ic_Loc (int)\n  \u2022 Remark (varchar)\n  \u2022 Ccode (int)\n",
+    "TABLE: dbo.WiegandTerminalRel\n\nCOLUMNS:\n  \u2022 TerminalID (int)\n  \u2022 WiegandID (int)\n  \u2022 RelNumber (int)\n  \u2022 IsEnabled (bit)\n",
+    "VIEW: dbo.vw_EmployeeMaster_Vms \u2b50\u2b50\u2b50\u2b50\u2b50\nTIER: 1 (Priority: 5)\n\nPURPOSE:\nComplete employee master record with ALL organizational hierarchy pre-joined (18 tables)\n\nPRE-JOINS (12 tables):\nEmployeeMaster, SectionMaster, DeptMaster, BranchMaster, CompanyMaster, CategoryMaster, DesignationMaster, GradeMaster, BiometricMaster, ContractorMaster, AttendanceMaster, ShiftMaster\n\nKEY COLUMNS:\n  employee_identity: Ecode, CorpEmpCode, EmpName, Active\n  organizational_hierarchy: Dname, SecName, BranchName, CName\n  employee_metadata: DateofJoin, PresentCardNo, Sex, DateofBirth\n  biometric: FP1_ID, FP2_ID, IsEnrolled\n  contractor: ContractorID\n\nALWAYS USE FOR:\n  \u2713 ANY employee query with department/section/branch\n  \u2713 Employee count by department/section/branch\n  \u2713 Employee organizational hierarchy queries\n  \u2713 Employee personal details\n  \u2713 Active vs inactive employees\n  \u2713 Employee filtering by name, code, date of joining\n\nCRITICAL FILTERS:\n  WHERE Active = 1  -- ALWAYS filter for active employees unless specifically asking for inactive\n  WHERE Dname LIKE '%IT%'  -- Department name filter\n  WHERE EmpName LIKE '%John%'  -- Employee name search\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"How many employees in each department?\"\n  SQL: SELECT Dname, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname ORDER BY EmployeeCount DESC\n\n  Example 2:\n  Question: \"Show me employees in IT department\"\n  SQL: SELECT Ecode, CorpEmpCode, EmpName, Dname, SecName FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND Dname LIKE '%IT%'\n\n  Example 3:\n  Question: \"How many total active employees?\"\n  SQL: SELECT COUNT(*) AS TotalEmployees FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1\n\n\u26a0\ufe0f IMPORTANT WARNINGS:\n  DO NOT manually JOIN EmployeeMaster + SectionMaster + DeptMaster\n  DO NOT manually JOIN EmployeeMaster + BranchMaster + CompanyMaster\n  USE THIS VIEW INSTEAD - it has all JOINs pre-built!\n\n",
+    "VIEW: dbo.vw_RawPunchDetail \u2b50\u2b50\u2b50\u2b50\u2b50\nTIER: 1 (Priority: 5)\n\nPURPOSE:\nAttendance/punch records with employee details, machine info, and organizational context pre-joined\n\nPRE-JOINS (7 tables):\nMachineRawPunch, EmployeeMaster, MachineMaster, DeptMaster, SectionMaster, BranchMaster, CompanyMaster\n\nKEY COLUMNS:\n  punch_data: ATDate, ATTime, InTime, OutTime, WorkHour\n  employee: ECode, EmpName, CorpEmpCode\n  machine: MachineID, MachineName, IPAddress, Location\n  organizational: Dname, SecName, BranchName\n\nALWAYS USE FOR:\n  \u2713 ANY attendance or punch query\n  \u2713 Time tracking queries\n  \u2713 Employee in/out times\n  \u2713 Attendance by date/date range\n  \u2713 Punch logs by employee/machine/department\n  \u2713 Work hour calculations\n\nCRITICAL FILTERS:\n  WHERE ATDate = '2025-01-20'  -- Specific date\n  WHERE ATDate BETWEEN '2025-01-01' AND '2025-01-31'  -- Date range\n  WHERE ECode = 12345  -- Specific employee\n  WHERE Dname LIKE '%IT%'  -- Department filter\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"Show attendance for today\"\n  SQL: SELECT EmpName, ATDate, InTime, OutTime, WorkHour FROM dbo.vw_RawPunchDetail WHERE ATDate = CAST(GETDATE() AS DATE)\n\n  Example 2:\n  Question: \"Which employees punched in late today?\"\n  SQL: SELECT EmpName, InTime FROM dbo.vw_RawPunchDetail WHERE ATDate = CAST(GETDATE() AS DATE) AND InTime > '09:30:00'\n\n\u26a0\ufe0f IMPORTANT WARNINGS:\n  DO NOT manually JOIN MachineRawPunch + EmployeeMaster + MachineMaster\n  USE THIS VIEW INSTEAD - it has all attendance context!\n\n",
+    "VIEW: dbo.AllEmployeeUnion \u2b50\u2b50\u2b50\u2b50\u2b50\nTIER: 1 (Priority: 5)\n\nPURPOSE:\nUnion of EmployeeMaster + EmployeeMaster_Deleted (includes both active and deleted employees)\n\nPRE-JOINS (1 tables):\nEmployeeMaster UNION ALL EmployeeMaster_Deleted\n\nKEY COLUMNS:\n  employee: Ecode, CorpEmpCode, EmpName, Active\n  metadata: DateofJoin, LeavingDate, LeavingReason\n\nALWAYS USE FOR:\n  \u2713 Total employee count (active + deleted)\n  \u2713 Historical employee queries\n  \u2713 Queries that need to include deleted/inactive employees\n  \u2713 Employee count over time\n\nCRITICAL FILTERS:\n  WHERE Active = 1  -- Only active employees\n  WHERE Active = 0  -- Only deleted/inactive employees\n  -- No WHERE clause = all employees (active + deleted)\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"How many total employees (including deleted)?\"\n  SQL: SELECT COUNT(*) AS TotalEmployees FROM dbo.AllEmployeeUnion\n\n  Example 2:\n  Question: \"How many active employees?\"\n  SQL: SELECT COUNT(*) AS ActiveEmployees FROM dbo.AllEmployeeUnion WHERE Active = 1\n\n\u26a0\ufe0f IMPORTANT WARNINGS:\n  DO NOT query EmployeeMaster alone if you need total count\n  DO NOT manually UNION EmployeeMaster and EmployeeMaster_Deleted\n  USE THIS VIEW INSTEAD!\n\n",
+    "VIEW: dbo.View_Visitor_EnrollmentDetail \u2b50\u2b50\u2b50\u2b50\nTIER: 2 (Priority: 3)\n\nPURPOSE:\nVisitor enrollment details with host employee and access information\n\nALWAYS USE FOR:\n  \u2713 Visitor queries\n  \u2713 Visitor enrollment status\n  \u2713 Visitor access logs\n  \u2713 Host employee for visitors\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"Show all visitors enrolled today\"\n  SQL: SELECT * FROM dbo.View_Visitor_EnrollmentDetail WHERE EnrollmentDate = CAST(GETDATE() AS DATE)\n\n",
+    "VIEW: dbo.View_Contractor_Detail \u2b50\u2b50\u2b50\u2b50\nTIER: 2 (Priority: 3)\n\nPURPOSE:\nContractor details with company and employee linkage\n\nALWAYS USE FOR:\n  \u2713 Contractor queries\n  \u2713 Contractor company information\n  \u2713 Contractor employee relationships\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"Show all active contractors\"\n  SQL: SELECT * FROM dbo.View_Contractor_Detail WHERE Active = 1\n\n",
+    "VIEW: dbo.View_Employee_Terminal_Authentication_Relation \u2b50\u2b50\u2b50\u2b50\nTIER: 2 (Priority: 3)\n\nPURPOSE:\nEmployee access control permissions to terminals/devices\n\nALWAYS USE FOR:\n  \u2713 Access control queries\n  \u2713 Employee terminal permissions\n  \u2713 Which employees can access which terminals\n  \u2713 Terminal access authorization\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"Which employees have access to terminal 101?\"\n  SQL: SELECT * FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE TerminalID = 101\n\n",
+    "VIEW: dbo.View_EmployeeByUserGroupPolicy \u2b50\u2b50\u2b50\u2b50\nTIER: 2 (Priority: 3)\n\nPURPOSE:\nEmployee grouping by user group policies\n\nALWAYS USE FOR:\n  \u2713 User group queries\n  \u2713 Policy-based employee grouping\n  \u2713 Employee access policies\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"Show employees in Admin group\"\n  SQL: SELECT * FROM dbo.View_EmployeeByUserGroupPolicy WHERE GroupName = 'Admin'\n\n",
+    "VIEW: dbo.Vw_TerminalDetail_VMS \u2b50\u2b50\u2b50\nTIER: 3 (Priority: 2)\n\nPURPOSE:\nTerminal/device configuration and status details\n\nALWAYS USE FOR:\n  \u2713 Terminal/device configuration queries\n  \u2713 Device status (online/offline)\n  \u2713 Terminal location and settings\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"Show all online terminals\"\n  SQL: SELECT * FROM dbo.Vw_TerminalDetail_VMS WHERE Status = 'Online'\n\n",
+    "VIEW: dbo.vw_VisitorBasicDetail \u2b50\u2b50\u2b50\nTIER: 3 (Priority: 2)\n\nPURPOSE:\nBasic visitor information lookup (simplified version)\n\nALWAYS USE FOR:\n  \u2713 Simple visitor lookup\n  \u2713 Basic visitor details\n\nCOMMON QUERY PATTERNS:\n\n  Example 1:\n  Question: \"Find visitor by name\"\n  SQL: SELECT * FROM dbo.vw_VisitorBasicDetail WHERE VisitorName LIKE '%John%'\n\n",
+    "VIEW: dbo.Employee_Hikvision_Image\n\nCOLUMNS (3 total):\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 ImagePath (nvarchar)\n",
+    "VIEW: dbo.Employee_Suprema_Unwarped_Image\n\nCOLUMNS (3 total):\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 ImagePath (nvarchar)\n",
+    "VIEW: dbo.Employee_Suprema_warped_Image\n\nCOLUMNS (3 total):\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 ImagePath (nvarchar)\n",
+    "VIEW: dbo.Employee_User_Image\n\nCOLUMNS (3 total):\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 ImagePath (nvarchar)\n",
+    "VIEW: dbo.GTMS_User_Observation\n\nCOLUMNS (20 total):\n  \u2022 ObserTypeID (int)\n  \u2022 ObserRoundID (int)\n  \u2022 PlantID (int)\n  \u2022 SequenceNo (int)\n  \u2022 PlaceCategory (varchar)\n  \u2022 PlaceName (varchar)\n  \u2022 TaskName (varchar)\n  \u2022 TaskTime (char)\n  \u2022 TaskDuration (varchar)\n  \u2022 TaskDescription (varchar)\n  \u2022 ProcessName (varchar)\n  \u2022 Repeat (varchar)\n  \u2022 TaskStartDate (datetime)\n  \u2022 RepeatType (varchar)\n  \u2022 Frequency (nchar)\n  \u2022 EndDate (datetime)\n  \u2022 BeforeTolerance (int)\n  \u2022 AfterTolerance (int)\n  \u2022 Active (int)\n  \u2022 UserID (int)\n",
+    "VIEW: dbo.Vedanta_Admin_Checkpoint\n\nCOLUMNS (20 total):\n  \u2022 Location (varchar)\n  \u2022 Latitude (varchar)\n  \u2022 Longitude (varchar)\n  \u2022 GeofenceType (varchar)\n  \u2022 Radius (varchar)\n  \u2022 Lat_Lng_Lst (varchar)\n  \u2022 CheckPointID (int)\n  \u2022 CheckPointName (varchar)\n  \u2022 Call_Sign (varchar)\n  \u2022 PlantName (varchar)\n  \u2022 PlantID (int)\n  \u2022 CategoryName (varchar)\n  \u2022 UserID (int)\n  \u2022 CategoryID (int)\n  \u2022 Data (varchar)\n  \u2022 PetrollType (varchar)\n  \u2022 PetrollTypeID (int)\n  \u2022 TaskStartDate (varchar)\n  \u2022 EndDate (varchar)\n  \u2022 Severity (varchar)\n",
+    "VIEW: dbo.Vedanta_User_Cat_Plant_Checkpoint\n\nCOLUMNS (20 total):\n  \u2022 PlantName (varchar)\n  \u2022 PlantID (int)\n  \u2022 CategoryName (varchar)\n  \u2022 UserID (int)\n  \u2022 CategoryID (int)\n  \u2022 Data (nvarchar)\n  \u2022 PetrollType (varchar)\n  \u2022 PetrollTypeID (int)\n  \u2022 TaskStartDate (datetime)\n  \u2022 EndDate (datetime)\n  \u2022 Location (varchar)\n  \u2022 Latitude (varchar)\n  \u2022 Longitude (varchar)\n  \u2022 GeofenceType (varchar)\n  \u2022 Radius (varchar)\n  \u2022 Lat_Lng_Lst (varchar)\n  \u2022 CheckPointID (int)\n  \u2022 CheckPointName (varchar)\n  \u2022 Severity (varchar)\n  \u2022 Call_Sign (varchar)\n",
+    "VIEW: dbo.Vedanta_User_Cat_Plant_Checkpoint2\n\nCOLUMNS (20 total):\n  \u2022 CategoryName (varchar)\n  \u2022 UserID (int)\n  \u2022 CategoryID (int)\n  \u2022 Data (int)\n  \u2022 PetrollType (varchar)\n  \u2022 PetrollTypeID (int)\n  \u2022 TaskStartDate (datetime)\n  \u2022 EndDate (datetime)\n  \u2022 Location (varchar)\n  \u2022 Latitude (varchar)\n  \u2022 Longitude (varchar)\n  \u2022 GeofenceType (varchar)\n  \u2022 Radius (varchar)\n  \u2022 Lat_Lng_Lst (varchar)\n  \u2022 CheckPointID (int)\n  \u2022 CheckPointName (varchar)\n  \u2022 Severity (varchar)\n  \u2022 Call_Sign (varchar)\n  \u2022 PlantName (varchar)\n  \u2022 PlantID (int)\n",
+    "VIEW: dbo.Vedanta_User_Plant_Relation\n\nCOLUMNS (23 total):\n  \u2022 RecordID (int)\n  \u2022 PlantName (varchar)\n  \u2022 Location (varchar)\n  \u2022 Latitude (varchar)\n  \u2022 Longitude (varchar)\n  \u2022 GeofenceType (varchar)\n  \u2022 Radius (varchar)\n  \u2022 Lat_Lng_Lst (varchar)\n  \u2022 Active (int)\n  \u2022 CreatedDate (datetime)\n  \u2022 UPdatedDate (datetime)\n  \u2022 CreatedBy (int)\n  \u2022 UpdatedBy (int)\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 EmpName (nvarchar)\n  \u2022 Gcode (int)\n  \u2022 Catcode (int)\n  \u2022 DesCode (int)\n  \u2022 SecCode (int)\n  ... and 3 more columns\n",
+    "VIEW: dbo.View_All_Alert_Log\n\nCOLUMNS (34 total):\n  \u2022 CardNo (varchar)\n  \u2022 PunchTime (datetime)\n  \u2022 IsManual (bit)\n  \u2022 InOut (bit)\n  \u2022 RtcProcessed (bit)\n  \u2022 HRExecutiveID (int)\n  \u2022 CreateTime (datetime)\n  \u2022 Channel (int)\n  \u2022 ID (int)\n  \u2022 Acknowledgement (bit)\n  \u2022 AcknowledgementDateTime (datetime)\n  \u2022 Remark (varchar)\n  \u2022 MachineID (int)\n  \u2022 DeviceType (varchar)\n  \u2022 TerminalID (int)\n  \u2022 IPAddress (varchar)\n  \u2022 DomainName (varchar)\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 EmpName (nvarchar)\n  ... and 14 more columns\n",
+    "VIEW: dbo.View_BDW_MPunch\n\nCOLUMNS (18 total):\n  \u2022 EmployeeID (varchar)\n  \u2022 CardNo (varchar)\n  \u2022 PunchTime (datetime)\n  \u2022 EmpName (nvarchar)\n  \u2022 PunchLocation (nvarchar)\n  \u2022 IsManual (bit)\n  \u2022 InOut (bit)\n  \u2022 Status (nvarchar)\n  \u2022 DeviceLocation (varchar)\n  \u2022 Role (varchar)\n  \u2022 DomainName (varchar)\n  \u2022 IPAddress (varchar)\n  \u2022 Sno (nvarchar)\n  \u2022 Create_Date (datetime)\n  \u2022 Image (image)\n  \u2022 Latitude (nvarchar)\n  \u2022 TerminalID (int)\n  \u2022 Dname (varchar)\n",
+    "VIEW: dbo.View_ComapnyMaster\n\nCOLUMNS (12 total):\n  \u2022 Ecode (int)\n  \u2022 CorpEmpCode (varchar)\n  \u2022 CName (varchar)\n  \u2022 Address (varchar)\n  \u2022 PinCode (varchar)\n  \u2022 Logo (image)\n  \u2022 TelephoneNo (varchar)\n  \u2022 Email (varchar)\n  \u2022 Ccode (int)\n  \u2022 BranchCode (int)\n  \u2022 Dcode (int)\n  \u2022 SecCode (int)\n",
+    "VIEW: dbo.View_EmpDepartRole\n\nCOLUMNS (9 total):\n  \u2022 Ecode (int)\n  \u2022 CName (varchar)\n  \u2022 Ccode (int)\n  \u2022 BranchName (varchar)\n  \u2022 BranchCode (int)\n  \u2022 Dname (varchar)\n  \u2022 Dcode (int)\n  \u2022 SecName (varchar)\n  \u2022 SecCode (int)\n",
+    "VIEW: dbo.View_EmployeeESIPF\n\nCOLUMNS (3 total):\n  \u2022 Ecode (int)\n  \u2022 ESICNo (varchar)\n  \u2022 PFNo (varchar)\n",
+    "VIEW: dbo.View_FACE_V1\n\nCOLUMNS (7 total):\n  \u2022 Ecode (int)\n  \u2022 Format (int)\n  \u2022 FingerID (int)\n  \u2022 CaptureDate (datetime)\n  \u2022 Quality (int)\n  \u2022 OperatorID (int)\n  \u2022 Enable (bit)\n",
+    "VIEW: dbo.View_FingerDetail\n\nCOLUMNS (9 total):\n  \u2022 Finger (varchar)\n  \u2022 Format (varchar)\n  \u2022 Score (int)\n  \u2022 Ecode (int)\n  \u2022 FormatID (int)\n  \u2022 FingerID (int)\n  \u2022 CheckedStatus (bit)\n  \u2022 DuplicateEcode (int)\n  \u2022 DuplicateFingerID (int)\n",
+    "VIEW: dbo.View_ForExcelExport\n\nCOLUMNS (9 total):\n  \u2022 Employee Number (varchar)\n  \u2022 In Date (datetime)\n  \u2022 Out Date (datetime)\n  \u2022 In Location (varchar)\n  \u2022 Out Location (varchar)\n  \u2022 Shift Starttime (datetime)\n  \u2022 Shift Endtime (datetime)\n  \u2022 Attendance Date (datetime)\n  \u2022 Time Zone (varchar)\n",
+    "VIEW: dbo.View_Group_By_DCode\n\nCOLUMNS (5 total):\n  \u2022 Dcode (int)\n  \u2022 GroupID (bigint)\n  \u2022 Name (nvarchar)\n  \u2022 IsFixed (bit)\n  \u2022 Note (nvarchar)\n",
+    "VIEW: dbo.View_HalfDayPresent\n\nCOLUMNS (2 total):\n  \u2022 ECode (int)\n  \u2022 Dname (varchar)\n",
+    "VIEW: dbo.View_Hospital_VMS_Patient_Details\n\nCOLUMNS (4 total):\n  \u2022 CorpEmpCode (varchar)\n  \u2022 EmpName (nvarchar)\n  \u2022 PresentCardNo (varchar)\n  \u2022 Role (varchar)\n",
+    "Table: Access_Schedules\nColumns (10): ScheduleID, Schedule_Name, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, Remark\nColumn Types: ScheduleID:int, Schedule_Name:varchar, Monday:varbinary, Tuesday:varbinary, Wednesday:varbinary, Thursday:varbinary, Friday:varbinary, Saturday:varbinary, Sunday:varbinary, Remark:varchar\nSample Data: ScheduleID=0, Schedule_Name=No Access, Monday=b'', Tuesday=b'', Wednesday=b''\n",
+    "Table: Access_Schedules_Terminal_Relation\nPrimary Key: ScheduleID\nColumns (4): ScheduleID, TerminalID, Status, Error\nColumn Types: ScheduleID:int, TerminalID:int, Status:varchar, Error:varchar\n",
+    "Table: Alert_Master\nPrimary Key: ID\nColumns (19): ID, OEM, Alert, Name, DeviceAlertCode, SeverityID, NotificationTypeID, Acknowledgement, MasterAlert, LanguageID, AutoMail, AutoSms, AutoSnap, CameraLive, Door_Release_Terminal_GroupID, Mail_Ecode_List, Remarks, IsEnable, ThirdParty\nColumn Types: ID:bigint, OEM:nvarchar, Alert:nvarchar, Name:nvarchar, DeviceAlertCode:nvarchar, SeverityID:int, NotificationTypeID:int, Acknowledgement:bit, MasterAlert:nvarchar, LanguageID:int\nSample Data: ID=0, OEM=ORYGGI, Alert=Not Matched, Name=Not Matched, DeviceAlertCode=\n",
+    "Table: AlertMaster\nPrimary Key: AlertID\nColumns (3): AlertID, Alert, Remark\nColumn Types: AlertID:int, Alert:varchar, Remark:varchar\nSample Data: AlertID=1, Alert=LOG_ACTION_REJECTED_BY_SCHEDULE, Remark=None\n",
+    "Table: ApplicationSetup\nPrimary Key: AppSetupCode\nColumns (31): AppSetupCode, BranchCode, MinWorkHourForPresent, IshalfDayAllowed, MinWorkHourForHalfDay, IsShortDayAllowed, MinWorkHourForShortDay, OvertimeAllowed, MinDurationReqForOverTime, OnePunchPresentMarking, PermissableLateArrival, PermissableEarlyDeparture, FWOAssigned, FirstWo, SWOAssigned, SecondWo, SecondWOFirst, SecondWOSecond, SecondWOThird, SecondWOFourth, SecondWOFifth, SecondWoType, CurrentYear, EarlyArrivalIgnoured, LateDepartureIgnoured, OverTimeFormula, OverTimeThreshold, DuplicatePunchTime, IsBreakShiftAllowed, WorkMinuteFomula, DeductIntermediate\nColumn Types: AppSetupCode:int, BranchCode:int, MinWorkHourForPresent:datetime, IshalfDayAllowed:bit, MinWorkHourForHalfDay:datetime, IsShortDayAllowed:bit, MinWorkHourForShortDay:datetime, OvertimeAllowed:bit, MinDurationReqForOverTime:datetime, OnePunchPresentMarking:bit\nForeign Keys: BranchCode -> BranchMaster.BranchCode\nSample Data: AppSetupCode=80, BranchCode=1, MinWorkHourForPresent=1900-01-01 00:00:00, IshalfDayAllowed=False, MinWorkHourForHalfDay=1900-01-01 00:00:00\n",
+    "Table: AppSetup_Cat_Rel\nColumns (5): AppSetupCode, GAZMaleOT, GAZFemaleOT, NonGAZMaleOT, NonGAZFemaleOT\nColumn Types: AppSetupCode:int, GAZMaleOT:datetime, GAZFemaleOT:datetime, NonGAZMaleOT:datetime, NonGAZFemaleOT:datetime\nSample Data: AppSetupCode=84, GAZMaleOT=1900-01-01 00:00:00, GAZFemaleOT=1900-01-01 00:00:00, NonGAZMaleOT=1900-01-01 00:00:00, NonGAZFemaleOT=1900-01-01 00:00:00\n",
+    "Table: Area_AreaGroup_Relation\nPrimary Key: AreaGroupID\nColumns (2): AreaGroupID, AreaID\nColumn Types: AreaGroupID:int, AreaID:int\n",
+    "Table: AreaGroupMaster\nColumns (5): AreaGroupID, AreaGroupIDDisplay, AreaGroupName, Remark1, Remark2\nColumn Types: AreaGroupID:int, AreaGroupIDDisplay:int, AreaGroupName:nvarchar, Remark1:nvarchar, Remark2:nvarchar\n",
+    "Table: AreaMaster\nColumns (5): AreaID, AreaIDDisplay, AreaName, Remark1, Remark2\nColumn Types: AreaID:int, AreaIDDisplay:int, AreaName:nvarchar, Remark1:nvarchar, Remark2:nvarchar\n",
+    "Table: aspnet_Applications\nPrimary Key: ApplicationId\nColumns (4): ApplicationName, LoweredApplicationName, ApplicationId, Description\nColumn Types: ApplicationName:nvarchar, LoweredApplicationName:nvarchar, ApplicationId:uniqueidentifier, Description:nvarchar\n",
+    "Table: aspnet_Membership\nPrimary Key: UserId\nColumns (21): ApplicationId, UserId, Password, PasswordFormat, PasswordSalt, MobilePIN, Email, LoweredEmail, PasswordQuestion, PasswordAnswer, IsApproved, IsLockedOut, CreateDate, LastLoginDate, LastPasswordChangedDate, LastLockoutDate, FailedPasswordAttemptCount, FailedPasswordAttemptWindowStart, FailedPasswordAnswerAttemptCount, FailedPasswordAnswerAttemptWindowStart, Comment\nColumn Types: ApplicationId:uniqueidentifier, UserId:uniqueidentifier, Password:nvarchar, PasswordFormat:int, PasswordSalt:nvarchar, MobilePIN:nvarchar, Email:nvarchar, LoweredEmail:nvarchar, PasswordQuestion:nvarchar, PasswordAnswer:nvarchar\nForeign Keys: ApplicationId -> aspnet_Applications.ApplicationId, UserId -> aspnet_Users.UserId\n",
+    "Table: aspnet_Paths\nPrimary Key: PathId\nColumns (4): ApplicationId, PathId, Path, LoweredPath\nColumn Types: ApplicationId:uniqueidentifier, PathId:uniqueidentifier, Path:nvarchar, LoweredPath:nvarchar\nForeign Keys: ApplicationId -> aspnet_Applications.ApplicationId\n",
+    "Table: aspnet_PersonalizationAllUsers\nPrimary Key: PathId\nColumns (3): PathId, PageSettings, LastUpdatedDate\nColumn Types: PathId:uniqueidentifier, PageSettings:image, LastUpdatedDate:datetime\nForeign Keys: PathId -> aspnet_Paths.PathId\n",
+    "Table: aspnet_PersonalizationPerUser\nPrimary Key: Id\nColumns (5): Id, PathId, UserId, PageSettings, LastUpdatedDate\nColumn Types: Id:uniqueidentifier, PathId:uniqueidentifier, UserId:uniqueidentifier, PageSettings:image, LastUpdatedDate:datetime\nForeign Keys: PathId -> aspnet_Paths.PathId, UserId -> aspnet_Users.UserId\n",
+    "Table: aspnet_Profile\nPrimary Key: UserId\nColumns (5): UserId, PropertyNames, PropertyValuesString, PropertyValuesBinary, LastUpdatedDate\nColumn Types: UserId:uniqueidentifier, PropertyNames:ntext, PropertyValuesString:ntext, PropertyValuesBinary:image, LastUpdatedDate:datetime\nForeign Keys: UserId -> aspnet_Users.UserId\n",
+    "Table: aspnet_Roles\nPrimary Key: RoleId\nColumns (5): ApplicationId, RoleId, RoleName, LoweredRoleName, Description\nColumn Types: ApplicationId:uniqueidentifier, RoleId:uniqueidentifier, RoleName:nvarchar, LoweredRoleName:nvarchar, Description:nvarchar\nForeign Keys: ApplicationId -> aspnet_Applications.ApplicationId\n",
+    "Table: aspnet_SchemaVersions\nPrimary Key: CompatibleSchemaVersion\nColumns (3): Feature, CompatibleSchemaVersion, IsCurrentVersion\nColumn Types: Feature:nvarchar, CompatibleSchemaVersion:nvarchar, IsCurrentVersion:bit\nSample Data: Feature=common, CompatibleSchemaVersion=1, IsCurrentVersion=True\n",
+    "Table: aspnet_Users\nPrimary Key: UserId\nColumns (7): ApplicationId, UserId, UserName, LoweredUserName, MobileAlias, IsAnonymous, LastActivityDate\nColumn Types: ApplicationId:uniqueidentifier, UserId:uniqueidentifier, UserName:nvarchar, LoweredUserName:nvarchar, MobileAlias:nvarchar, IsAnonymous:bit, LastActivityDate:datetime\nForeign Keys: ApplicationId -> aspnet_Applications.ApplicationId\n",
+    "Table: aspnet_UsersInRoles\nPrimary Key: RoleId\nColumns (2): UserId, RoleId\nColumn Types: UserId:uniqueidentifier, RoleId:uniqueidentifier\nForeign Keys: RoleId -> aspnet_Roles.RoleId, UserId -> aspnet_Users.UserId\n",
+    "Table: aspnet_WebEvent_Events\nPrimary Key: EventId\nColumns (15): EventId, EventTimeUtc, EventTime, EventType, EventSequence, EventOccurrence, EventCode, EventDetailCode, Message, ApplicationPath, ApplicationVirtualPath, MachineName, RequestUrl, ExceptionType, Details\nColumn Types: EventId:char, EventTimeUtc:datetime, EventTime:datetime, EventType:nvarchar, EventSequence:decimal, EventOccurrence:decimal, EventCode:int, EventDetailCode:int, Message:nvarchar, ApplicationPath:nvarchar\n",
+    "Table: Attendance\nPrimary Key: attendance_id\nColumns (6): attendance_id, Ecode, session_id, status_id, timestamp, TerminalID\nColumn Types: attendance_id:int, Ecode:int, session_id:int, status_id:int, timestamp:datetime, TerminalID:int\nForeign Keys: Ecode -> EmployeeMaster.Ecode, session_id -> ClassSessions.session_id\n",
+    "Table: AttendanceRegister\nPrimary Key: ATDate\nColumns (64): AtCode, ATDate, ECode, SCode, LCCode, Status, ShiftStartTime, ShiftEndTime, LunchStartTime, LunchEndTime, InTime, OutTime, InManual, OutManual, LunchInTime, LunchOutTime, LateArrival, EarlyDeparture, WorkDuration, LeaveValue, PresentValue, AbsentValue, HoliDayValue, WOValue, OT, In1, Out1, In2, Out2, In3, Out3, In4, Out4, In5, Out5, In6, Out6, Locked, Shift1, IN_1, OUT_1, LA1, AD1, WH1, OT1, Status1, Shift2, IN_2, OUT_2, LA2, AD2, WH2, OT2, Status2, Shift3, IN_3, OUT_3, LA3, AD3, WH3, OT3, Status3, ServerSync, Intermediate\nColumn Types: AtCode:uniqueidentifier, ATDate:datetime, ECode:int, SCode:int, LCCode:int, Status:varchar, ShiftStartTime:datetime, ShiftEndTime:datetime, LunchStartTime:datetime, LunchEndTime:datetime\nForeign Keys: ECode -> EmployeeMaster.Ecode, LCCode -> LeaveCard.LCCode\nSample Data: AtCode=4C160746-FFE6-4CA6-B659-EA1E082DB02B, ATDate=2024-01-01 00:00:00, ECode=146, SCode=22, LCCode=None\n",
+    "Table: AuditLog\nPrimary Key: AuditLogID\nColumns (22): AuditLogID, LogDetail, MacAddress, IPAddress, Sno, SoftwareVer, DetailType, Ecode, LogDateTime, OperatorEcode, Remark, Status, Acknowledgement, AcknowledgementDateTime, Alert_Level, Data_1, Data_2, ServerSync, CorpEmpCode, Channel, Role, FilePath\nColumn Types: AuditLogID:int, LogDetail:varchar, MacAddress:varchar, IPAddress:varchar, Sno:varchar, SoftwareVer:varchar, DetailType:varchar, Ecode:int, LogDateTime:datetime, OperatorEcode:int\nSample Data: AuditLogID=1, LogDetail=Online User Login, MacAddress=B81EA4E417D8, IPAddress=192.168.29.95, Sno=\n",
+    "Table: AuthenticationMaster\nPrimary Key: AuthenticationID\nColumns (9): AuthenticationID, AuthenticationName, triggercheckfingerbio, triggercheckcontactless, triggercheckexternalport, referencecheckterminal, controlcheckfingerbiocontrol, schedule_nb, IsEnable\nColumn Types: AuthenticationID:int, AuthenticationName:varchar, triggercheckfingerbio:bit, triggercheckcontactless:bit, triggercheckexternalport:bit, referencecheckterminal:bit, controlcheckfingerbiocontrol:bit, schedule_nb:int, IsEnable:bit\nSample Data: AuthenticationID=1, AuthenticationName=Card Only, triggercheckfingerbio=False, triggercheckcontactless=True, triggercheckexternalport=True\n",
+    "Table: Biometric\nColumns (14): Ecode, Templete, TempleteImage, Format, FingerID, CaptureDate, Quality, OperatorID, Enable, CheckedStatus, ServerSync, DuplicateEcode, DuplicateFingerID, ID\nColumn Types: Ecode:int, Templete:image, TempleteImage:image, Format:int, FingerID:int, CaptureDate:datetime, Quality:int, OperatorID:int, Enable:bit, CheckedStatus:bit\n",
+    "Table: BitCompanyRel\nColumns (2): Ccode, BitID\nColumn Types: Ccode:int, BitID:int\n",
+    "Table: BitFacilityCodeRel\nColumns (3): BitID, FacilityCode, Ccode\nColumn Types: BitID:int, FacilityCode:int, Ccode:int\n",
+    "Table: BitMaster\nPrimary Key: ID\nColumns (3): ID, Name, BitNumber\nColumn Types: ID:int, Name:nvarchar, BitNumber:int\nSample Data: ID=1, Name=Standard 26-bits, BitNumber=26\n",
+    "Table: BlackListMaster\nPrimary Key: BlackListID\nColumns (6): BlackListID, Ecode, Remark, Documnet1, Documnet2, Documnet3\nColumn Types: BlackListID:int, Ecode:int, Remark:varchar, Documnet1:image, Documnet2:image, Documnet3:image\n",
+    "Table: Bonus\nPrimary Key: BonusCode\nColumns (11): BonusCode, bonusMinDay, bonusWageLimit, bonusLimit, bonusArrier, bonusRate, graMinY, graFormula, ECode, Month, Year\nColumn Types: BonusCode:tinyint, bonusMinDay:int, bonusWageLimit:decimal, bonusLimit:decimal, bonusArrier:bit, bonusRate:decimal, graMinY:int, graFormula:varchar, ECode:int, Month:varchar\n",
+    "Table: BranchMaster\nPrimary Key: BranchCode\nColumns (4): BranchCode, BranchName, Location, Ccode\nColumn Types: BranchCode:int, BranchName:varchar, Location:varchar, Ccode:int\nForeign Keys: Ccode -> CompanyMaster.Ccode\nSample Data: BranchCode=1, BranchName=Branch Name, Location=None, Ccode=1\n",
+    "Table: Card_Master\nColumns (14): ID, CardNo, CardType, FacilityCode, StartBit, EndBit, Lenght, CreateDate, UpdateDate, Remark, ServerSync, Ecode, ActiveDate, InActiveDate\nColumn Types: ID:int, CardNo:nvarchar, CardType:nvarchar, FacilityCode:nvarchar, StartBit:int, EndBit:int, Lenght:int, CreateDate:datetime, UpdateDate:datetime, Remark:nvarchar\nSample Data: ID=2, CardNo=36391, CardType=None, FacilityCode=None, StartBit=None\n",
+    "Table: CatMaster\nPrimary Key: CatCode\nColumns (3): CatCode, CatName, Remark\nColumn Types: CatCode:int, CatName:varchar, Remark:nvarchar\nSample Data: CatCode=1, CatName=Staff, Remark=None\n",
+    "Table: ClassSessions\nPrimary Key: session_id\nColumns (6): session_id, subject_id, Ecode, session_datetime, TerminalID, LastPunchTime\nColumn Types: session_id:int, subject_id:int, Ecode:int, session_datetime:datetime, TerminalID:int, LastPunchTime:datetime\nForeign Keys: Ecode -> EmployeeMaster.Ecode, subject_id -> Subjects.subject_id\n",
+    "Table: CompanyMaster\nPrimary Key: Ccode\nColumns (7): Ccode, CName, Address, PinCode, TelephoneNo, Email, Logo\nColumn Types: Ccode:int, CName:varchar, Address:varchar, PinCode:varchar, TelephoneNo:varchar, Email:varchar, Logo:image\nSample Data: Ccode=1, CName=Manipal University Jaipur, Address=Manipal University Jaipur , Dehmi Kalan, Off Jaipu, PinCode=303007, TelephoneNo=+91 141-3999100\n",
+    "Table: Contractor_Detail\nColumns (12): ContractorID, Client_ID, PO_Number, PO_Date, Job_Detail, Servce_Start_Date, Servce_End_Date, Max_Labour_Limt, Status, Remark, CreatedDate, LastModifiedDate\nColumn Types: ContractorID:int, Client_ID:int, PO_Number:nvarchar, PO_Date:datetime, Job_Detail:nvarchar, Servce_Start_Date:datetime, Servce_End_Date:datetime, Max_Labour_Limt:int, Status:bit, Remark:nvarchar\n",
+    "Table: ContractorMaster\nPrimary Key: ContractorID\nColumns (7): ContractorID, Contractor_Code, Name, Address, Email, Mobile, Description\nColumn Types: ContractorID:int, Contractor_Code:nvarchar, Name:nvarchar, Address:nvarchar, Email:nvarchar, Mobile:nvarchar, Description:nvarchar\n",
+    "Table: Controller\nPrimary Key: ControllerID\nColumns (10): ControllerID, Name, Note, IsAlive, IsTA, IP, SerialNo, Port, ControllerType, Department\nColumn Types: ControllerID:bigint, Name:nvarchar, Note:nvarchar, IsAlive:bit, IsTA:bit, IP:nvarchar, SerialNo:nvarchar, Port:int, ControllerType:int, Department:nvarchar\n",
+    "Table: CustomWiegandFormats\nPrimary Key: CustomWiegandFormatsID\nColumns (8): CustomWiegandFormatsID, TerminalID, Slot, SlotName, SlotLength, WiegandIDStartPosition, WiegandIDLength, IsEnable\nColumn Types: CustomWiegandFormatsID:int, TerminalID:int, Slot:int, SlotName:varchar, SlotLength:int, WiegandIDStartPosition:int, WiegandIDLength:int, IsEnable:bit\nSample Data: CustomWiegandFormatsID=1, TerminalID=-1, Slot=0, SlotName=26 BIT, SlotLength=26\n",
+    "Table: DataConnectionOutputTypeMaster\nPrimary Key: ID\nColumns (3): ID, DataConnectionOutputTypeName, MaxReaderCount\nColumn Types: ID:int, DataConnectionOutputTypeName:nvarchar, MaxReaderCount:int\nSample Data: ID=1, DataConnectionOutputTypeName=Wiegand, MaxReaderCount=2\n",
+    "Table: DeptCategoryRelation\nColumns (3): DeptCode, CatCode, Created_Date\nColumn Types: DeptCode:int, CatCode:int, Created_Date:datetime\n",
+    "Table: DeptMaster\nPrimary Key: Dcode\nColumns (3): Dcode, Dname, BranchCode\nColumn Types: Dcode:int, Dname:varchar, BranchCode:int\nForeign Keys: BranchCode -> BranchMaster.BranchCode\nSample Data: Dcode=1, Dname=Department Name, BranchCode=1\n",
+    "Table: DesignationMaster\nPrimary Key: DesCode\nColumns (3): DesCode, DesName, DesName_hindi\nColumn Types: DesCode:int, DesName:varchar, DesName_hindi:nvarchar\nSample Data: DesCode=1, DesName=Designation Name, DesName_hindi=None\n",
+    "Table: DocumentMaster\nPrimary Key: DocumentId\nColumns (3): DocumentId, DocumentName, Description\nColumn Types: DocumentId:int, DocumentName:varchar, Description:varchar\n",
+    "Table: DocumentUploadmaster\nPrimary Key: DOCID\nColumns (12): DOCID, ECode, Document1, Document1filename, Document1content, Status, UplodedBy, UplodedDate, UploadRemark, ApprovedBy, ApprovedDate, ApprovedRemark\nColumn Types: DOCID:bigint, ECode:bigint, Document1:varbinary, Document1filename:nvarchar, Document1content:nvarchar, Status:varchar, UplodedBy:bigint, UplodedDate:datetime, UploadRemark:varchar, ApprovedBy:bigint\n",
+    "Table: Door\nPrimary Key: DoorID\nColumns (9): DoorID, Name, ControllerID, TerminalID, DoorIndex, Note, IsTA, FireGroupID, ServerSync\nColumn Types: DoorID:bigint, Name:nvarchar, ControllerID:int, TerminalID:bigint, DoorIndex:bigint, Note:nvarchar, IsTA:bit, FireGroupID:int, ServerSync:bit\n",
+    "Table: DutyRoster\nPrimary Key: ATDate\nColumns (5): ECode, ATDate, SCode, Locked, ShiftRemarks\nColumn Types: ECode:int, ATDate:datetime, SCode:int, Locked:bit, ShiftRemarks:varchar\nForeign Keys: SCode -> ShiftMaster.Scode, ECode -> EmployeeMaster.Ecode\nSample Data: ECode=146, ATDate=2024-01-01 00:00:00, SCode=22, Locked=False, ShiftRemarks=\n",
+    "Table: Ecode_Relation\nColumns (4): Ecode, VisitorDetail_ID, R_Ecode, Relation_Type\nColumn Types: Ecode:int, VisitorDetail_ID:int, R_Ecode:int, Relation_Type:nvarchar\n",
+    "Table: EmpESIPFNo\nPrimary Key: EmpESIPFNo\nColumns (4): EmpESIPFNo, ECode, PFNo, ESINo\nColumn Types: EmpESIPFNo:int, ECode:int, PFNo:varchar, ESINo:varchar\n"
+  ],
+  "metadatas": [
+    {
+      "type": "schema",
+      "table_name": "Access_Schedules",
+      "num_columns": 10,
+      "full_name": "dbo.Access_Schedules"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.Access_Schedules_Terminal_Relation",
+      "num_columns": 4,
+      "table_name": "Access_Schedules_Terminal_Relation"
+    },
+    {
+      "type": "schema",
+      "num_columns": 19,
+      "table_name": "Alert_Master",
+      "full_name": "dbo.Alert_Master"
+    },
+    {
+      "full_name": "dbo.AlertMaster",
+      "num_columns": 3,
+      "table_name": "AlertMaster",
+      "type": "schema"
+    },
+    {
+      "num_columns": 31,
+      "full_name": "dbo.ApplicationSetup",
+      "type": "schema",
+      "table_name": "ApplicationSetup"
+    },
+    {
+      "type": "schema",
+      "num_columns": 5,
+      "table_name": "AppSetup_Cat_Rel",
+      "full_name": "dbo.AppSetup_Cat_Rel"
+    },
+    {
+      "full_name": "dbo.Area_AreaGroup_Relation",
+      "num_columns": 2,
+      "type": "schema",
+      "table_name": "Area_AreaGroup_Relation"
+    },
+    {
+      "type": "schema",
+      "num_columns": 5,
+      "full_name": "dbo.AreaGroupMaster",
+      "table_name": "AreaGroupMaster"
+    },
+    {
+      "num_columns": 5,
+      "full_name": "dbo.AreaMaster",
+      "type": "schema",
+      "table_name": "AreaMaster"
+    },
+    {
+      "table_name": "aspnet_Applications",
+      "num_columns": 4,
+      "full_name": "dbo.aspnet_Applications",
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "table_name": "aspnet_Membership",
+      "num_columns": 21,
+      "full_name": "dbo.aspnet_Membership"
+    },
+    {
+      "num_columns": 4,
+      "table_name": "aspnet_Paths",
+      "full_name": "dbo.aspnet_Paths",
+      "type": "schema"
+    },
+    {
+      "num_columns": 3,
+      "table_name": "aspnet_PersonalizationAllUsers",
+      "type": "schema",
+      "full_name": "dbo.aspnet_PersonalizationAllUsers"
+    },
+    {
+      "table_name": "aspnet_PersonalizationPerUser",
+      "full_name": "dbo.aspnet_PersonalizationPerUser",
+      "type": "schema",
+      "num_columns": 5
+    },
+    {
+      "full_name": "dbo.aspnet_Profile",
+      "type": "schema",
+      "table_name": "aspnet_Profile",
+      "num_columns": 5
+    },
+    {
+      "num_columns": 5,
+      "full_name": "dbo.aspnet_Roles",
+      "table_name": "aspnet_Roles",
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "table_name": "aspnet_SchemaVersions",
+      "num_columns": 3,
+      "full_name": "dbo.aspnet_SchemaVersions"
+    },
+    {
+      "num_columns": 7,
+      "table_name": "aspnet_Users",
+      "full_name": "dbo.aspnet_Users",
+      "type": "schema"
+    },
+    {
+      "table_name": "aspnet_UsersInRoles",
+      "type": "schema",
+      "num_columns": 2,
+      "full_name": "dbo.aspnet_UsersInRoles"
+    },
+    {
+      "table_name": "aspnet_WebEvent_Events",
+      "full_name": "dbo.aspnet_WebEvent_Events",
+      "type": "schema",
+      "num_columns": 15
+    },
+    {
+      "table_name": "Attendance",
+      "full_name": "dbo.Attendance",
+      "type": "schema",
+      "num_columns": 6
+    },
+    {
+      "type": "schema",
+      "num_columns": 64,
+      "full_name": "dbo.AttendanceRegister",
+      "table_name": "AttendanceRegister"
+    },
+    {
+      "type": "schema",
+      "num_columns": 22,
+      "table_name": "AuditLog",
+      "full_name": "dbo.AuditLog"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.AuthenticationMaster",
+      "num_columns": 9,
+      "table_name": "AuthenticationMaster"
+    },
+    {
+      "full_name": "dbo.Biometric",
+      "type": "schema",
+      "num_columns": 14,
+      "table_name": "Biometric"
+    },
+    {
+      "table_name": "BitCompanyRel",
+      "full_name": "dbo.BitCompanyRel",
+      "num_columns": 2,
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "table_name": "BitFacilityCodeRel",
+      "num_columns": 3,
+      "full_name": "dbo.BitFacilityCodeRel"
+    },
+    {
+      "full_name": "dbo.BitMaster",
+      "table_name": "BitMaster",
+      "type": "schema",
+      "num_columns": 3
+    },
+    {
+      "num_columns": 6,
+      "type": "schema",
+      "table_name": "BlackListMaster",
+      "full_name": "dbo.BlackListMaster"
+    },
+    {
+      "type": "schema",
+      "num_columns": 11,
+      "table_name": "Bonus",
+      "full_name": "dbo.Bonus"
+    },
+    {
+      "type": "schema",
+      "num_columns": 4,
+      "table_name": "BranchMaster",
+      "full_name": "dbo.BranchMaster"
+    },
+    {
+      "num_columns": 14,
+      "table_name": "Card_Master",
+      "type": "schema",
+      "full_name": "dbo.Card_Master"
+    },
+    {
+      "num_columns": 3,
+      "type": "schema",
+      "table_name": "CatMaster",
+      "full_name": "dbo.CatMaster"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.ClassSessions",
+      "table_name": "ClassSessions",
+      "num_columns": 6
+    },
+    {
+      "table_name": "CompanyMaster",
+      "num_columns": 7,
+      "full_name": "dbo.CompanyMaster",
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.Contractor_Detail",
+      "type": "schema",
+      "table_name": "Contractor_Detail",
+      "num_columns": 12
+    },
+    {
+      "type": "schema",
+      "num_columns": 7,
+      "full_name": "dbo.ContractorMaster",
+      "table_name": "ContractorMaster"
+    },
+    {
+      "table_name": "Controller",
+      "full_name": "dbo.Controller",
+      "num_columns": 10,
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.CustomWiegandFormats",
+      "type": "schema",
+      "num_columns": 8,
+      "table_name": "CustomWiegandFormats"
+    },
+    {
+      "num_columns": 3,
+      "type": "schema",
+      "full_name": "dbo.DataConnectionOutputTypeMaster",
+      "table_name": "DataConnectionOutputTypeMaster"
+    },
+    {
+      "type": "schema",
+      "num_columns": 3,
+      "full_name": "dbo.DeptCategoryRelation",
+      "table_name": "DeptCategoryRelation"
+    },
+    {
+      "full_name": "dbo.DeptMaster",
+      "num_columns": 3,
+      "type": "schema",
+      "table_name": "DeptMaster"
+    },
+    {
+      "table_name": "DesignationMaster",
+      "type": "schema",
+      "num_columns": 3,
+      "full_name": "dbo.DesignationMaster"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.DocumentMaster",
+      "num_columns": 3,
+      "table_name": "DocumentMaster"
+    },
+    {
+      "table_name": "DocumentUploadmaster",
+      "full_name": "dbo.DocumentUploadmaster",
+      "num_columns": 12,
+      "type": "schema"
+    },
+    {
+      "num_columns": 9,
+      "full_name": "dbo.Door",
+      "table_name": "Door",
+      "type": "schema"
+    },
+    {
+      "num_columns": 5,
+      "type": "schema",
+      "table_name": "DutyRoster",
+      "full_name": "dbo.DutyRoster"
+    },
+    {
+      "full_name": "dbo.Ecode_Relation",
+      "num_columns": 4,
+      "type": "schema",
+      "table_name": "Ecode_Relation"
+    },
+    {
+      "num_columns": 2,
+      "table_name": "EmpDepartRole",
+      "type": "schema",
+      "full_name": "dbo.EmpDepartRole"
+    },
+    {
+      "table_name": "EmpESIPFNo",
+      "num_columns": 4,
+      "full_name": "dbo.EmpESIPFNo",
+      "type": "schema"
+    },
+    {
+      "num_columns": 10,
+      "type": "schema",
+      "full_name": "dbo.Employee_Card_Relation",
+      "table_name": "Employee_Card_Relation"
+    },
+    {
+      "num_columns": 22,
+      "type": "schema",
+      "full_name": "dbo.Employee_Terminal_Authentication_Relation",
+      "table_name": "Employee_Terminal_Authentication_Relation"
+    },
+    {
+      "table_name": "Employee_TerminalGroup_Authentication_Relation",
+      "num_columns": 3,
+      "type": "schema",
+      "full_name": "dbo.Employee_TerminalGroup_Authentication_Relation"
+    },
+    {
+      "table_name": "EmployeeMaster",
+      "full_name": "dbo.EmployeeMaster",
+      "type": "schema",
+      "num_columns": 86
+    },
+    {
+      "table_name": "EmployeeMaster_Deleted",
+      "num_columns": 87,
+      "type": "schema",
+      "full_name": "dbo.EmployeeMaster_Deleted"
+    },
+    {
+      "num_columns": 10,
+      "table_name": "EmployeePayMaster",
+      "full_name": "dbo.EmployeePayMaster",
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.EmployeeSalaryHeadRelation",
+      "num_columns": 5,
+      "table_name": "EmployeeSalaryHeadRelation",
+      "type": "schema"
+    },
+    {
+      "table_name": "EmpShiftPatternRelation",
+      "num_columns": 8,
+      "type": "schema",
+      "full_name": "dbo.EmpShiftPatternRelation"
+    },
+    {
+      "type": "schema",
+      "table_name": "Escort_Terminal_Status",
+      "full_name": "dbo.Escort_Terminal_Status",
+      "num_columns": 6
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.ESI_PF",
+      "num_columns": 7,
+      "table_name": "ESI_PF"
+    },
+    {
+      "type": "schema",
+      "table_name": "ESIC",
+      "num_columns": 7,
+      "full_name": "dbo.ESIC"
+    },
+    {
+      "full_name": "dbo.ESICChalan",
+      "num_columns": 8,
+      "type": "schema",
+      "table_name": "ESICChalan"
+    },
+    {
+      "full_name": "dbo.FingerMaster",
+      "table_name": "FingerMaster",
+      "type": "schema",
+      "num_columns": 2
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.FireGroup",
+      "num_columns": 3,
+      "table_name": "FireGroup"
+    },
+    {
+      "num_columns": 21,
+      "full_name": "dbo.GenSetup",
+      "table_name": "GenSetup",
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "table_name": "GradeMaster",
+      "full_name": "dbo.GradeMaster",
+      "num_columns": 2
+    },
+    {
+      "num_columns": 4,
+      "table_name": "GradeSalaryHeadRelation",
+      "full_name": "dbo.GradeSalaryHeadRelation",
+      "type": "schema"
+    },
+    {
+      "num_columns": 4,
+      "full_name": "dbo.Group",
+      "table_name": "Group",
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.GroupAccession",
+      "table_name": "GroupAccession",
+      "num_columns": 5,
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.GTMSGroupCheckPointRel",
+      "type": "schema",
+      "table_name": "GTMSGroupCheckPointRel",
+      "num_columns": 2
+    },
+    {
+      "full_name": "dbo.GTMSTaskGroup",
+      "type": "schema",
+      "num_columns": 4,
+      "table_name": "GTMSTaskGroup"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.HardwareTypeMaster",
+      "table_name": "HardwareTypeMaster",
+      "num_columns": 2
+    },
+    {
+      "table_name": "HighLightMaster",
+      "type": "schema",
+      "num_columns": 2,
+      "full_name": "dbo.HighLightMaster"
+    },
+    {
+      "table_name": "HolidayDepartmentRelation",
+      "type": "schema",
+      "num_columns": 3,
+      "full_name": "dbo.HolidayDepartmentRelation"
+    },
+    {
+      "full_name": "dbo.HolidayMaster",
+      "num_columns": 3,
+      "type": "schema",
+      "table_name": "HolidayMaster"
+    },
+    {
+      "table_name": "ID_Card_Template",
+      "full_name": "dbo.ID_Card_Template",
+      "num_columns": 125,
+      "type": "schema"
+    },
+    {
+      "table_name": "IDProofMaster",
+      "full_name": "dbo.IDProofMaster",
+      "num_columns": 3,
+      "type": "schema"
+    },
+    {
+      "table_name": "IOModuleTypeMaster",
+      "num_columns": 3,
+      "full_name": "dbo.IOModuleTypeMaster",
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "table_name": "LabelMaster",
+      "num_columns": 3,
+      "full_name": "dbo.LabelMaster"
+    },
+    {
+      "full_name": "dbo.LdapSettings",
+      "table_name": "LdapSettings",
+      "num_columns": 7,
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.LeaveAccural",
+      "num_columns": 7,
+      "type": "schema",
+      "table_name": "LeaveAccural"
+    },
+    {
+      "table_name": "LeaveCard",
+      "type": "schema",
+      "num_columns": 19,
+      "full_name": "dbo.LeaveCard"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.LeaveMaster",
+      "table_name": "LeaveMaster",
+      "num_columns": 10
+    },
+    {
+      "type": "schema",
+      "table_name": "MachineMaster",
+      "num_columns": 99,
+      "full_name": "dbo.MachineMaster"
+    },
+    {
+      "table_name": "MachinePunch",
+      "full_name": "dbo.MachinePunch",
+      "type": "schema",
+      "num_columns": 25
+    },
+    {
+      "full_name": "dbo.MachineRawPunch",
+      "num_columns": 28,
+      "type": "schema",
+      "table_name": "MachineRawPunch"
+    },
+    {
+      "full_name": "dbo.MachineRawPunchDL",
+      "num_columns": 25,
+      "type": "schema",
+      "table_name": "MachineRawPunchDL"
+    },
+    {
+      "full_name": "dbo.MachineRawPunchExtn",
+      "table_name": "MachineRawPunchExtn",
+      "type": "schema",
+      "num_columns": 9
+    },
+    {
+      "table_name": "MachineRawPunchExtn2",
+      "full_name": "dbo.MachineRawPunchExtn2",
+      "type": "schema",
+      "num_columns": 12
+    },
+    {
+      "full_name": "dbo.MachineRawPunchRT",
+      "num_columns": 28,
+      "type": "schema",
+      "table_name": "MachineRawPunchRT"
+    },
+    {
+      "type": "schema",
+      "table_name": "MasterTerminalHardwareTypeRelation",
+      "num_columns": 4,
+      "full_name": "dbo.MasterTerminalHardwareTypeRelation"
+    },
+    {
+      "full_name": "dbo.Material_Master",
+      "type": "schema",
+      "table_name": "Material_Master",
+      "num_columns": 6
+    },
+    {
+      "full_name": "dbo.Meeting_Persons",
+      "table_name": "Meeting_Persons",
+      "num_columns": 7,
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.MessageMaster",
+      "table_name": "MessageMaster",
+      "type": "schema",
+      "num_columns": 3
+    },
+    {
+      "table_name": "MultiReportingHeadRelation",
+      "num_columns": 3,
+      "type": "schema",
+      "full_name": "dbo.MultiReportingHeadRelation"
+    },
+    {
+      "full_name": "dbo.NotificationTypeMaster",
+      "type": "schema",
+      "table_name": "NotificationTypeMaster",
+      "num_columns": 3
+    },
+    {
+      "full_name": "dbo.OryggiErrorLog",
+      "type": "schema",
+      "num_columns": 5,
+      "table_name": "OryggiErrorLog"
+    },
+    {
+      "table_name": "OryggiService",
+      "num_columns": 4,
+      "type": "schema",
+      "full_name": "dbo.OryggiService"
+    },
+    {
+      "full_name": "dbo.Paritybits",
+      "num_columns": 6,
+      "table_name": "Paritybits",
+      "type": "schema"
+    },
+    {
+      "table_name": "PayrollStep1",
+      "full_name": "dbo.PayrollStep1",
+      "num_columns": 21,
+      "type": "schema"
+    },
+    {
+      "table_name": "PayrollStep2",
+      "full_name": "dbo.PayrollStep2",
+      "type": "schema",
+      "num_columns": 10
+    },
+    {
+      "num_columns": 13,
+      "type": "schema",
+      "table_name": "PaySlip",
+      "full_name": "dbo.PaySlip"
+    },
+    {
+      "num_columns": 7,
+      "table_name": "PF",
+      "type": "schema",
+      "full_name": "dbo.PF"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.PFChalan",
+      "table_name": "PFChalan",
+      "num_columns": 17
+    },
+    {
+      "num_columns": 6,
+      "full_name": "dbo.PinMaster",
+      "type": "schema",
+      "table_name": "PinMaster"
+    },
+    {
+      "table_name": "ProtocolMaster",
+      "full_name": "dbo.ProtocolMaster",
+      "type": "schema",
+      "num_columns": 10
+    },
+    {
+      "num_columns": 2,
+      "full_name": "dbo.PurposeMaster",
+      "type": "schema",
+      "table_name": "PurposeMaster"
+    },
+    {
+      "num_columns": 3,
+      "full_name": "dbo.RemarkMaster",
+      "table_name": "RemarkMaster",
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.ReportingHeadMaster",
+      "num_columns": 2,
+      "table_name": "ReportingHeadMaster",
+      "type": "schema"
+    },
+    {
+      "table_name": "ReportTemplate",
+      "num_columns": 4,
+      "full_name": "dbo.ReportTemplate",
+      "type": "schema"
+    },
+    {
+      "num_columns": 3,
+      "type": "schema",
+      "full_name": "dbo.RoleMaster",
+      "table_name": "RoleMaster"
+    },
+    {
+      "table_name": "RoundCheckPoint_RTL",
+      "type": "schema",
+      "num_columns": 2,
+      "full_name": "dbo.RoundCheckPoint_RTL"
+    },
+    {
+      "table_name": "SalaryHeadMaster",
+      "type": "schema",
+      "num_columns": 8,
+      "full_name": "dbo.SalaryHeadMaster"
+    },
+    {
+      "full_name": "dbo.ScheduleMaster",
+      "num_columns": 2,
+      "type": "schema",
+      "table_name": "ScheduleMaster"
+    },
+    {
+      "num_columns": 3,
+      "type": "schema",
+      "full_name": "dbo.SectionMaster",
+      "table_name": "SectionMaster"
+    },
+    {
+      "full_name": "dbo.SeverityMaster",
+      "num_columns": 3,
+      "table_name": "SeverityMaster",
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.ShiftMaster",
+      "num_columns": 10,
+      "table_name": "ShiftMaster"
+    },
+    {
+      "full_name": "dbo.ShiftPattern",
+      "type": "schema",
+      "table_name": "ShiftPattern",
+      "num_columns": 12
+    },
+    {
+      "type": "schema",
+      "num_columns": 2,
+      "full_name": "dbo.StatusMaster",
+      "table_name": "StatusMaster"
+    },
+    {
+      "num_columns": 3,
+      "table_name": "Subjects",
+      "type": "schema",
+      "full_name": "dbo.Subjects"
+    },
+    {
+      "num_columns": 5,
+      "type": "schema",
+      "table_name": "Sublect_Card_Relation",
+      "full_name": "dbo.Sublect_Card_Relation"
+    },
+    {
+      "table_name": "Task",
+      "num_columns": 57,
+      "type": "schema",
+      "full_name": "dbo.Task"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.TaskAccessSchedulesRemove",
+      "num_columns": 17,
+      "table_name": "TaskAccessSchedulesRemove"
+    },
+    {
+      "full_name": "dbo.TaskGrant",
+      "table_name": "TaskGrant",
+      "num_columns": 17,
+      "type": "schema"
+    },
+    {
+      "full_name": "dbo.TaskRebuildDevice",
+      "type": "schema",
+      "table_name": "TaskRebuildDevice",
+      "num_columns": 17
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.TaskSEMAC",
+      "table_name": "TaskSEMAC",
+      "num_columns": 17
+    },
+    {
+      "table_name": "TaskUpdateAccessSchedules",
+      "type": "schema",
+      "num_columns": 17,
+      "full_name": "dbo.TaskUpdateAccessSchedules"
+    },
+    {
+      "type": "schema",
+      "num_columns": 17,
+      "table_name": "TaskUpdateDeviceSetting",
+      "full_name": "dbo.TaskUpdateDeviceSetting"
+    },
+    {
+      "table_name": "TaskUserRebuild",
+      "num_columns": 17,
+      "type": "schema",
+      "full_name": "dbo.TaskUserRebuild"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.TaskUserRemove",
+      "num_columns": 17,
+      "table_name": "TaskUserRemove"
+    },
+    {
+      "num_columns": 7,
+      "type": "schema",
+      "full_name": "dbo.TempFinger",
+      "table_name": "TempFinger"
+    },
+    {
+      "table_name": "TemplateFormat",
+      "full_name": "dbo.TemplateFormat",
+      "type": "schema",
+      "num_columns": 2
+    },
+    {
+      "type": "schema",
+      "num_columns": 5,
+      "full_name": "dbo.TerminalGroupMaster",
+      "table_name": "TerminalGroupMaster"
+    },
+    {
+      "table_name": "TerminalPolicy",
+      "type": "schema",
+      "full_name": "dbo.TerminalPolicy",
+      "num_columns": 3
+    },
+    {
+      "full_name": "dbo.TimeSet",
+      "type": "schema",
+      "table_name": "TimeSet",
+      "num_columns": 6
+    },
+    {
+      "full_name": "dbo.TimeZone",
+      "table_name": "TimeZone",
+      "type": "schema",
+      "num_columns": 5
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.UserESIPF",
+      "num_columns": 11,
+      "table_name": "UserESIPF"
+    },
+    {
+      "table_name": "Userfields",
+      "num_columns": 8,
+      "type": "schema",
+      "full_name": "dbo.Userfields"
+    },
+    {
+      "table_name": "UserGroupMaster",
+      "full_name": "dbo.UserGroupMaster",
+      "num_columns": 4,
+      "type": "schema"
+    },
+    {
+      "num_columns": 3,
+      "type": "schema",
+      "table_name": "UserGroupPolicy",
+      "full_name": "dbo.UserGroupPolicy"
+    },
+    {
+      "full_name": "dbo.Vedanta_Checklist_Answer",
+      "num_columns": 7,
+      "table_name": "Vedanta_Checklist_Answer",
+      "type": "schema"
+    },
+    {
+      "table_name": "Vedanta_Checklist_Major_Observation_RTL",
+      "num_columns": 10,
+      "full_name": "dbo.Vedanta_Checklist_Major_Observation_RTL",
+      "type": "schema"
+    },
+    {
+      "num_columns": 10,
+      "table_name": "Vedanta_Checklist_Minor_Observation_RTL",
+      "type": "schema",
+      "full_name": "dbo.Vedanta_Checklist_Minor_Observation_RTL"
+    },
+    {
+      "table_name": "Vedanta_Checklist_Question",
+      "num_columns": 8,
+      "full_name": "dbo.Vedanta_Checklist_Question",
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.Vedanta_Major_Observation_Category",
+      "num_columns": 9,
+      "table_name": "Vedanta_Major_Observation_Category"
+    },
+    {
+      "num_columns": 9,
+      "table_name": "Vedanta_Minor_Observation_Category",
+      "type": "schema",
+      "full_name": "dbo.Vedanta_Minor_Observation_Category"
+    },
+    {
+      "full_name": "dbo.Vedanta_Observation_Round",
+      "num_columns": 30,
+      "table_name": "Vedanta_Observation_Round",
+      "type": "schema"
+    },
+    {
+      "num_columns": 32,
+      "table_name": "Vedanta_Observation_Round_Log",
+      "full_name": "dbo.Vedanta_Observation_Round_Log",
+      "type": "schema"
+    },
+    {
+      "num_columns": 7,
+      "full_name": "dbo.Vedanta_Observation_Type",
+      "type": "schema",
+      "table_name": "Vedanta_Observation_Type"
+    },
+    {
+      "type": "schema",
+      "full_name": "dbo.Vedanta_Plant_Checkpoint",
+      "table_name": "Vedanta_Plant_Checkpoint",
+      "num_columns": 17
+    },
+    {
+      "full_name": "dbo.Vedanta_Plant_Location",
+      "table_name": "Vedanta_Plant_Location",
+      "type": "schema",
+      "num_columns": 13
+    },
+    {
+      "full_name": "dbo.Vedanta_Question_Answer_RTL",
+      "type": "schema",
+      "table_name": "Vedanta_Question_Answer_RTL",
+      "num_columns": 9
+    },
+    {
+      "num_columns": 9,
+      "full_name": "dbo.Vedanta_User_Category_RTL",
+      "table_name": "Vedanta_User_Category_RTL",
+      "type": "schema"
+    },
+    {
+      "table_name": "Vistor_Details",
+      "full_name": "dbo.Vistor_Details",
+      "num_columns": 31,
+      "type": "schema"
+    },
+    {
+      "table_name": "Weekdays",
+      "num_columns": 2,
+      "full_name": "dbo.Weekdays",
+      "type": "schema"
+    },
+    {
+      "type": "schema",
+      "num_columns": 21,
+      "table_name": "WiegandMaster",
+      "full_name": "dbo.WiegandMaster"
+    },
+    {
+      "full_name": "dbo.WiegandSettings",
+      "table_name": "WiegandSettings",
+      "num_columns": 19,
+      "type": "schema"
+    },
+    {
+      "table_name": "WiegandTerminalRel",
+      "num_columns": 4,
+      "type": "schema",
+      "full_name": "dbo.WiegandTerminalRel"
+    },
+    {
+      "tier": 1,
+      "type": "view",
+      "table_name": "vw_EmployeeMaster_Vms",
+      "is_tier1": true,
+      "rating": "\u2b50\u2b50\u2b50\u2b50\u2b50",
+      "priority": 5
+    },
+    {
+      "table_name": "vw_RawPunchDetail",
+      "is_tier1": true,
+      "type": "view",
+      "rating": "\u2b50\u2b50\u2b50\u2b50\u2b50",
+      "priority": 5,
+      "tier": 1
+    },
+    {
+      "tier": 1,
+      "is_tier1": true,
+      "priority": 5,
+      "rating": "\u2b50\u2b50\u2b50\u2b50\u2b50",
+      "type": "view",
+      "table_name": "AllEmployeeUnion"
+    },
+    {
+      "priority": 3,
+      "table_name": "View_Visitor_EnrollmentDetail",
+      "tier": 2,
+      "rating": "\u2b50\u2b50\u2b50\u2b50",
+      "type": "view",
+      "is_tier1": false
+    },
+    {
+      "priority": 3,
+      "tier": 2,
+      "type": "view",
+      "table_name": "View_Contractor_Detail",
+      "is_tier1": false,
+      "rating": "\u2b50\u2b50\u2b50\u2b50"
+    },
+    {
+      "rating": "\u2b50\u2b50\u2b50\u2b50",
+      "priority": 3,
+      "type": "view",
+      "is_tier1": false,
+      "table_name": "View_Employee_Terminal_Authentication_Relation",
+      "tier": 2
+    },
+    {
+      "table_name": "View_EmployeeByUserGroupPolicy",
+      "is_tier1": false,
+      "type": "view",
+      "tier": 2,
+      "rating": "\u2b50\u2b50\u2b50\u2b50",
+      "priority": 3
+    },
+    {
+      "tier": 3,
+      "table_name": "Vw_TerminalDetail_VMS",
+      "is_tier1": false,
+      "type": "view",
+      "priority": 2,
+      "rating": "\u2b50\u2b50\u2b50"
+    },
+    {
+      "table_name": "vw_VisitorBasicDetail",
+      "is_tier1": false,
+      "priority": 2,
+      "rating": "\u2b50\u2b50\u2b50",
+      "tier": 3,
+      "type": "view"
+    },
+    {
+      "priority": 1,
+      "type": "view",
+      "table_name": "Employee_Hikvision_Image",
+      "tier": 3
+    },
+    {
+      "tier": 3,
+      "type": "view",
+      "table_name": "Employee_Suprema_Unwarped_Image",
+      "priority": 1
+    },
+    {
+      "type": "view",
+      "priority": 1,
+      "table_name": "Employee_Suprema_warped_Image",
+      "tier": 3
+    },
+    {
+      "priority": 1,
+      "tier": 3,
+      "type": "view",
+      "table_name": "Employee_User_Image"
+    },
+    {
+      "table_name": "GTMS_User_Observation",
+      "tier": 3,
+      "type": "view",
+      "priority": 1
+    },
+    {
+      "table_name": "Vedanta_Admin_Checkpoint",
+      "tier": 3,
+      "type": "view",
+      "priority": 1
+    },
+    {
+      "tier": 3,
+      "type": "view",
+      "priority": 1,
+      "table_name": "Vedanta_User_Cat_Plant_Checkpoint"
+    },
+    {
+      "table_name": "Vedanta_User_Cat_Plant_Checkpoint2",
+      "type": "view",
+      "priority": 1,
+      "tier": 3
+    },
+    {
+      "table_name": "Vedanta_User_Plant_Relation",
+      "tier": 3,
+      "type": "view",
+      "priority": 1
+    },
+    {
+      "priority": 1,
+      "tier": 3,
+      "table_name": "View_All_Alert_Log",
+      "type": "view"
+    },
+    {
+      "type": "view",
+      "table_name": "View_BDW_MPunch",
+      "tier": 3,
+      "priority": 1
+    },
+    {
+      "tier": 3,
+      "priority": 1,
+      "table_name": "View_ComapnyMaster",
+      "type": "view"
+    },
+    {
+      "tier": 3,
+      "type": "view",
+      "table_name": "View_EmpDepartRole",
+      "priority": 1
+    },
+    {
+      "type": "view",
+      "tier": 3,
+      "table_name": "View_EmployeeESIPF",
+      "priority": 1
+    },
+    {
+      "type": "view",
+      "tier": 3,
+      "priority": 1,
+      "table_name": "View_FACE_V1"
+    },
+    {
+      "type": "view",
+      "priority": 1,
+      "table_name": "View_FingerDetail",
+      "tier": 3
+    },
+    {
+      "type": "view",
+      "priority": 1,
+      "table_name": "View_ForExcelExport",
+      "tier": 3
+    },
+    {
+      "type": "view",
+      "table_name": "View_Group_By_DCode",
+      "priority": 1,
+      "tier": 3
+    },
+    {
+      "table_name": "View_HalfDayPresent",
+      "tier": 3,
+      "type": "view",
+      "priority": 1
+    },
+    {
+      "priority": 1,
+      "type": "view",
+      "table_name": "View_Hospital_VMS_Patient_Details",
+      "tier": 3
+    },
+    {
+      "table_name": "Access_Schedules",
+      "has_foreign_keys": false,
+      "type": "table",
+      "column_count": 10,
+      "priority": 1
+    },
+    {
+      "table_name": "Access_Schedules_Terminal_Relation",
+      "priority": 1,
+      "column_count": 4,
+      "has_foreign_keys": false,
+      "type": "table"
+    },
+    {
+      "priority": 1,
+      "type": "table",
+      "has_foreign_keys": false,
+      "column_count": 19,
+      "table_name": "Alert_Master"
+    },
+    {
+      "type": "table",
+      "table_name": "AlertMaster",
+      "column_count": 3,
+      "has_foreign_keys": false,
+      "priority": 1
+    },
+    {
+      "column_count": 31,
+      "priority": 1,
+      "table_name": "ApplicationSetup",
+      "type": "table",
+      "has_foreign_keys": true
+    },
+    {
+      "has_foreign_keys": false,
+      "priority": 1,
+      "type": "table",
+      "table_name": "AppSetup_Cat_Rel",
+      "column_count": 5
+    },
+    {
+      "type": "table",
+      "column_count": 2,
+      "has_foreign_keys": false,
+      "priority": 1,
+      "table_name": "Area_AreaGroup_Relation"
+    },
+    {
+      "table_name": "AreaGroupMaster",
+      "priority": 1,
+      "has_foreign_keys": false,
+      "column_count": 5,
+      "type": "table"
+    },
+    {
+      "priority": 1,
+      "has_foreign_keys": false,
+      "type": "table",
+      "table_name": "AreaMaster",
+      "column_count": 5
+    },
+    {
+      "priority": 1,
+      "type": "table",
+      "column_count": 4,
+      "has_foreign_keys": false,
+      "table_name": "aspnet_Applications"
+    },
+    {
+      "column_count": 21,
+      "type": "table",
+      "priority": 1,
+      "has_foreign_keys": true,
+      "table_name": "aspnet_Membership"
+    },
+    {
+      "table_name": "aspnet_Paths",
+      "priority": 1,
+      "has_foreign_keys": true,
+      "column_count": 4,
+      "type": "table"
+    },
+    {
+      "has_foreign_keys": true,
+      "priority": 1,
+      "type": "table",
+      "column_count": 3,
+      "table_name": "aspnet_PersonalizationAllUsers"
+    },
+    {
+      "column_count": 5,
+      "table_name": "aspnet_PersonalizationPerUser",
+      "priority": 1,
+      "type": "table",
+      "has_foreign_keys": true
+    },
+    {
+      "type": "table",
+      "priority": 1,
+      "table_name": "aspnet_Profile",
+      "column_count": 5,
+      "has_foreign_keys": true
+    },
+    {
+      "table_name": "aspnet_Roles",
+      "type": "table",
+      "column_count": 5,
+      "has_foreign_keys": true,
+      "priority": 1
+    },
+    {
+      "column_count": 3,
+      "has_foreign_keys": false,
+      "type": "table",
+      "priority": 1,
+      "table_name": "aspnet_SchemaVersions"
+    },
+    {
+      "type": "table",
+      "table_name": "aspnet_Users",
+      "has_foreign_keys": true,
+      "column_count": 7,
+      "priority": 1
+    },
+    {
+      "has_foreign_keys": true,
+      "column_count": 2,
+      "table_name": "aspnet_UsersInRoles",
+      "priority": 1,
+      "type": "table"
+    },
+    {
+      "table_name": "aspnet_WebEvent_Events",
+      "type": "table",
+      "priority": 1,
+      "has_foreign_keys": false,
+      "column_count": 15
+    },
+    {
+      "priority": 1,
+      "table_name": "Attendance",
+      "has_foreign_keys": true,
+      "column_count": 6,
+      "type": "table"
+    },
+    {
+      "has_foreign_keys": true,
+      "type": "table",
+      "table_name": "AttendanceRegister",
+      "priority": 1,
+      "column_count": 64
+    },
+    {
+      "type": "table",
+      "has_foreign_keys": false,
+      "table_name": "AuditLog",
+      "column_count": 22,
+      "priority": 1
+    },
+    {
+      "has_foreign_keys": false,
+      "table_name": "AuthenticationMaster",
+      "type": "table",
+      "column_count": 9,
+      "priority": 1
+    },
+    {
+      "column_count": 14,
+      "type": "table",
+      "has_foreign_keys": false,
+      "priority": 1,
+      "table_name": "Biometric"
+    },
+    {
+      "has_foreign_keys": false,
+      "type": "table",
+      "priority": 1,
+      "table_name": "BitCompanyRel",
+      "column_count": 2
+    },
+    {
+      "column_count": 3,
+      "has_foreign_keys": false,
+      "priority": 1,
+      "table_name": "BitFacilityCodeRel",
+      "type": "table"
+    },
+    {
+      "column_count": 3,
+      "table_name": "BitMaster",
+      "type": "table",
+      "has_foreign_keys": false,
+      "priority": 1
+    },
+    {
+      "column_count": 6,
+      "has_foreign_keys": false,
+      "type": "table",
+      "priority": 1,
+      "table_name": "BlackListMaster"
+    },
+    {
+      "has_foreign_keys": false,
+      "type": "table",
+      "priority": 1,
+      "table_name": "Bonus",
+      "column_count": 11
+    },
+    {
+      "priority": 1,
+      "has_foreign_keys": true,
+      "type": "table",
+      "column_count": 4,
+      "table_name": "BranchMaster"
+    },
+    {
+      "priority": 1,
+      "has_foreign_keys": false,
+      "type": "table",
+      "column_count": 14,
+      "table_name": "Card_Master"
+    },
+    {
+      "column_count": 3,
+      "has_foreign_keys": false,
+      "table_name": "CatMaster",
+      "type": "table",
+      "priority": 1
+    },
+    {
+      "table_name": "ClassSessions",
+      "has_foreign_keys": true,
+      "type": "table",
+      "column_count": 6,
+      "priority": 1
+    },
+    {
+      "has_foreign_keys": false,
+      "table_name": "CompanyMaster",
+      "priority": 1,
+      "column_count": 7,
+      "type": "table"
+    },
+    {
+      "table_name": "Contractor_Detail",
+      "type": "table",
+      "has_foreign_keys": false,
+      "column_count": 12,
+      "priority": 1
+    },
+    {
+      "priority": 1,
+      "has_foreign_keys": false,
+      "column_count": 7,
+      "table_name": "ContractorMaster",
+      "type": "table"
+    },
+    {
+      "column_count": 10,
+      "table_name": "Controller",
+      "priority": 1,
+      "type": "table",
+      "has_foreign_keys": false
+    },
+    {
+      "has_foreign_keys": false,
+      "priority": 1,
+      "column_count": 8,
+      "table_name": "CustomWiegandFormats",
+      "type": "table"
+    },
+    {
+      "table_name": "DataConnectionOutputTypeMaster",
+      "priority": 1,
+      "has_foreign_keys": false,
+      "type": "table",
+      "column_count": 3
+    },
+    {
+      "column_count": 3,
+      "type": "table",
+      "has_foreign_keys": false,
+      "priority": 1,
+      "table_name": "DeptCategoryRelation"
+    },
+    {
+      "has_foreign_keys": true,
+      "priority": 1,
+      "type": "table",
+      "column_count": 3,
+      "table_name": "DeptMaster"
+    },
+    {
+      "table_name": "DesignationMaster",
+      "priority": 1,
+      "has_foreign_keys": false,
+      "column_count": 3,
+      "type": "table"
+    },
+    {
+      "priority": 1,
+      "has_foreign_keys": false,
+      "column_count": 3,
+      "table_name": "DocumentMaster",
+      "type": "table"
+    },
+    {
+      "table_name": "DocumentUploadmaster",
+      "column_count": 12,
+      "type": "table",
+      "priority": 1,
+      "has_foreign_keys": false
+    },
+    {
+      "has_foreign_keys": false,
+      "column_count": 9,
+      "type": "table",
+      "priority": 1,
+      "table_name": "Door"
+    },
+    {
+      "priority": 1,
+      "column_count": 5,
+      "type": "table",
+      "has_foreign_keys": true,
+      "table_name": "DutyRoster"
+    },
+    {
+      "table_name": "Ecode_Relation",
+      "column_count": 4,
+      "has_foreign_keys": false,
+      "priority": 1,
+      "type": "table"
+    },
+    {
+      "column_count": 4,
+      "priority": 1,
+      "table_name": "EmpESIPFNo",
+      "type": "table",
+      "has_foreign_keys": false
+    }
+  ]
+}

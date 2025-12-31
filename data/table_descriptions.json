@@ -1,0 +1,484 @@
+{
+  "metadata": {
+    "description": "Comprehensive table and view descriptions for OryggiDB - Access Control & Attendance Management System",
+    "version": "1.0",
+    "created": "2025-11-27",
+    "domain": "University/Organization Access Control, Attendance & Visitor Management",
+    "total_tables": 158,
+    "total_views": 130,
+    "primary_views_for_queries": ["vw_EmployeeMaster_Vms", "vw_CompleteAttendanceReport", "vw_RawPunchDetail", "View_Visitor_EnrollmentDetail", "Vw_TerminalDetail_VMS"]
+  },
+
+  "business_context": {
+    "system_purpose": "Oryggi is an integrated Access Control and Attendance Management System deployed at universities and organizations. It tracks employee/student attendance, manages biometric authentication, controls door access, and handles visitor management.",
+    "primary_entities": [
+      "Employees/Students - People enrolled in the system",
+      "Terminals/Devices - Biometric devices, card readers, doors",
+      "Punches - Time records when someone authenticates",
+      "Attendance - Daily attendance status calculated from punches",
+      "Visitors - External people visiting the premises",
+      "Shifts - Work schedules assigned to employees"
+    ],
+    "key_business_rules": {
+      "active_employee": "Active = 1 means currently employed/enrolled, Active = 0 means left/inactive",
+      "punch_direction": "InOut = 1 means IN/Entry punch, InOut = 0 means OUT/Exit punch",
+      "attendance_status": "Status values: 'Present', 'Absent', 'WO' (Weekend Off), 'Holiday', 'CL' (Casual Leave), 'EL' (Earned Leave), 'SL' (Sick Leave), 'LWP' (Leave Without Pay), 'Half Day'",
+      "work_duration": "WorkDuration and OT (overtime) are stored in MINUTES, not hours",
+      "gender": "Sex = 1 means Male, Sex = 0 means Female",
+      "late_arrival": "LateArrival stored in minutes late from shift start",
+      "early_departure": "EarlyDeparture stored in minutes left before shift end"
+    }
+  },
+
+  "primary_views": {
+    "vw_EmployeeMaster_Vms": {
+      "purpose": "Master view for all employee/student information with organizational hierarchy",
+      "row_count": "~16,560 records",
+      "column_count": 94,
+      "use_when": "Any query about employees, students, staff, faculty, or person details",
+      "key_columns": {
+        "Ecode": "Internal employee ID (primary key for joins)",
+        "CorpEmpCode": "Human-readable employee ID shown to users (e.g., 'EMP001', 'STU2024001')",
+        "EmpName": "Full name of the employee/student",
+        "Active": "1 = Active/Current, 0 = Left/Inactive",
+        "DateofJoin": "Date when employee joined the organization",
+        "LeavingDate": "Date when employee left (NULL if still active)",
+        "Role": "System role: 'Employee', 'Student', 'Faculty', 'Visitor', 'Admin', etc.",
+        "Dname": "Department name (pre-joined from DeptMaster)",
+        "SecName": "Section name within department",
+        "DesName": "Designation/Job title",
+        "BranchName": "Branch/Location name",
+        "CName": "Company name (for multi-company setups)",
+        "PresentCardNo": "Current access card number assigned",
+        "Telephone1": "Primary contact number",
+        "E_mail": "Email address",
+        "Sex": "Gender: 1 = Male, 0 = Female",
+        "BloodGroup": "Blood group (for emergency contact)",
+        "IsEnrolled": "Whether biometric templates are enrolled",
+        "IN_Out_Status": "Last known IN/OUT status",
+        "ReportingHeadEcode": "Ecode of the reporting manager/supervisor",
+        "ReportingHeadName": "Name of reporting manager",
+        "StatusID": "Employee status code",
+        "emptype": "Employee type classification"
+      },
+      "organizational_hierarchy": {
+        "Company (Ccode, CName)": "Top level organization",
+        "Branch (BranchCode, BranchName)": "Physical location/campus",
+        "Department (Dcode, Dname)": "Department within branch",
+        "Section (SecCode, SecName)": "Section within department"
+      },
+      "common_filters": [
+        "WHERE Active = 1 -- Only active employees",
+        "WHERE Role = 'Student' -- Only students",
+        "WHERE Role = 'Employee' -- Only staff",
+        "WHERE Dname = 'Computer Science' -- Specific department",
+        "WHERE DateofJoin >= '2024-01-01' -- Recent joiners"
+      ],
+      "example_queries": [
+        "SELECT COUNT(*) FROM vw_EmployeeMaster_Vms WHERE Active = 1 -- Total active employees",
+        "SELECT Dname, COUNT(*) as Count FROM vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname -- Department-wise count"
+      ]
+    },
+
+    "vw_CompleteAttendanceReport": {
+      "purpose": "Comprehensive attendance data combining daily attendance with employee details",
+      "row_count": "~6 million records (one row per employee per day)",
+      "column_count": 70,
+      "use_when": "Any query about attendance, presence, absence, late arrivals, work hours, overtime",
+      "key_columns": {
+        "ATDate": "Attendance date (use for date filtering)",
+        "ECode": "Employee code (join key to employee tables)",
+        "CorpEmpCode": "Human-readable employee ID",
+        "EmpName": "Employee name",
+        "Status": "Attendance status: 'Present', 'Absent', 'WO', 'Holiday', 'CL', 'EL', 'SL', 'LWP', 'Half Day'",
+        "InTime": "First IN punch time of the day",
+        "OutTime": "Last OUT punch time of the day",
+        "WorkDuration": "Total work minutes (divide by 60 for hours)",
+        "OT": "Overtime minutes (divide by 60 for hours)",
+        "LateArrival": "Minutes late from shift start time",
+        "EarlyDeparture": "Minutes left early before shift end",
+        "ShiftStartTime": "Assigned shift start time",
+        "ShiftEndTime": "Assigned shift end time",
+        "Sname": "Shift name",
+        "Dname": "Department name",
+        "BranchName": "Branch name",
+        "In1-In6, Out1-Out6": "Multiple IN/OUT punches throughout the day",
+        "InManual": "1 = IN time was manually entered, 0 = from device",
+        "OutManual": "1 = OUT time was manually entered, 0 = from device",
+        "PresentValue": "1 if marked present (full day)",
+        "AbsentValue": "1 if marked absent",
+        "LeaveValue": "Leave portion (0.5 for half day, 1 for full day)",
+        "HolidayValue": "1 if holiday",
+        "WOValue": "1 if weekend off"
+      },
+      "status_values": {
+        "Present": "Employee was present (has valid IN and OUT)",
+        "Absent": "Employee was absent (no punches)",
+        "WO": "Weekend Off / Weekly Off",
+        "Holiday": "Public/Official holiday",
+        "CL": "Casual Leave",
+        "EL": "Earned Leave",
+        "SL": "Sick Leave",
+        "LWP": "Leave Without Pay",
+        "Half Day": "Half day attendance"
+      },
+      "common_filters": [
+        "WHERE ATDate = CAST(GETDATE() AS DATE) -- Today's attendance",
+        "WHERE ATDate BETWEEN '2024-01-01' AND '2024-01-31' -- Monthly attendance",
+        "WHERE Status = 'Present' -- Only present records",
+        "WHERE Status = 'Absent' -- Only absent records",
+        "WHERE LateArrival > 0 -- Late arrivals",
+        "WHERE OT > 0 -- Employees who worked overtime"
+      ],
+      "important_notes": [
+        "WorkDuration and OT are in MINUTES - divide by 60 for hours",
+        "Always filter by Active employee if needed using join to vw_EmployeeMaster_Vms",
+        "For current status, filter ATDate = CAST(GETDATE() AS DATE)"
+      ]
+    },
+
+    "vw_RawPunchDetail": {
+      "purpose": "Raw punch/swipe records from biometric devices with employee and device details",
+      "row_count": "~473,000 records",
+      "column_count": 29,
+      "use_when": "Queries about punch times, device usage, access logs, swipe history",
+      "key_columns": {
+        "PunchTime": "Exact date/time of the punch",
+        "CardNo": "Card number used for the punch",
+        "CorpEmpCode": "Employee ID who punched",
+        "EmpName": "Name of the employee",
+        "InOut": "Direction: 1 = IN/Entry, 0 = OUT/Exit",
+        "TerminalID": "Device ID where punch occurred",
+        "DomainName": "Device name/location description",
+        "IPAddress": "IP address of the device",
+        "Location": "Physical location description",
+        "Action": "Type of authentication action",
+        "Status": "Authentication result status",
+        "DeviceType": "Type of device (Biometric, Card Reader, etc.)",
+        "IsManual": "1 = Manually entered, 0 = Device captured"
+      },
+      "common_filters": [
+        "WHERE CAST(PunchTime AS DATE) = CAST(GETDATE() AS DATE) -- Today's punches",
+        "WHERE InOut = 1 -- Only IN punches",
+        "WHERE InOut = 0 -- Only OUT punches",
+        "WHERE TerminalID = 5 -- Specific device"
+      ]
+    },
+
+    "View_Visitor_EnrollmentDetail": {
+      "purpose": "Complete visitor information with visit details",
+      "row_count": "Variable based on visitor traffic",
+      "column_count": 56,
+      "use_when": "Queries about visitors, guest management, visitor logs",
+      "key_columns": {
+        "Ecode": "Visitor internal ID",
+        "CorpEmpCode": "Visitor registration number",
+        "FName": "First name",
+        "LName": "Last name",
+        "MobileNumner": "Visitor mobile number",
+        "Expected_IN_Time": "Expected arrival time",
+        "IN_Time": "Actual check-in time",
+        "Expected_OUT_Time": "Expected departure time",
+        "OUT_Time": "Actual check-out time",
+        "Status": "Visit status: 'Pending', 'CheckedIn', 'CheckedOut', 'Expired'",
+        "Whom_To_Visit": "Ecode of the host employee",
+        "WhomEmpName": "Name of host employee",
+        "Purpose": "Purpose of visit",
+        "PurposeType": "Category of visit purpose",
+        "ID_Proof_Type": "Type of ID proof provided",
+        "ID_Proof_Detail": "ID proof number/details",
+        "Issued_Card_Number": "Temporary card issued to visitor",
+        "Vachel_Number": "Vehicle number if applicable",
+        "NumberOfVisitors": "Count of people in the party",
+        "VisitorType": "Type classification of visitor",
+        "Create_Time": "When the visit was registered"
+      }
+    },
+
+    "Vw_TerminalDetail_VMS": {
+      "purpose": "Complete device/terminal information with configuration",
+      "row_count": "~60 devices",
+      "column_count": 86,
+      "use_when": "Queries about devices, terminals, doors, biometric machines",
+      "key_columns": {
+        "TerminalID": "Unique device ID",
+        "DomainName": "Device name/label",
+        "IPAddress": "Device IP address",
+        "DeviceType": "Type: 'Biometric', 'Card Reader', 'Door Controller', etc.",
+        "Location": "Physical location description",
+        "Sno": "Device serial number",
+        "IsAlive": "1 = Online/Connected, 0 = Offline",
+        "isTA": "1 = Time Attendance device, 0 = Access Control only",
+        "BranchCode": "Branch where device is installed",
+        "Dcode": "Department association",
+        "TerminalGroupID": "Group this device belongs to"
+      }
+    },
+
+    "View_Employee_Terminal_Authentication_Relation": {
+      "purpose": "Which employees have access to which terminals/doors",
+      "row_count": "~419,000 records",
+      "use_when": "Queries about access rights, who can access what, door permissions",
+      "key_columns": {
+        "CorpEmpCode": "Employee ID",
+        "EmpName": "Employee name",
+        "TerminalID": "Device ID",
+        "DomainName": "Device name",
+        "AuthenticationName": "Type of authentication allowed",
+        "WhiteList": "1 = VIP/Priority access",
+        "Expiry_date": "When access permission expires",
+        "Status": "Current status of the access right",
+        "IsBlackListed": "1 = Access denied/blacklisted"
+      }
+    },
+
+    "vw_LeaveDetail": {
+      "purpose": "Leave applications and balances",
+      "use_when": "Queries about leave requests, leave balance, approvals",
+      "key_columns": {
+        "Ecode": "Employee ID",
+        "CorpEmpCode": "Employee code",
+        "EmpName": "Employee name",
+        "LshortName": "Leave type code (CL, EL, SL, LWP)",
+        "Balance": "Remaining leave balance",
+        "LeaveAllowedCYear": "Total leave allowed for current year",
+        "StartDate": "Leave start date",
+        "EndDate": "Leave end date",
+        "LeaveAmount": "Number of days applied",
+        "LeaveReason": "Reason for leave",
+        "Status": "Approval status: 0=Pending, 1=Approved, 2=Rejected",
+        "ApplicationDate": "When leave was applied"
+      }
+    }
+  },
+
+  "core_tables": {
+    "EmployeeMaster": {
+      "purpose": "Core employee/student master data",
+      "row_count": "~16,561 records",
+      "primary_key": "Ecode",
+      "note": "PREFER using vw_EmployeeMaster_Vms view instead - it pre-joins organizational hierarchy",
+      "important_columns": {
+        "Ecode": "Internal unique ID",
+        "CorpEmpCode": "Display employee ID",
+        "EmpName": "Full name",
+        "Active": "1=Active, 0=Inactive",
+        "SecCode": "Section foreign key",
+        "DesCode": "Designation foreign key",
+        "PresentCardNo": "Current card number",
+        "DateofJoin": "Joining date",
+        "LeavingDate": "Leaving date if inactive",
+        "Role": "System role"
+      }
+    },
+
+    "AttendanceRegister": {
+      "purpose": "Daily attendance records",
+      "row_count": "~6 million records",
+      "primary_key": "ATDate, ECode (composite)",
+      "note": "PREFER using vw_CompleteAttendanceReport view instead - it includes employee details",
+      "important_columns": {
+        "ATDate": "Attendance date",
+        "ECode": "Employee code",
+        "Status": "Attendance status",
+        "InTime": "First IN time",
+        "OutTime": "Last OUT time",
+        "WorkDuration": "Minutes worked",
+        "OT": "Overtime minutes",
+        "LateArrival": "Late arrival minutes",
+        "EarlyDeparture": "Early departure minutes"
+      }
+    },
+
+    "MachineRawPunch": {
+      "purpose": "Raw punch records from devices",
+      "row_count": "~473,000 records",
+      "note": "Contains punch history - use vw_RawPunchDetail for enriched data",
+      "important_columns": {
+        "PunchTime": "Timestamp of punch",
+        "CardNo": "Card used",
+        "InOut": "1=IN, 0=OUT",
+        "MachineID": "Device ID",
+        "Status": "Authentication status"
+      }
+    },
+
+    "MachineMaster": {
+      "purpose": "Device/terminal master data",
+      "row_count": "~60 devices",
+      "primary_key": "MachineID",
+      "important_columns": {
+        "MachineID": "Internal device ID",
+        "TerminalID": "Display terminal ID",
+        "DomainName": "Device name",
+        "IPAddress": "IP address",
+        "DeviceType": "Device type",
+        "Location": "Physical location",
+        "IsAlive": "Online status"
+      }
+    },
+
+    "ShiftMaster": {
+      "purpose": "Work shift definitions",
+      "row_count": "~11 shifts",
+      "primary_key": "Scode",
+      "important_columns": {
+        "Scode": "Shift code",
+        "Sname": "Shift name (e.g., 'General Shift', 'Night Shift')",
+        "StartTime": "Shift start time",
+        "EndTime": "Shift end time",
+        "LunchStartTime": "Lunch break start",
+        "LunchEndTime": "Lunch break end"
+      }
+    },
+
+    "DeptMaster": {
+      "purpose": "Department master data",
+      "row_count": "~15 departments",
+      "primary_key": "Dcode",
+      "important_columns": {
+        "Dcode": "Department code",
+        "Dname": "Department name",
+        "BranchCode": "Parent branch"
+      }
+    },
+
+    "BranchMaster": {
+      "purpose": "Branch/location master data",
+      "row_count": "~7 branches",
+      "primary_key": "BranchCode",
+      "important_columns": {
+        "BranchCode": "Branch code",
+        "BranchName": "Branch name",
+        "Location": "Physical address",
+        "Ccode": "Parent company"
+      }
+    },
+
+    "CompanyMaster": {
+      "purpose": "Company/organization master data",
+      "row_count": "1 company",
+      "primary_key": "Ccode",
+      "important_columns": {
+        "Ccode": "Company code",
+        "CName": "Company name",
+        "Address": "Company address"
+      }
+    },
+
+    "SectionMaster": {
+      "purpose": "Section within departments",
+      "primary_key": "SecCode",
+      "important_columns": {
+        "SecCode": "Section code",
+        "SecName": "Section name",
+        "Dcode": "Parent department"
+      }
+    },
+
+    "DesignationMaster": {
+      "purpose": "Job title/designation master",
+      "row_count": "~13 designations",
+      "primary_key": "DesCode",
+      "important_columns": {
+        "DesCode": "Designation code",
+        "DesName": "Designation name (e.g., 'Professor', 'Manager')"
+      }
+    },
+
+    "Vistor_Details": {
+      "purpose": "Visitor visit records",
+      "note": "Use View_Visitor_EnrollmentDetail for complete visitor data",
+      "important_columns": {
+        "ID": "Visit record ID",
+        "Ecode": "Visitor Ecode",
+        "Whom_To_Visit": "Host employee Ecode",
+        "IN_Time": "Check-in time",
+        "OUT_Time": "Check-out time",
+        "Status": "Visit status",
+        "Purpose": "Visit purpose code"
+      }
+    },
+
+    "AuditLog": {
+      "purpose": "System audit trail and security events",
+      "row_count": "~184,534 records",
+      "important_columns": {
+        "AuditLogID": "Log entry ID",
+        "LogDetail": "Event description",
+        "LogDateTime": "When event occurred",
+        "Ecode": "Related employee",
+        "IPAddress": "Source IP",
+        "DetailType": "Type of event"
+      }
+    },
+
+    "Alert_Master": {
+      "purpose": "Alert type definitions",
+      "row_count": "~468 alert types",
+      "important_columns": {
+        "ID": "Alert type ID",
+        "Alert": "Alert name",
+        "SeverityID": "Severity level",
+        "AutoMail": "Auto-email flag",
+        "AutoSms": "Auto-SMS flag"
+      }
+    }
+  },
+
+  "query_patterns": {
+    "employee_queries": {
+      "view_to_use": "vw_EmployeeMaster_Vms",
+      "examples": [
+        "Total employees: SELECT COUNT(*) FROM vw_EmployeeMaster_Vms WHERE Active = 1",
+        "By department: SELECT Dname, COUNT(*) FROM vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname",
+        "Search by name: SELECT * FROM vw_EmployeeMaster_Vms WHERE EmpName LIKE '%John%' AND Active = 1",
+        "Find by ID: SELECT * FROM vw_EmployeeMaster_Vms WHERE CorpEmpCode = 'EMP001'"
+      ]
+    },
+    "attendance_queries": {
+      "view_to_use": "vw_CompleteAttendanceReport",
+      "examples": [
+        "Today's present: SELECT COUNT(*) FROM vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND Status = 'Present'",
+        "Late arrivals: SELECT CorpEmpCode, EmpName, LateArrival FROM vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0",
+        "Monthly summary: SELECT ECode, COUNT(CASE WHEN Status='Present' THEN 1 END) as PresentDays FROM vw_CompleteAttendanceReport WHERE ATDate BETWEEN '2024-01-01' AND '2024-01-31' GROUP BY ECode"
+      ]
+    },
+    "punch_queries": {
+      "view_to_use": "vw_RawPunchDetail",
+      "examples": [
+        "Today's punches: SELECT * FROM vw_RawPunchDetail WHERE CAST(PunchTime AS DATE) = CAST(GETDATE() AS DATE)",
+        "First IN punch: SELECT CorpEmpCode, MIN(PunchTime) FROM vw_RawPunchDetail WHERE InOut = 1 AND CAST(PunchTime AS DATE) = CAST(GETDATE() AS DATE) GROUP BY CorpEmpCode"
+      ]
+    },
+    "visitor_queries": {
+      "view_to_use": "View_Visitor_EnrollmentDetail",
+      "examples": [
+        "Today's visitors: SELECT * FROM View_Visitor_EnrollmentDetail WHERE CAST(Create_Time AS DATE) = CAST(GETDATE() AS DATE)",
+        "Currently inside: SELECT * FROM View_Visitor_EnrollmentDetail WHERE IN_Time IS NOT NULL AND OUT_Time IS NULL"
+      ]
+    }
+  },
+
+  "common_joins": {
+    "note": "Most joins are already done in the views. Use views instead of manual joins.",
+    "organizational_hierarchy": "CompanyMaster -> BranchMaster -> DeptMaster -> SectionMaster -> EmployeeMaster",
+    "attendance_to_employee": "vw_CompleteAttendanceReport already includes employee details",
+    "punch_to_employee": "vw_RawPunchDetail already includes employee details"
+  },
+
+  "performance_tips": [
+    "Always use views (vw_*) instead of base tables when possible - they have optimized joins",
+    "Filter by date first for attendance queries (ATDate) as it's indexed",
+    "Use TOP N for large result sets",
+    "Filter Active = 1 for employee queries unless specifically looking for inactive",
+    "Use CAST(datetime AS DATE) for date-only comparisons"
+  ],
+
+  "date_functions": {
+    "today": "CAST(GETDATE() AS DATE)",
+    "this_month": "WHERE ATDate >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) AND ATDate < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) + 1, 0)",
+    "last_7_days": "WHERE ATDate >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))",
+    "this_year": "WHERE YEAR(ATDate) = YEAR(GETDATE())"
+  }
+}

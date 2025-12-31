@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        @page {
+            size: {{ page_size }};
+            margin: 2cm;
+            @bottom-right {
+                content: "Page " counter(page);
+            }
+        }
+
+        body {
+            font-family: {{ font_family }}, Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #242c34;
+            background: #ffffff;
+        }
+
+        /* Professional Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #5DA5DA;
+            padding-bottom: 15px;
+            background: linear-gradient(to right, #f8f9fa, #ffffff, #f8f9fa);
+            padding-top: 15px;
+        }
+
+        .header h1 {
+            margin: 0 0 5px 0;
+            color: #242c34;
+            font-size: 22pt;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            margin: 3px 0;
+            color: #60636A;
+            font-size: 11pt;
+            font-weight: 500;
+        }
+
+        .header .date {
+            margin-top: 8px;
+            color: #5DA5DA;
+            font-size: 9pt;
+            font-weight: 600;
+        }
+
+        /* KPI Cards Section */
+        .kpi-section {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+
+        .kpi-grid {
+            display: table;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 10px 0;
+        }
+
+        .kpi-row {
+            display: table-row;
+        }
+
+        .kpi-card {
+            display: table-cell;
+            width: 23%;
+            background-color: #F5F5F5;
+            border-left: 4px solid #5DA5DA;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .kpi-card .kpi-label {
+            font-size: 9pt;
+            color: #60636A;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #242c34;
+            line-height: 1;
+        }
+
+        .kpi-card .kpi-trend {
+            font-size: 9pt;
+            color: #5CB85C;
+            margin-top: 5px;
+        }
+
+        .kpi-card.accent-orange {
+            border-left-color: #FAA43A;
+        }
+
+        .kpi-card.accent-green {
+            border-left-color: #5CB85C;
+        }
+
+        .kpi-card.accent-primary {
+            border-left-color: #242c34;
+        }
+
+        /* Metadata Section */
+        .metadata {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #5DA5DA;
+            border-radius: 4px;
+        }
+
+        .metadata-item {
+            margin: 5px 0;
+            font-size: 9pt;
+            color: #242c34;
+        }
+
+        .metadata-item strong {
+            color: #5DA5DA;
+            font-weight: 600;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+
+        .chart-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #242c34;
+            margin-bottom: 12px;
+            text-align: left;
+            border-bottom: 2px solid #5DA5DA;
+            padding-bottom: 5px;
+        }
+
+        .chart-image {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+        }
+
+        .chart-grid {
+            display: table;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 15px;
+        }
+
+        .chart-row {
+            display: table-row;
+        }
+
+        .chart-cell {
+            display: table-cell;
+            width: 48%;
+            vertical-align: top;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        .data-table-header {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #242c34;
+            margin: 25px 0 12px 0;
+            border-bottom: 2px solid #5DA5DA;
+            padding-bottom: 5px;
+        }
+
+        .data-table th {
+            background-color: #242c34;
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 10pt;
+            font-weight: 600;
+            border: none;
+        }
+
+        .data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 9pt;
+            color: #242c34;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .data-table tr:hover {
+            background-color: #f0f1f2;
+        }
+
+        /* Summary Statistics Section */
+        .summary-section {
+            margin-top: 30px;
+            page-break-before: always;
+        }
+
+        .summary-section h2 {
+            color: #242c34;
+            border-bottom: 3px solid #5DA5DA;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 16pt;
+        }
+
+        .stats-grid {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #5DA5DA;
+            width: 31%;
+            border-radius: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 9pt;
+            color: #60636A;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #242c34;
+        }
+
+        /* Truncation Warning */
+        .truncation-warning {
+            background-color: #FFF3CD;
+            border-left: 4px solid #FAA43A;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 9pt;
+            border-radius: 4px;
+            color: #856404;
+        }
+
+        .truncation-warning strong {
+            color: #FAA43A;
+        }
+
+        /* SQL Query */
+        .sql-query {
+            background-color: #1E293B;
+            color: #E2E8F0;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #5CB85C;
+            font-family: 'Courier New', monospace;
+            font-size: 8pt;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-radius: 4px;
+        }
+
+        .sql-query-label {
+            color: #94A3B8;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* Section Divider */
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, #5DA5DA, transparent);
+            margin: 25px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>{{ title }}</h1>
+        <div class="subtitle">Database Query Report</div>
+        <div class="date">{{ generated_at }}</div>
+    </div>
+
+    <!-- KPI Cards Section -->
+    {% if kpis %}
+    <div class="kpi-section">
+        <div class="kpi-grid">
+            <div class="kpi-row">
+                {% for kpi in kpis[:4] %}
+                <div class="kpi-card {% if loop.index == 1 %}accent-blue{% elif loop.index == 2 %}accent-orange{% elif loop.index == 3 %}accent-green{% else %}accent-primary{% endif %}">
+                    <div class="kpi-label">{{ kpi.label }}</div>
+                    <div class="kpi-value">
+                        {% if kpi.format == 'decimal' %}
+                            {{ "%.2f"|format(kpi.value) }}
+                        {% elif kpi.format == 'percentage' %}
+                            {{ "%.1f"|format(kpi.value) }}%
+                        {% else %}
+                            {{ "{:,.0f}".format(kpi.value) }}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="section-divider"></div>
+    {% endif %}
+
+    <!-- Metadata Section -->
+    {% if metadata %}
+    <div class="metadata">
+        <div class="metadata-item">
+            <strong>Generated By:</strong> {{ metadata.generated_by }} ({{ metadata.user_role }})
+        </div>
+        {% if metadata.question %}
+        <div class="metadata-item">
+            <strong>Question:</strong> {{ metadata.question }}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- SQL Query -->
+    {% if metadata and metadata.sql_query %}
+    <div class="sql-query">
+        <div class="sql-query-label">Generated SQL Query</div>
+        {{ metadata.sql_query }}
+    </div>
+    {% endif %}
+
+    <!-- Charts Section -->
+    {% if charts and charts|length > 0 %}
+    <div class="charts-section">
+        {% for chart in charts %}
+        <div class="chart-container">
+            <div class="chart-title">{{ chart.title }}</div>
+            <img src="{{ chart.image }}" alt="{{ chart.title }}" class="chart-image" />
+        </div>
+        {% if loop.index % 2 == 0 and not loop.last %}
+        <div class="section-divider"></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="section-divider"></div>
+    {% endif %}
+
+    <!-- Truncation Warning -->
+    {% if truncated %}
+    <div class="truncation-warning">
+        <strong>Note:</strong> This report has been truncated. Showing {{ displayed_rows }} of {{ total_rows }} total rows.
+    </div>
+    {% endif %}
+
+    <!-- Data Table -->
+    <div class="data-table-header">Query Results</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Summary Statistics Section -->
+    {% if summary_stats %}
+    <div class="summary-section">
+        <h2>Summary Statistics</h2>
+
+        <table class="stats-grid">
+            <tr>
+                <td class="stat-card">
+                    <div class="label">Total Rows</div>
+                    <div class="value">{{ summary_stats.total_rows }}</div>
+                </td>
+                <td class="stat-card">
+                    <div class="label">Total Columns</div>
+                    <div class="value">{{ summary_stats.total_columns }}</div>
+                </td>
+                <td class="stat-card">
+                    <div class="label">Numeric Columns</div>
+                    <div class="value">{{ summary_stats.numeric_columns|length }}</div>
+                </td>
+            </tr>
+        </table>
+
+        {% if summary_stats.numeric_summary %}
+        <h3>Numeric Column Statistics</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Mean</th>
+                    <th>Median</th>
+                    <th>Sum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for col_name, stats in summary_stats.numeric_summary.items() %}
+                <tr>
+                    <td><strong>{{ col_name }}</strong></td>
+                    <td>{{ "%.2f"|format(stats.min) }}</td>
+                    <td>{{ "%.2f"|format(stats.max) }}</td>
+                    <td>{{ "%.2f"|format(stats.mean) }}</td>
+                    <td>{{ "%.2f"|format(stats.median) }}</td>
+                    <td>{{ "%.2f"|format(stats.sum) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

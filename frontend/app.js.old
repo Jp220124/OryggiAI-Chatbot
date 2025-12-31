@@ -1,0 +1,293 @@
+// Configuration
+const API_BASE_URL = 'http://localhost:9000/api/chat';
+
+// DOM Elements
+const chatMessages = document.getElementById('chatMessages');
+const chatForm = document.getElementById('chatForm');
+const questionInput = document.getElementById('questionInput');
+const sendButton = document.getElementById('sendButton');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const statusDot = document.getElementById('statusDot');
+const statusText = document.getElementById('statusText');
+
+// State
+let isLoading = false;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    checkServerStatus();
+    setupEventListeners();
+
+    // Check server status every 30 seconds
+    setInterval(checkServerStatus, 30000);
+});
+
+// Event Listeners
+function setupEventListeners() {
+    chatForm.addEventListener('submit', handleSubmit);
+
+    // Example query click handlers
+    document.querySelectorAll('.example-queries li').forEach(li => {
+        li.addEventListener('click', () => {
+            questionInput.value = li.textContent;
+            questionInput.focus();
+        });
+    });
+}
+
+// Check if server is running
+async function checkServerStatus() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/schema-stats`);
+        if (response.ok) {
+            updateConnectionStatus(true);
+        } else {
+            updateConnectionStatus(false);
+        }
+    } catch (error) {
+        updateConnectionStatus(false);
+    }
+}
+
+function updateConnectionStatus(isConnected) {
+    if (isConnected) {
+        statusDot.classList.add('connected');
+        statusText.textContent = 'Connected';
+    } else {
+        statusDot.classList.remove('connected');
+        statusText.textContent = 'Disconnected';
+    }
+}
+
+// Handle form submission
+async function handleSubmit(e) {
+    e.preventDefault();
+
+    if (isLoading) return;
+
+    const question = questionInput.value.trim();
+    if (!question) return;
+
+    // Add user message
+    addUserMessage(question);
+
+    // Clear input
+    questionInput.value = '';
+
+    // Show loading
+    setLoading(true);
+
+    try {
+        // Send request to API
+        const response = await fetch(`${API_BASE_URL}/query`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                question: question,
+                tenant_id: 'default',
+                user_id: 'admin',
+                user_role: 'ADMIN'  // Use ADMIN role for full access (testing)
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Add bot response
+        addBotMessage(data);
+
+    } catch (error) {
+        console.error('Error:', error);
+        addErrorMessage('Failed to get response from server. Please check if the server is running.');
+    } finally {
+        setLoading(false);
+    }
+}
+
+// Add user message to chat
+function addUserMessage(text) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message message-user';
+
+    messageDiv.innerHTML = `
+        <div class="message-content">
+            ${escapeHtml(text)}
+        </div>
+    `;
+
+    chatMessages.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+// Add bot message to chat
+function addBotMessage(data) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message message-bot';
+
+    let html = '<div class="message-content">';
+
+    // Answer
+    if (data.answer) {
+        html += `<div class="answer">${escapeHtml(data.answer).replace(/\n/g, '<br>')}</div>`;
+
+        // Check if answer contains report path (PDF or Excel)
+        const reportPathMatch = data.answer.match(/Report saved to:\s*(.+?)(?:\n|$)/);
+        if (reportPathMatch) {
+            const reportPath = reportPathMatch[1].trim();
+            // Extract filename from path (handle both forward and backslashes)
+            const filename = reportPath.split(/[/\\]/).pop();
+
+            if (filename) {
+                html += `
+                    <div class="download-button-container">
+                        <button class="download-report-button" onclick="downloadReport('${escapeHtml(filename)}')">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download Report
+                        </button>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    // SQL Query
+    if (data.sql_query) {
+        html += `
+            <div class="sql-query">
+                <div class="sql-query-header">
+                    <span class="sql-query-label">Generated SQL Query</span>
+                    <button class="copy-button" onclick="copyToClipboard(\`${escapeHtml(data.sql_query).replace(/`/g, '\\`')}\`)">
+                        Copy
+                    </button>
+                </div>
+                <pre>${escapeHtml(data.sql_query)}</pre>
+            </div>
+        `;
+    }
+
+    // Metadata
+    if (data.success) {
+        html += '<div class="metadata">';
+
+        if (data.result_count !== undefined) {
+            html += `
+                <div class="metadata-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <span>${data.result_count} result(s)</span>
+                </div>
+            `;
+        }
+
+        if (data.tables_used && data.tables_used.length > 0) {
+            html += `
+                <div class="metadata-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Tables: ${data.tables_used.join(', ')}</span>
+                </div>
+            `;
+        }
+
+        if (data.execution_time !== undefined) {
+            html += `
+                <div class="metadata-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>${data.execution_time.toFixed(2)}s</span>
+                </div>
+            `;
+        }
+
+        html += '</div>';
+    }
+
+    // Error message
+    if (!data.success && data.error) {
+        html += `
+            <div class="error-message">
+                <p><strong>Error:</strong> ${escapeHtml(data.error)}</p>
+            </div>
+        `;
+    }
+
+    html += '</div>';
+
+    messageDiv.innerHTML = html;
+    chatMessages.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+// Add error message
+function addErrorMessage(text) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message message-bot';
+
+    messageDiv.innerHTML = `
+        <div class="message-content">
+            <div class="error-message">
+                <p><strong>Error:</strong> ${escapeHtml(text)}</p>
+            </div>
+        </div>
+    `;
+
+    chatMessages.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+// Set loading state
+function setLoading(loading) {
+    isLoading = loading;
+    sendButton.disabled = loading;
+    questionInput.disabled = loading;
+
+    if (loading) {
+        loadingIndicator.classList.add('active');
+    } else {
+        loadingIndicator.classList.remove('active');
+    }
+}
+
+// Scroll to bottom of chat
+function scrollToBottom() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Copy to clipboard
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Show temporary success message
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+            button.textContent = originalText;
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy:', err);
+        alert('Failed to copy to clipboard');
+    });
+}
+
+// Download report file
+function downloadReport(filename) {
+    const downloadUrl = `http://localhost:9000/api/reports/download/${filename}`;
+    window.open(downloadUrl, '_blank');
+}

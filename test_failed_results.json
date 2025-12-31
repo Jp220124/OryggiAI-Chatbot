@@ -1,0 +1,162 @@
+[
+  {
+    "id": "Q7",
+    "question": "What is the attendance percentage of Engineering department?",
+    "success": true,
+    "sql_query": "SELECT\n    COUNT(CASE WHEN Status = 'Present' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) AS AttendancePercent\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)\n    AND Dname = 'Engineering'",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.434006452560425,
+    "answer_preview": "The answer is: None"
+  },
+  {
+    "id": "Q13",
+    "question": "List all students who were late more than 3 times this week",
+    "success": true,
+    "sql_query": "SELECT TOP 100 E.CorpEmpCode, E.EmpName, E.Dname\nFROM dbo.vw_EmployeeMaster_Vms E\nJOIN (\n    SELECT ECode\n    FROM dbo.AttendanceRegister\n    WHERE ATDate >= DATEADD(day, -7, GETDATE())\n    AND ATDate <= GETDATE()\n    AND LateArrival > 0\n    GROUP BY ECode\n    HAVING COUNT(*) > 3\n) AS LateEmployees ON E.Ecode = LateEmployees.ECode\nWHERE E.Role = 'Student'\nAND E.Active = 1",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.840695381164551,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q14",
+    "question": "What time did John Smith arrive today?",
+    "success": true,
+    "sql_query": "SELECT TOP 1 InTime\nFROM dbo.vw_CompleteAttendanceReport\nWHERE EmpName = 'John Smith'\nAND CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.284344673156738,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q23",
+    "question": "Which employees have overtime this week?",
+    "success": true,
+    "sql_query": "SELECT TOP 10 CorpEmpCode, EmpName, Dname, SUM(OT)/60 as TotalOTHours \nFROM dbo.vw_CompleteAttendanceReport \nWHERE ATDate BETWEEN DATEADD(wk,DATEDIFF(wk,7,GETDATE()),0) AND DATEADD(wk,DATEDIFF(wk,0,GETDATE()),6) AND OT > 0 \nGROUP BY CorpEmpCode, EmpName, Dname \nORDER BY TotalOTHours DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.818269968032837,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q24",
+    "question": "List staff who haven't punched out yesterday",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, InTime FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(DATEADD(day, -1, GETDATE()) AS DATE) AND InTime IS NOT NULL AND OutTime IS NULL",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.944592237472534,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q25",
+    "question": "Show early departures from Library staff today",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, OutTime, EarlyDeparture\nFROM dbo.vw_CompleteAttendanceReport\nWHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)\n  AND EarlyDeparture > 0\n  AND Dname LIKE '%Library%'\nORDER BY EarlyDeparture DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.615544319152832,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q26",
+    "question": "Which department has the highest attendance rate?",
+    "success": true,
+    "sql_query": "SELECT TOP 1 Dname,\n       CAST(SUM(CASE WHEN Status = 'Present' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS DECIMAL(5,2)) AS AttendanceRate\nFROM dbo.vw_CompleteAttendanceReport\nWHERE MONTH(ATDate) = MONTH(GETDATE())\n  AND YEAR(ATDate) = YEAR(GETDATE())\nGROUP BY Dname\nORDER BY AttendanceRate DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 7.444632053375244,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q27",
+    "question": "Compare attendance between Science and Arts departments",
+    "success": true,
+    "sql_query": "SELECT\n    Dname,\n    COUNT(CASE WHEN Status = 'Present' THEN 1 ELSE NULL END) AS PresentCount,\n    COUNT(CASE WHEN Status = 'Absent' THEN 1 ELSE NULL END) AS AbsentCount,\n    CAST(COUNT(CASE WHEN Status = 'Present' THEN 1 ELSE NULL END) * 100.0 / COUNT(*) AS DECIMAL(5, 2)) AS AttendanceRate\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    Dname IN ('Science', 'Arts')\n    AND MONTH(ATDate) = MONTH(GETDATE())\n    AND YEAR(ATDate) = YEAR(GETDATE())\nGROUP BY\n    Dname\nORDER BY\n    AttendanceRate DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.4234232902526855,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q35",
+    "question": "Who visited the Dean's office this week?",
+    "success": true,
+    "sql_query": "SELECT FName, LName, IN_Time, OUT_Time, Purpose, WhomEmpName as HostName FROM dbo.View_Visitor_EnrollmentDetail WHERE WhomEmpName LIKE '%Dean%' AND IN_Time >= DATEADD(day, -7, GETDATE()) ORDER BY IN_Time DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.214396715164185,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q36",
+    "question": "Show visitor log for yesterday",
+    "success": true,
+    "sql_query": "SELECT FName, LName, MobileNumner, WhomEmpName as Host, IN_Time, OUT_Time, Purpose FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) = DATEADD(day, -1, CAST(GETDATE() AS DATE)) ORDER BY IN_Time DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.314270973205566,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q37",
+    "question": "Which department receives the most visitors?",
+    "success": true,
+    "sql_query": "SELECT TOP 10 WhomEmpName AS Department, COUNT(*) AS VisitorCount\nFROM dbo.View_Visitor_EnrollmentDetail\nWHERE IN_Time >= DATEADD(month, -1, GETDATE())\nGROUP BY WhomEmpName\nORDER BY VisitorCount DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 4.971587181091309,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q38",
+    "question": "How many vendors visited this month?",
+    "success": true,
+    "sql_query": "SELECT COUNT(*) AS VendorCount\nFROM dbo.View_Visitor_EnrollmentDetail\nWHERE VisitorType = 'Vendor'\n  AND MONTH(IN_Time) = MONTH(GETDATE())\n  AND YEAR(IN_Time) = YEAR(GETDATE())",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.103280544281006,
+    "answer_preview": "The answer is: 0"
+  },
+  {
+    "id": "Q39",
+    "question": "List parent visits for this semester",
+    "success": true,
+    "sql_query": "SELECT FName, LName, IN_Time, WhomEmpName as MetWith, Purpose FROM dbo.View_Visitor_EnrollmentDetail WHERE VisitorType = 'Parent' AND IN_Time >= DATEADD(month, -6, GETDATE()) ORDER BY IN_Time DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 4.98762321472168,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": "Q48",
+    "question": "What is the overall attendance rate this semester?",
+    "success": true,
+    "sql_query": "SELECT\n    CAST(SUM(CASE WHEN Status = 'Present' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS DECIMAL(5, 2)) AS OverallAttendanceRate\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    ATDate BETWEEN DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0) AND EOMONTH(GETDATE())",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.498316764831543,
+    "answer_preview": "The answer is: None"
+  },
+  {
+    "id": "Q49",
+    "question": "Compare this month's attendance with last month",
+    "success": true,
+    "sql_query": "SELECT\n    'This Month' AS Month,\n    COUNT(CASE WHEN Status = 'Present' THEN 1 END) AS Present,\n    COUNT(CASE WHEN Status = 'Absent' THEN 1 END) AS Absent\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    MONTH(ATDate) = MONTH(GETDATE())\n    AND YEAR(ATDate) = YEAR(GETDATE())\nUNION ALL\nSELECT\n    'Last Month',\n    COUNT(CASE WHEN Status = 'Present' THEN 1 END),\n    COUNT(CASE WHEN Status = 'Absent' THEN 1 END)\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    MONTH(ATDate) = MONTH(DATEADD(month, -1, GETDATE()))\n    AND YEAR(ATDate) = YEAR(DATEADD(month, -1, GETDATE()))",
+    "error": null,
+    "result_count": 2,
+    "execution_time": 9.602534294128418,
+    "answer_preview": "Found 2 result(s):\n\n1. Month: This Month, Present: 0, Absent: 0\n2. Month: Last Month, Present: 0, Absent: 0\n"
+  },
+  {
+    "id": "Q50",
+    "question": "Show top 10 most punctual students this month",
+    "success": true,
+    "sql_query": "SELECT TOP 10 Ecode, COUNT(*) AS PresentDays, SUM(CASE WHEN LateArrival = 0 OR LateArrival IS NULL THEN 1 ELSE 0 END) AS OnTimeDays FROM dbo.AttendanceRegister WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND Status = 'Present' GROUP BY Ecode ORDER BY OnTimeDays DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.94377326965332,
+    "answer_preview": "No results found for your query."
+  }
+]

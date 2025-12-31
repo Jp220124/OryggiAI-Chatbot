@@ -1,0 +1,83 @@
+# ============================================
+# Advance Chatbot - Requirements
+# ============================================
+# Agentic AI chatbot with RAG, Report Generation, and Action Execution
+# Python 3.10+
+
+# Core Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.7.4
+pydantic-settings==2.4.0
+python-multipart==0.0.6
+
+# LangGraph & LangChain - Agentic Orchestration
+langgraph==0.2.50
+langchain==0.3.20
+langchain-google-genai==2.0.8
+langchain-community==0.3.18
+
+# Vector Database for RAG (FAISS - Windows compatible)
+faiss-cpu==1.9.0
+sentence-transformers==3.3.1
+
+# ChromaDB for Conversation Memory (Phase 3)
+chromadb==0.4.22
+
+# Google Generative AI (Gemini)
+google-generativeai==0.8.3
+
+# Database - SQL Server
+pyodbc==5.0.1
+pymssql==2.2.11
+sqlalchemy==2.0.25
+
+# Security & Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.1.2
+cryptography==42.0.0
+
+# Logging & Monitoring
+loguru==0.7.2
+python-json-logger==2.0.7
+
+# Report Generation
+# Excel Generation only (PDF support removed)
+openpyxl==3.1.2
+xlsxwriter==3.1.9
+
+# Charts for Reports
+matplotlib==3.8.2
+pandas==2.1.4
+
+# Email Integration
+sendgrid==6.11.0
+python-dotenv==1.0.0
+
+# Natural Language Date/Time Parsing
+dateparser==1.2.0
+python-dateutil==2.8.2
+
+# HTTP Client
+httpx==0.27.0
+requests==2.31.0
+
+# Data Validation & Serialization
+pyyaml==6.0.1
+marshmallow==3.20.2
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Development Tools
+black==24.1.1
+flake8==7.0.0
+mypy==1.8.0
+isort==5.13.2
+
+# Utilities
+python-slugify==8.0.1

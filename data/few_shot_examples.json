@@ -1,0 +1,3815 @@
+{
+  "metadata": {
+    "description": "Comprehensive few-shot examples for SQL query generation - Access Control & Attendance Management System",
+    "version": "3.0",
+    "created": "2025-11-21",
+    "updated": "2025-11-27",
+    "total_examples": 224,
+    "domain": "University/Organization Access Control & Attendance Management",
+    "note": "All examples use database views instead of manual JOINs for optimal performance"
+  },
+  "examples": [
+    {
+      "id": "emp_001",
+      "category": "employee_count",
+      "question": "How many employees are in each department?",
+      "sql": "SELECT Dname, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname ORDER BY EmployeeCount DESC",
+      "explanation": "Using vw_EmployeeMaster_Vms view which pre-joins org hierarchy. Active=1 filters active employees only.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "COUNT",
+        "ORDER BY",
+        "WHERE"
+      ]
+    },
+    {
+      "id": "emp_002",
+      "category": "employee_list",
+      "question": "List all active employees with their details",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, SecName, DesName, DateofJoin, PresentCardNo FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 ORDER BY EmpName",
+      "explanation": "Using vw_EmployeeMaster_Vms view which includes organizational hierarchy (dept, section, designation)",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "TOP",
+        "WHERE",
+        "ORDER BY"
+      ]
+    },
+    {
+      "id": "emp_003",
+      "category": "employee_search",
+      "question": "Find employee by name",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName, Telephone1, E_mail FROM dbo.vw_EmployeeMaster_Vms WHERE EmpName LIKE '%John%' AND Active = 1",
+      "explanation": "Partial name search using LIKE pattern matching",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "WHERE",
+        "AND"
+      ]
+    },
+    {
+      "id": "emp_003a",
+      "category": "employee_report",
+      "question": "Generate report of employee John",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%John%' ORDER BY PunchTime DESC",
+      "explanation": "Employee report with all attendance/punch logs - returns all access records for the employee",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003b",
+      "category": "employee_profile",
+      "question": "Show profile details of employee",
+      "sql": "SELECT Ecode, CorpEmpCode, EmpName, FName, LName, DateofBirth, Sex, DateofJoin, Dname, SecName, DesName, CatName, BranchName, CName, GuardianName, Telephone1, Telephone2, E_mail, Address1, Address2, BloodGroup, Qualification, Experience, PresentCardNo, IsEnrolled, IsBlackListed, ReportingHeadName FROM dbo.vw_EmployeeMaster_Vms WHERE EmpName LIKE '%Smith%' AND Active = 1",
+      "explanation": "Employee profile details including personal info, contact, organizational hierarchy",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "WHERE",
+        "profile_details"
+      ]
+    },
+    {
+      "id": "emp_003c",
+      "category": "employee_profile",
+      "question": "Get complete profile of employee by name",
+      "sql": "SELECT Ecode, CorpEmpCode, EmpName, FName, LName, DateofBirth, Sex, DateofJoin, LeavingDate, Dname, SecName, DesName, CatName, BranchName, CName, GuardianName, Telephone1, Telephone2, E_mail, Address1, Address2, BloodGroup, Qualification, Experience, PresentCardNo, IsEnrolled, IsBlackListed, ReportingHeadName, Active FROM dbo.vw_EmployeeMaster_Vms WHERE EmpName LIKE '%Kumar%'",
+      "explanation": "Complete employee profile information with personal details",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "WHERE",
+        "employee_profile"
+      ]
+    },
+    {
+      "id": "emp_003h",
+      "category": "employee_report",
+      "question": "Generate report of employee Smith",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Smith%' ORDER BY PunchTime DESC",
+      "explanation": "Employee report generates attendance punch logs",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003i",
+      "category": "employee_report",
+      "question": "Generate report of employee Kumar",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Kumar%' ORDER BY PunchTime DESC",
+      "explanation": "Employee report generates attendance punch logs for the specified employee",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003j",
+      "category": "employee_report",
+      "question": "Generate employee report for Sharma",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Sharma%' ORDER BY PunchTime DESC",
+      "explanation": "Employee report shows all punch/attendance logs. Always use View_MachineRawPunchWithMachineAndEmployee for employee reports.",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003k",
+      "category": "employee_report",
+      "question": "Generate report of employee Mishra",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Mishra%' ORDER BY PunchTime DESC",
+      "explanation": "Employee report returns all punch logs from View_MachineRawPunchWithMachineAndEmployee",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003l",
+      "category": "employee_report",
+      "question": "Generate report of employee Gupta",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Gupta%' ORDER BY PunchTime DESC",
+      "explanation": "Generate report retrieves all attendance punch logs for the employee",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003m",
+      "category": "employee_report",
+      "question": "Generate report of employee Kothari",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Kothari%' ORDER BY PunchTime DESC",
+      "explanation": "Employee report query uses View_MachineRawPunchWithMachineAndEmployee for punch logs",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003n",
+      "category": "employee_report",
+      "question": "Generate report of employee Patel",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Patel%' ORDER BY PunchTime DESC",
+      "explanation": "Employee report with all punch/access records",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_report"
+      ]
+    },
+    {
+      "id": "emp_003d",
+      "category": "employee_attendance_report",
+      "question": "Generate report of employee John with all logs",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%John%' ORDER BY PunchTime DESC",
+      "explanation": "Employee attendance/punch log report showing all their access records",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "attendance_log"
+      ]
+    },
+    {
+      "id": "emp_003e",
+      "category": "employee_attendance_report",
+      "question": "Show all punch logs for employee Smith",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Smith%' ORDER BY PunchTime DESC",
+      "explanation": "All punch/swipe logs for a specific employee",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "punch_log"
+      ]
+    },
+    {
+      "id": "emp_003f",
+      "category": "employee_attendance_report",
+      "question": "Get attendance logs of employee Kumar",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Kumar%' ORDER BY PunchTime DESC",
+      "explanation": "Attendance and access logs for employee",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "attendance_log"
+      ]
+    },
+    {
+      "id": "emp_003g",
+      "category": "employee_attendance_report",
+      "question": "Generate employee report with attendance records",
+      "sql": "SELECT CorpEmpCode, EmpName, CardNo, PunchTime, Action, Status, IPAddress, InOut, IsManual FROM dbo.View_MachineRawPunchWithMachineAndEmployee WHERE EmpName LIKE '%Patel%' ORDER BY PunchTime DESC",
+      "explanation": "Complete log report for employee including all punch/attendance records",
+      "tables_used": [
+        "View_MachineRawPunchWithMachineAndEmployee"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "ORDER BY",
+        "employee_logs"
+      ]
+    },
+    {
+      "id": "emp_004",
+      "category": "employee_search",
+      "question": "Get employee details by employee code",
+      "sql": "SELECT * FROM dbo.vw_EmployeeMaster_Vms WHERE CorpEmpCode = 'EMP001'",
+      "explanation": "Direct lookup by employee code (corporate employee code)",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE",
+        "exact match"
+      ]
+    },
+    {
+      "id": "emp_005",
+      "category": "employee_stats",
+      "question": "How many employees joined this year?",
+      "sql": "SELECT COUNT(*) as NewJoiners FROM dbo.vw_EmployeeMaster_Vms WHERE YEAR(DateofJoin) = YEAR(GETDATE()) AND Active = 1",
+      "explanation": "Count employees who joined in current year",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT",
+        "YEAR",
+        "GETDATE"
+      ]
+    },
+    {
+      "id": "emp_006",
+      "category": "employee_stats",
+      "question": "Show employee count by designation",
+      "sql": "SELECT DesName, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY DesName ORDER BY EmployeeCount DESC",
+      "explanation": "Group employees by their designation/role",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "COUNT",
+        "ORDER BY"
+      ]
+    },
+    {
+      "id": "emp_007",
+      "category": "employee_stats",
+      "question": "How many male and female employees are there?",
+      "sql": "SELECT CASE WHEN Sex = 1 THEN 'Male' ELSE 'Female' END as Gender, COUNT(*) as Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Sex",
+      "explanation": "Sex=1 is Male, Sex=0 is Female in the system",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "CASE",
+        "GROUP BY",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "emp_008",
+      "category": "employee_search",
+      "question": "List employees who left the organization",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, LeavingDate, LeavingReason FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 0 AND LeavingDate IS NOT NULL ORDER BY LeavingDate DESC",
+      "explanation": "Active=0 indicates inactive/left employees",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE",
+        "IS NOT NULL",
+        "ORDER BY"
+      ]
+    },
+    {
+      "id": "emp_009",
+      "category": "employee_org",
+      "question": "List employees by department and designation",
+      "sql": "SELECT Dname, DesName, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname, DesName ORDER BY Dname, EmployeeCount DESC",
+      "explanation": "Using vw_EmployeeMaster_Vms for dept and designation grouping",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "multiple columns"
+      ]
+    },
+    {
+      "id": "emp_010",
+      "category": "employee_org",
+      "question": "Show employees in each branch",
+      "sql": "SELECT BranchName, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY BranchName ORDER BY EmployeeCount DESC",
+      "explanation": "Branch-wise employee distribution",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "emp_011",
+      "category": "employee_contact",
+      "question": "Get contact details of all employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Telephone1, Telephone2, E_mail, Address1 FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1",
+      "explanation": "Employee contact information including phone and email",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "TOP"
+      ]
+    },
+    {
+      "id": "emp_012",
+      "category": "employee_search",
+      "question": "Find employees by blood group",
+      "sql": "SELECT CorpEmpCode, EmpName, BloodGroup, Telephone1 FROM dbo.vw_EmployeeMaster_Vms WHERE BloodGroup = 'O+' AND Active = 1",
+      "explanation": "Search by blood group for emergency purposes",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE"
+      ]
+    },
+    {
+      "id": "emp_013",
+      "category": "employee_stats",
+      "question": "Show employee tenure distribution",
+      "sql": "SELECT CASE WHEN DATEDIFF(YEAR, DateofJoin, GETDATE()) < 1 THEN 'Less than 1 year' WHEN DATEDIFF(YEAR, DateofJoin, GETDATE()) BETWEEN 1 AND 3 THEN '1-3 years' WHEN DATEDIFF(YEAR, DateofJoin, GETDATE()) BETWEEN 4 AND 5 THEN '4-5 years' ELSE 'More than 5 years' END as Tenure, COUNT(*) as Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY CASE WHEN DATEDIFF(YEAR, DateofJoin, GETDATE()) < 1 THEN 'Less than 1 year' WHEN DATEDIFF(YEAR, DateofJoin, GETDATE()) BETWEEN 1 AND 3 THEN '1-3 years' WHEN DATEDIFF(YEAR, DateofJoin, GETDATE()) BETWEEN 4 AND 5 THEN '4-5 years' ELSE 'More than 5 years' END",
+      "explanation": "Categorize employees by years of service",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "CASE",
+        "DATEDIFF",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_014",
+      "category": "employee_reporting",
+      "question": "Who reports to a specific manager?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_EmployeeMaster_Vms WHERE ReportingHeadEcode = (SELECT Ecode FROM dbo.vw_EmployeeMaster_Vms WHERE CorpEmpCode = 'MGR001') AND Active = 1",
+      "explanation": "Find direct reports using ReportingHeadEcode field",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "subquery",
+        "WHERE"
+      ]
+    },
+    {
+      "id": "emp_015",
+      "category": "employee_contractor",
+      "question": "Get all contractor employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Name as ContractorName, PO_Number FROM dbo.vw_EmployeeMaster_Vms WHERE ContractorID IS NOT NULL AND Active = 1",
+      "explanation": "Filter employees who are contractors (have ContractorID)",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "IS NOT NULL",
+        "contractor data"
+      ]
+    },
+    {
+      "id": "emp_016",
+      "category": "employee_role",
+      "question": "List all teachers/faculty members",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_EmployeeMaster_Vms WHERE Role = 'Teacher' OR DesName LIKE '%Professor%' OR DesName LIKE '%Faculty%' AND Active = 1",
+      "explanation": "Find teaching staff by role or designation",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE",
+        "OR",
+        "LIKE"
+      ]
+    },
+    {
+      "id": "emp_017",
+      "category": "employee_role",
+      "question": "List all students",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DateofJoin FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1",
+      "explanation": "CRITICAL: Use AccessType = 'Student' to filter students, NOT Role column. AccessType is the correct column for identifying students in vw_EmployeeMaster_Vms.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE",
+        "AccessType",
+        "Student"
+      ]
+    },
+    {
+      "id": "late_001",
+      "category": "late_arrival",
+      "question": "Who was late today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "explanation": "IMPORTANT: Use vw_CompleteAttendanceReport for late arrivals - it has LateArrival column. LateArrival is stored in minutes. Do NOT use vw_RawPunchDetail for late queries.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "attendance",
+        "LateArrival column"
+      ]
+    },
+    {
+      "id": "late_002",
+      "category": "late_arrival",
+      "question": "Who came late today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "explanation": "IMPORTANT: Always use vw_CompleteAttendanceReport for late arrival queries. LateArrival column contains minutes late. Never use vw_RawPunchDetail for late queries.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "attendance"
+      ]
+    },
+    {
+      "id": "late_003",
+      "category": "late_arrival",
+      "question": "Show late arrivals today",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival as LateMinutes FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "explanation": "vw_CompleteAttendanceReport has LateArrival (minutes late) and EarlyDeparture columns. vw_RawPunchDetail does NOT have these columns.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "attendance"
+      ]
+    },
+    {
+      "id": "late_004",
+      "category": "late_arrival",
+      "question": "List employees who arrived late",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, ShiftStartTime, LateArrival as MinutesLate FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "explanation": "Use vw_CompleteAttendanceReport for attendance metrics like LateArrival, EarlyDeparture, WorkDuration. ShiftStartTime shows expected start time.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "shift comparison"
+      ]
+    },
+    {
+      "id": "late_005",
+      "category": "late_arrival",
+      "question": "How many people were late today?",
+      "sql": "SELECT COUNT(*) as LateCount FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0",
+      "explanation": "Count of late arrivals using vw_CompleteAttendanceReport. LateArrival > 0 indicates the person was late.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT",
+        "late arrival"
+      ]
+    },
+    {
+      "id": "late_006",
+      "category": "late_arrival",
+      "question": "Who was late this week?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, ATDate, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE)) AND LateArrival > 0 ORDER BY ATDate DESC, LateArrival DESC",
+      "explanation": "Weekly late arrival report using vw_CompleteAttendanceReport",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "date range"
+      ]
+    },
+    {
+      "id": "early_001",
+      "category": "early_departure",
+      "question": "Who left early today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, OutTime, EarlyDeparture FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND EarlyDeparture > 0 ORDER BY EarlyDeparture DESC",
+      "explanation": "IMPORTANT: Use vw_CompleteAttendanceReport for early departure queries. EarlyDeparture column contains minutes left early.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "early departure",
+        "attendance"
+      ]
+    },
+    {
+      "id": "early_002",
+      "category": "early_departure",
+      "question": "Show employees who left before time",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, OutTime, ShiftEndTime, EarlyDeparture as MinutesEarly FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND EarlyDeparture > 0 ORDER BY EarlyDeparture DESC",
+      "explanation": "EarlyDeparture in vw_CompleteAttendanceReport shows minutes employee left before shift end",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "early departure",
+        "shift comparison"
+      ]
+    },
+    {
+      "id": "punch_001",
+      "category": "punch_records",
+      "question": "Show me the punch records from yesterday",
+      "sql": "SELECT CorpEmpCode, EmpName, PunchTime, InOut, Location, Authentication FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(DATEADD(day, -1, GETDATE()) AS DATE) ORDER BY PunchTime DESC",
+      "explanation": "Using vw_RawPunchDetail view which pre-joins punch data with employee and machine info",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "DATE functions",
+        "CAST",
+        "DATEADD"
+      ]
+    },
+    {
+      "id": "punch_002",
+      "category": "punch_records",
+      "question": "Get punch records for a specific employee",
+      "sql": "SELECT PunchTime, InOut, Location, ATDate FROM dbo.vw_RawPunchDetail WHERE CorpEmpCode = 'EMP001' ORDER BY PunchTime DESC",
+      "explanation": "Using vw_RawPunchDetail for employee-specific punch history",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE",
+        "ORDER BY"
+      ]
+    },
+    {
+      "id": "punch_003",
+      "category": "punch_records",
+      "question": "How many punches were manual today?",
+      "sql": "SELECT COUNT(*) as ManualPunchCount FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND IsManual = 1",
+      "explanation": "IsManual=1 means the punch was manually entered, not from device",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT",
+        "DATE functions",
+        "AND"
+      ]
+    },
+    {
+      "id": "punch_004",
+      "category": "punch_records",
+      "question": "Show punch records by department for today",
+      "sql": "SELECT Dname, COUNT(*) as PunchCount FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Dname ORDER BY PunchCount DESC",
+      "explanation": "Department-wise punch distribution for today",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "department analysis"
+      ]
+    },
+    {
+      "id": "punch_005",
+      "category": "punch_events",
+      "question": "Which employee has the most IN events or IN punches?",
+      "sql": "SELECT TOP 10 CorpEmpCode, EmpName, COUNT(*) AS InCount FROM dbo.vw_RawPunchDetail WHERE InOut = 1 GROUP BY CorpEmpCode, EmpName ORDER BY InCount DESC",
+      "explanation": "InOut=1 means IN event, InOut=0 means OUT event. Do NOT use View_All_Alert_Log for attendance punches.",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "COUNT",
+        "IN events",
+        "attendance"
+      ]
+    },
+    {
+      "id": "punch_006",
+      "category": "punch_events",
+      "question": "Which employee has the most OUT events or OUT punches?",
+      "sql": "SELECT TOP 10 CorpEmpCode, EmpName, COUNT(*) AS OutCount FROM dbo.vw_RawPunchDetail WHERE InOut = 0 GROUP BY CorpEmpCode, EmpName ORDER BY OutCount DESC",
+      "explanation": "InOut=0 means OUT event. For attendance/punch data always use vw_RawPunchDetail.",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "COUNT",
+        "OUT events",
+        "attendance"
+      ]
+    },
+    {
+      "id": "punch_007",
+      "category": "punch_location",
+      "question": "Which locations have the most punches today?",
+      "sql": "SELECT Location, COUNT(*) as PunchCount FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Location ORDER BY PunchCount DESC",
+      "explanation": "Location-wise punch distribution - shows which devices/gates are most used",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "location analysis"
+      ]
+    },
+    {
+      "id": "punch_008",
+      "category": "punch_time",
+      "question": "Show punch records between specific times",
+      "sql": "SELECT CorpEmpCode, EmpName, PunchTime, InOut, Location FROM dbo.vw_RawPunchDetail WHERE PunchTime BETWEEN '2024-01-15 08:00:00' AND '2024-01-15 10:00:00' ORDER BY PunchTime",
+      "explanation": "Time range filtering for punch records",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "BETWEEN",
+        "datetime"
+      ]
+    },
+    {
+      "id": "punch_009",
+      "category": "punch_auth",
+      "question": "Show punches by authentication type",
+      "sql": "SELECT Authentication, COUNT(*) as Count FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Authentication ORDER BY Count DESC",
+      "explanation": "Authentication shows how punch was made - Fingerprint, Face, Card, etc.",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "authentication"
+      ]
+    },
+    {
+      "id": "punch_010",
+      "category": "punch_first_last",
+      "question": "Get first punch time for each employee today",
+      "sql": "SELECT CorpEmpCode, EmpName, MIN(PunchTime) as FirstPunch FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY CorpEmpCode, EmpName ORDER BY FirstPunch",
+      "explanation": "Find earliest punch time per employee",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "MIN",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "punch_011",
+      "category": "punch_first_last",
+      "question": "Get last punch time for each employee today",
+      "sql": "SELECT CorpEmpCode, EmpName, MAX(PunchTime) as LastPunch FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY CorpEmpCode, EmpName ORDER BY LastPunch DESC",
+      "explanation": "Find latest punch time per employee",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "MAX",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "punch_012",
+      "category": "punch_analysis",
+      "question": "How many people punched in today?",
+      "sql": "SELECT COUNT(DISTINCT CorpEmpCode) as UniqueEmployees FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND InOut = 1",
+      "explanation": "Count unique employees who punched IN today",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT DISTINCT",
+        "IN punches"
+      ]
+    },
+    {
+      "id": "punch_013",
+      "category": "punch_analysis",
+      "question": "Show punch count trend by hour",
+      "sql": "SELECT DATEPART(HOUR, PunchTime) as Hour, COUNT(*) as PunchCount FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY DATEPART(HOUR, PunchTime) ORDER BY Hour",
+      "explanation": "Hourly punch distribution to see peak times",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "DATEPART",
+        "hourly analysis"
+      ]
+    },
+    {
+      "id": "att_001",
+      "category": "attendance_status",
+      "question": "Show attendance summary for today",
+      "sql": "SELECT Status, COUNT(*) as Count FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Status",
+      "explanation": "Status shows attendance state - Present, Absent, Leave, Weekend Off, Holiday, etc.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "attendance status"
+      ]
+    },
+    {
+      "id": "att_002",
+      "category": "attendance_present",
+      "question": "Who is present today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, OutTime, Status FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status = 'Present'",
+      "explanation": "List employees marked as Present",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE",
+        "status filter"
+      ]
+    },
+    {
+      "id": "att_003",
+      "category": "attendance_absent",
+      "question": "Who is absent today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status = 'Absent'",
+      "explanation": "List employees marked as Absent",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "WHERE",
+        "absent employees"
+      ]
+    },
+    {
+      "id": "att_004",
+      "category": "attendance_late",
+      "question": "Who came late today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "explanation": "LateArrival is in minutes - shows how late employee arrived",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "ORDER BY"
+      ]
+    },
+    {
+      "id": "att_005",
+      "category": "attendance_early",
+      "question": "Who left early today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, OutTime, EarlyDeparture FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND EarlyDeparture > 0 ORDER BY EarlyDeparture DESC",
+      "explanation": "EarlyDeparture is in minutes - shows how early employee left",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "early departure",
+        "ORDER BY"
+      ]
+    },
+    {
+      "id": "att_006",
+      "category": "attendance_overtime",
+      "question": "Who worked overtime today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, OutTime, OT as OvertimeMinutes FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND OT > 0 ORDER BY OT DESC",
+      "explanation": "OT field shows overtime in minutes",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "overtime",
+        "ORDER BY"
+      ]
+    },
+    {
+      "id": "att_007",
+      "category": "attendance_workhours",
+      "question": "Show work hours for each employee today",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, OutTime, WorkDuration/60 as WorkHours FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND WorkDuration IS NOT NULL ORDER BY WorkDuration DESC",
+      "explanation": "WorkDuration is in minutes, divide by 60 for hours",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "work hours",
+        "arithmetic"
+      ]
+    },
+    {
+      "id": "att_008",
+      "category": "attendance_dept",
+      "question": "Show attendance by department today",
+      "sql": "SELECT Dname, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent, COUNT(CASE WHEN Status LIKE '%Leave%' THEN 1 END) as OnLeave FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Dname",
+      "explanation": "Department-wise attendance breakdown",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "CASE",
+        "conditional counting"
+      ]
+    },
+    {
+      "id": "att_009",
+      "category": "attendance_monthly",
+      "question": "Show monthly attendance summary for an employee",
+      "sql": "SELECT CorpEmpCode, EmpName, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as PresentDays, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as AbsentDays, SUM(WorkDuration)/60 as TotalWorkHours FROM dbo.vw_CompleteAttendanceReport WHERE CorpEmpCode = 'EMP001' AND MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) GROUP BY CorpEmpCode, EmpName",
+      "explanation": "Monthly attendance aggregation for specific employee",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "monthly aggregation",
+        "MONTH",
+        "YEAR"
+      ]
+    },
+    {
+      "id": "att_010",
+      "category": "attendance_avg",
+      "question": "What is the average work hours per day this month?",
+      "sql": "SELECT AVG(WorkDuration)/60 as AvgWorkHours FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND WorkDuration IS NOT NULL AND WorkDuration > 0",
+      "explanation": "Calculate average work hours across all employees this month",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "AVG",
+        "average calculation"
+      ]
+    },
+    {
+      "id": "att_011",
+      "category": "attendance_shift",
+      "question": "Show attendance with shift details",
+      "sql": "SELECT CorpEmpCode, EmpName, Sname as ShiftName, ShiftStartTime, ShiftEndTime, InTime, OutTime, Status FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) ORDER BY Sname",
+      "explanation": "View includes shift details for each attendance record",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "shift details"
+      ]
+    },
+    {
+      "id": "att_012",
+      "category": "attendance_leave",
+      "question": "Who is on leave today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, Status FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status LIKE '%Leave%'",
+      "explanation": "Filter for employees on any type of leave",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "leave status"
+      ]
+    },
+    {
+      "id": "att_013",
+      "category": "attendance_weekend",
+      "question": "Show weekend off employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, ATDate, Status FROM dbo.vw_CompleteAttendanceReport WHERE Status = 'WO' AND CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)",
+      "explanation": "WO = Weekend Off status",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "weekend off"
+      ]
+    },
+    {
+      "id": "att_014",
+      "category": "attendance_history",
+      "question": "Show attendance history for last 7 days",
+      "sql": "SELECT ATDate, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(day, -7, GETDATE()) GROUP BY ATDate ORDER BY ATDate",
+      "explanation": "Daily attendance trend over last week",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "DATEADD",
+        "trend analysis"
+      ]
+    },
+    {
+      "id": "att_015",
+      "category": "attendance_inout",
+      "question": "Show employees who punched in but not out",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND InTime IS NOT NULL AND OutTime IS NULL",
+      "explanation": "Identify employees who have not punched out yet",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "IS NULL",
+        "missing punch"
+      ]
+    },
+    {
+      "id": "bio_001",
+      "category": "biometric_status",
+      "question": "Show employees with their biometric enrollment status",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, Finger, Face, Card FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1",
+      "explanation": "Finger, Face, Card columns show YES/NO for biometric enrollment",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "biometric columns"
+      ]
+    },
+    {
+      "id": "bio_002",
+      "category": "biometric_missing",
+      "question": "List employees without face biometric",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, Face FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND Face = 'NO'",
+      "explanation": "Find employees who haven't enrolled face biometric",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "biometric check"
+      ]
+    },
+    {
+      "id": "bio_003",
+      "category": "biometric_missing",
+      "question": "List employees without fingerprint",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, Finger FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND Finger = 'NO'",
+      "explanation": "Find employees without fingerprint enrollment",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "fingerprint check"
+      ]
+    },
+    {
+      "id": "bio_004",
+      "category": "biometric_stats",
+      "question": "Show biometric enrollment statistics",
+      "sql": "SELECT Finger as HasFingerprint, COUNT(*) as Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Finger",
+      "explanation": "Count employees by fingerprint enrollment status",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "enrollment stats"
+      ]
+    },
+    {
+      "id": "bio_005",
+      "category": "biometric_stats",
+      "question": "Show face recognition enrollment by department",
+      "sql": "SELECT Dname, SUM(CASE WHEN Face = 'YES' THEN 1 ELSE 0 END) as Enrolled, SUM(CASE WHEN Face = 'NO' THEN 1 ELSE 0 END) as NotEnrolled FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname",
+      "explanation": "Department-wise face enrollment status",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "conditional SUM",
+        "biometric analysis"
+      ]
+    },
+    {
+      "id": "access_001",
+      "category": "access_control",
+      "question": "Get employee terminal authentication details",
+      "sql": "SELECT CorpEmpCode, IPAddress, Location, AuthenticationName, Schedule_Name FROM dbo.View_Employee_Terminal_Authentication_Relation",
+      "explanation": "Shows which terminals/devices employees can access and their authentication method",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "authentication",
+        "access control"
+      ]
+    },
+    {
+      "id": "access_002",
+      "category": "access_control",
+      "question": "Which employees have access to a specific location?",
+      "sql": "SELECT CorpEmpCode, EmpName, AuthenticationName FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE Location LIKE '%Main Gate%'",
+      "explanation": "Find employees who can access specific terminal/gate",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "access filtering"
+      ]
+    },
+    {
+      "id": "access_003",
+      "category": "access_control",
+      "question": "Show VIP access list",
+      "sql": "SELECT CorpEmpCode, EmpName, Location, Schedule_Name FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE VIP_list_flag = 1",
+      "explanation": "VIP_list_flag=1 indicates VIP access privileges",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "VIP access"
+      ]
+    },
+    {
+      "id": "access_004",
+      "category": "access_control",
+      "question": "Show whitelist employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Location FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE WhiteList = 1",
+      "explanation": "WhiteList=1 means employee is on access whitelist",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "whitelist"
+      ]
+    },
+    {
+      "id": "access_005",
+      "category": "access_control",
+      "question": "Show employees with expired access",
+      "sql": "SELECT CorpEmpCode, EmpName, Location, Expiry_date FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE Expiry_date < GETDATE() AND Expiry_date IS NOT NULL",
+      "explanation": "Find access records that have expired",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "expiry check"
+      ]
+    },
+    {
+      "id": "access_006",
+      "category": "access_control",
+      "question": "Show blacklisted employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Location FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE IsBlackListed = 1",
+      "explanation": "IsBlackListed=1 means employee is on blacklist",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "blacklist"
+      ]
+    },
+    {
+      "id": "access_007",
+      "category": "access_schedule",
+      "question": "Show employees by access schedule",
+      "sql": "SELECT Schedule_Name, COUNT(DISTINCT CorpEmpCode) as EmployeeCount FROM dbo.View_Employee_Terminal_Authentication_Relation GROUP BY Schedule_Name ORDER BY EmployeeCount DESC",
+      "explanation": "Group employees by their access schedule",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "schedule grouping"
+      ]
+    },
+    {
+      "id": "device_001",
+      "category": "device_management",
+      "question": "List all access control devices",
+      "sql": "SELECT TerminalID, DomainName as DeviceName, IPAddress, Location, DeviceType, Connection_Status FROM dbo.Vw_TerminalDetail_VMS",
+      "explanation": "Shows all biometric/access control terminals",
+      "tables_used": [
+        "Vw_TerminalDetail_VMS"
+      ],
+      "concepts": [
+        "VIEW",
+        "device list"
+      ]
+    },
+    {
+      "id": "device_002",
+      "category": "device_status",
+      "question": "Show online/offline device status",
+      "sql": "SELECT Connection_Status, COUNT(*) as Count FROM dbo.Vw_TerminalDetail_VMS GROUP BY Connection_Status",
+      "explanation": "Device connectivity status overview",
+      "tables_used": [
+        "Vw_TerminalDetail_VMS"
+      ],
+      "concepts": [
+        "VIEW",
+        "connection status"
+      ]
+    },
+    {
+      "id": "device_003",
+      "category": "device_location",
+      "question": "Show devices by location",
+      "sql": "SELECT Location, COUNT(*) as DeviceCount FROM dbo.Vw_TerminalDetail_VMS GROUP BY Location ORDER BY DeviceCount DESC",
+      "explanation": "Location-wise device distribution",
+      "tables_used": [
+        "Vw_TerminalDetail_VMS"
+      ],
+      "concepts": [
+        "VIEW",
+        "location grouping"
+      ]
+    },
+    {
+      "id": "device_004",
+      "category": "device_type",
+      "question": "Show devices by type",
+      "sql": "SELECT DeviceType, COUNT(*) as Count FROM dbo.Vw_TerminalDetail_VMS GROUP BY DeviceType ORDER BY Count DESC",
+      "explanation": "Different types of devices deployed",
+      "tables_used": [
+        "Vw_TerminalDetail_VMS"
+      ],
+      "concepts": [
+        "VIEW",
+        "device types"
+      ]
+    },
+    {
+      "id": "device_005",
+      "category": "device_capacity",
+      "question": "Show device user capacity details",
+      "sql": "SELECT DomainName, Location, UserCount as CurrentUsers, UserCapacity as MaxCapacity FROM dbo.MachineMaster WHERE UserCapacity > 0",
+      "explanation": "Shows device capacity vs current user count",
+      "tables_used": [
+        "MachineMaster"
+      ],
+      "concepts": [
+        "TABLE",
+        "capacity planning"
+      ]
+    },
+    {
+      "id": "visitor_001",
+      "category": "visitor_management",
+      "question": "Show visitors who checked in today",
+      "sql": "SELECT FName, LName, Whom_To_Visit, IN_Time, Purpose, MobileNumner FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE) ORDER BY IN_Time DESC",
+      "explanation": "Today's visitor check-ins",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "visitor data",
+        "DATE filtering"
+      ]
+    },
+    {
+      "id": "visitor_002",
+      "category": "visitor_management",
+      "question": "Show visitors who haven't checked out",
+      "sql": "SELECT FName, LName, IN_Time, Whom_To_Visit, MobileNumner FROM dbo.View_Visitor_EnrollmentDetail WHERE IN_Time IS NOT NULL AND OUT_Time IS NULL AND CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE)",
+      "explanation": "Visitors still on premises",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "missing checkout"
+      ]
+    },
+    {
+      "id": "visitor_003",
+      "category": "visitor_stats",
+      "question": "How many visitors came today?",
+      "sql": "SELECT COUNT(*) as VisitorCount FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE)",
+      "explanation": "Total visitor count for today",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "visitor_004",
+      "category": "visitor_purpose",
+      "question": "Show visitor count by purpose",
+      "sql": "SELECT Purpose, COUNT(*) as Count FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Purpose ORDER BY Count DESC",
+      "explanation": "Breakdown of visitors by visit purpose",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "purpose analysis"
+      ]
+    },
+    {
+      "id": "visitor_005",
+      "category": "visitor_host",
+      "question": "Which employees received the most visitors?",
+      "sql": "SELECT Whom_To_Visit as HostEmpCode, WhomEmpName as HostName, COUNT(*) as VisitorCount FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) >= DATEADD(month, -1, GETDATE()) GROUP BY Whom_To_Visit, WhomEmpName ORDER BY VisitorCount DESC",
+      "explanation": "Employees who received most visitors in last month. Use WhomEmpName for host employee name.",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "host analysis",
+        "WhomEmpName"
+      ]
+    },
+    {
+      "id": "visitor_006",
+      "category": "visitor_search",
+      "question": "Who visited the Dean's office this week?",
+      "sql": "SELECT FName, LName, IN_Time, OUT_Time, Purpose, WhomEmpName as HostName FROM dbo.View_Visitor_EnrollmentDetail WHERE WhomEmpName LIKE '%Dean%' AND IN_Time >= DATEADD(day, -7, GETDATE()) ORDER BY IN_Time DESC",
+      "explanation": "Search visitors by host name. CRITICAL: Use WhomEmpName (not Whom_To_Visit_Name) for host employee name searches.",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "host search",
+        "WhomEmpName",
+        "LIKE"
+      ]
+    },
+    {
+      "id": "visitor_007",
+      "category": "visitor_log",
+      "question": "Show visitor log for yesterday",
+      "sql": "SELECT FName, LName, MobileNumner, WhomEmpName as Host, IN_Time, OUT_Time, Purpose FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) = DATEADD(day, -1, CAST(GETDATE() AS DATE)) ORDER BY IN_Time DESC",
+      "explanation": "Visitor log for a specific date (yesterday)",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "date filter",
+        "visitor log"
+      ]
+    },
+    {
+      "id": "visitor_008",
+      "category": "visitor_department",
+      "question": "Which department receives the most visitors?",
+      "sql": "SELECT TOP 10 WhomEmpName as Host, COUNT(*) as VisitorCount FROM dbo.View_Visitor_EnrollmentDetail WHERE IN_Time >= DATEADD(month, -1, GETDATE()) GROUP BY WhomEmpName ORDER BY VisitorCount DESC",
+      "explanation": "Departments/hosts with most visitors. Group by host name to find busiest offices.",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "visitor analytics",
+        "TOP"
+      ]
+    },
+    {
+      "id": "visitor_009",
+      "category": "visitor_type",
+      "question": "How many vendors visited this month?",
+      "sql": "SELECT COUNT(*) as VendorCount FROM dbo.View_Visitor_EnrollmentDetail WHERE VisitorType = 'Vendor' AND MONTH(IN_Time) = MONTH(GETDATE()) AND YEAR(IN_Time) = YEAR(GETDATE())",
+      "explanation": "Count visitors by type. Common VisitorType values: Vendor, Parent, Guest, Interview Candidate, Contractor",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "visitor type filter",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "visitor_010",
+      "category": "visitor_type",
+      "question": "List parent visits for this semester",
+      "sql": "SELECT FName, LName, IN_Time, WhomEmpName as MetWith, Purpose FROM dbo.View_Visitor_EnrollmentDetail WHERE VisitorType = 'Parent' AND IN_Time >= DATEADD(month, -6, GETDATE()) ORDER BY IN_Time DESC",
+      "explanation": "Filter visitors by type (Parent). VisitorType column stores visitor classification.",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "parent visits",
+        "semester filter"
+      ]
+    },
+    {
+      "id": "visitor_011",
+      "category": "visitor_guest",
+      "question": "Show guest speakers who visited last month",
+      "sql": "SELECT FName, LName, IN_Time, OUT_Time, WhomEmpName as Host, Purpose FROM dbo.View_Visitor_EnrollmentDetail WHERE (VisitorType = 'Guest Speaker' OR Purpose LIKE '%Speaker%' OR Purpose LIKE '%Guest%') AND IN_Time >= DATEADD(month, -1, GETDATE()) AND IN_Time < GETDATE() ORDER BY IN_Time DESC",
+      "explanation": "Find guest speakers by visitor type or purpose. Check both VisitorType and Purpose columns.",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "guest speaker",
+        "OR condition"
+      ]
+    },
+    {
+      "id": "visitor_012",
+      "category": "visitor_status",
+      "question": "List all visitors currently in campus",
+      "sql": "SELECT FName, LName, IN_Time, WhomEmpName as Host, MobileNumner FROM dbo.View_Visitor_EnrollmentDetail WHERE IN_Time IS NOT NULL AND OUT_Time IS NULL AND CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE)",
+      "explanation": "Visitors who checked in but haven't checked out yet. IN_Time NOT NULL and OUT_Time IS NULL means still inside.",
+      "tables_used": [
+        "View_Visitor_EnrollmentDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "currently inside",
+        "NULL check"
+      ]
+    },
+    {
+      "id": "visitor_013",
+      "category": "visitor_attendance_pct",
+      "question": "What is the attendance percentage for a specific department?",
+      "sql": "SELECT Dname, COUNT(CASE WHEN Status = 'Present' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) as AttendancePercent FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Dname = 'Engineering' GROUP BY Dname",
+      "explanation": "CRITICAL: Always use NULLIF(COUNT(*), 0) when calculating percentages to prevent division by zero errors. Replace 'Engineering' with desired department name.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "attendance percentage",
+        "NULLIF",
+        "division by zero protection"
+      ]
+    },
+    {
+      "id": "shift_001",
+      "category": "shift_management",
+      "question": "Show all shifts",
+      "sql": "SELECT Sname as ShiftName, StartTime, EndTime, LunchStartTime, LunchEndTime FROM dbo.View_ShiftMaster",
+      "explanation": "List of all configured shifts",
+      "tables_used": [
+        "View_ShiftMaster"
+      ],
+      "concepts": [
+        "VIEW",
+        "shift list"
+      ]
+    },
+    {
+      "id": "shift_002",
+      "category": "shift_assignment",
+      "question": "Show employee shift assignments for today",
+      "sql": "SELECT CorpEmpCode, EmpName, Sname as ShiftName, ShiftStartTime, ShiftEndTime FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) ORDER BY ShiftStartTime",
+      "explanation": "Employee shift details from attendance report",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "shift assignment"
+      ]
+    },
+    {
+      "id": "shift_003",
+      "category": "shift_stats",
+      "question": "Show employee count by shift",
+      "sql": "SELECT Sname as ShiftName, COUNT(*) as EmployeeCount FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Sname ORDER BY EmployeeCount DESC",
+      "explanation": "Distribution of employees across shifts",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "shift distribution"
+      ]
+    },
+    {
+      "id": "leave_001",
+      "category": "leave_management",
+      "question": "Show employee leave balance",
+      "sql": "SELECT CorpEmpCode, EmpName, LshortName as LeaveType, Balance, LeaveAllowedCYear as AnnualAllowance FROM dbo.vw_LeaveDetail WHERE CorpEmpCode = 'EMP001'",
+      "explanation": "Leave balance for specific employee",
+      "tables_used": [
+        "vw_LeaveDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "leave balance"
+      ]
+    },
+    {
+      "id": "leave_002",
+      "category": "leave_requests",
+      "question": "Show pending leave requests",
+      "sql": "SELECT CorpEmpCode, EmpName, LshortName as LeaveType, StartDate, EndDate, LeaveAmount as Days, LeaveReason FROM dbo.vw_LeaveDetail WHERE Status = 0",
+      "explanation": "Status=0 means pending approval",
+      "tables_used": [
+        "vw_LeaveDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "pending leaves"
+      ]
+    },
+    {
+      "id": "leave_003",
+      "category": "leave_stats",
+      "question": "Show leave statistics by department",
+      "sql": "SELECT Dname, SUM(LeaveAmount) as TotalLeaveDays FROM dbo.vw_LeaveDetail WHERE Status = 1 AND YEAR(StartDate) = YEAR(GETDATE()) GROUP BY Dname ORDER BY TotalLeaveDays DESC",
+      "explanation": "Department-wise leave consumption",
+      "tables_used": [
+        "vw_LeaveDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "leave stats"
+      ]
+    },
+    {
+      "id": "org_001",
+      "category": "organization",
+      "question": "Show organization hierarchy",
+      "sql": "SELECT DISTINCT CName as Company, BranchName, Dname as Department, SecName as Section FROM dbo.vw_EmployeeMaster_Vms ORDER BY CName, BranchName, Dname, SecName",
+      "explanation": "Complete organizational structure",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "hierarchy"
+      ]
+    },
+    {
+      "id": "org_002",
+      "category": "organization",
+      "question": "Show all departments",
+      "sql": "SELECT DISTINCT Dname as Department, BranchName FROM dbo.vw_EmployeeMaster_Vms ORDER BY BranchName, Dname",
+      "explanation": "List of all departments with their branches",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "departments"
+      ]
+    },
+    {
+      "id": "org_003",
+      "category": "organization",
+      "question": "Show all designations",
+      "sql": "SELECT DISTINCT DesName as Designation, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY DesName ORDER BY EmployeeCount DESC",
+      "explanation": "All designations with employee counts",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "designations"
+      ]
+    },
+    {
+      "id": "org_004",
+      "category": "organization",
+      "question": "Show branch details",
+      "sql": "SELECT DISTINCT BranchName, CName as Company, COUNT(*) as EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY BranchName, CName ORDER BY EmployeeCount DESC",
+      "explanation": "Branch information with employee counts",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "branches"
+      ]
+    },
+    {
+      "id": "alert_001",
+      "category": "alerts",
+      "question": "Show recent device alerts",
+      "sql": "SELECT PunchTime, EmpName, CorpEmpCode, IPAddress, Remarks, NotificationName FROM dbo.View_All_Alert_Log ORDER BY PunchTime DESC",
+      "explanation": "Recent alerts from access control devices - NOT for attendance punch data",
+      "tables_used": [
+        "View_All_Alert_Log"
+      ],
+      "concepts": [
+        "VIEW",
+        "alerts",
+        "device events"
+      ]
+    },
+    {
+      "id": "alert_002",
+      "category": "alerts",
+      "question": "Show unacknowledged alerts",
+      "sql": "SELECT PunchTime, EmpName, IPAddress, Remarks, NotificationName FROM dbo.View_All_Alert_Log WHERE Acknowledgement = 0 ORDER BY PunchTime DESC",
+      "explanation": "Alerts that haven't been acknowledged",
+      "tables_used": [
+        "View_All_Alert_Log"
+      ],
+      "concepts": [
+        "VIEW",
+        "unacknowledged"
+      ]
+    },
+    {
+      "id": "alert_003",
+      "category": "alerts",
+      "question": "Show alerts by severity",
+      "sql": "SELECT SeverityID, COUNT(*) as AlertCount FROM dbo.View_All_Alert_Log WHERE CAST(PunchTime AS DATE) = CAST(GETDATE() AS DATE) GROUP BY SeverityID ORDER BY SeverityID DESC",
+      "explanation": "Alert distribution by severity level",
+      "tables_used": [
+        "View_All_Alert_Log"
+      ],
+      "concepts": [
+        "VIEW",
+        "severity"
+      ]
+    },
+    {
+      "id": "report_001",
+      "category": "daily_report",
+      "question": "Generate daily attendance report",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName, InTime, OutTime, WorkDuration/60 as WorkHours, LateArrival, EarlyDeparture, Status FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) ORDER BY Dname, EmpName",
+      "explanation": "Comprehensive daily attendance report",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "daily report"
+      ]
+    },
+    {
+      "id": "report_002",
+      "category": "monthly_report",
+      "question": "Generate monthly attendance summary",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, SUM(CASE WHEN Status = 'Present' THEN 1 ELSE 0 END) as PresentDays, SUM(CASE WHEN Status = 'Absent' THEN 1 ELSE 0 END) as AbsentDays, SUM(CASE WHEN Status LIKE '%Leave%' THEN 1 ELSE 0 END) as LeaveDays, SUM(WorkDuration)/60 as TotalWorkHours, SUM(LateArrival) as TotalLateMins, SUM(OT) as TotalOTMins FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) GROUP BY CorpEmpCode, EmpName, Dname ORDER BY Dname, EmpName",
+      "explanation": "Monthly attendance aggregation per employee",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "monthly aggregation",
+        "SUM",
+        "CASE"
+      ]
+    },
+    {
+      "id": "report_003",
+      "category": "department_report",
+      "question": "Department attendance percentage",
+      "sql": "SELECT Dname, COUNT(CASE WHEN Status = 'Present' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0) as AttendancePercent FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY Dname ORDER BY AttendancePercent DESC",
+      "explanation": "Department-wise attendance percentage. CRITICAL: Use NULLIF(COUNT(*), 0) to prevent division by zero errors when a department has no attendance records.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "percentage calculation",
+        "NULLIF",
+        "division by zero protection"
+      ]
+    },
+    {
+      "id": "report_004",
+      "category": "late_report",
+      "question": "Generate late arrival report",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, COUNT(*) as LateDays, SUM(LateArrival) as TotalLateMins, AVG(LateArrival) as AvgLateMins FROM dbo.vw_CompleteAttendanceReport WHERE LateArrival > 0 AND MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) GROUP BY CorpEmpCode, EmpName, Dname ORDER BY LateDays DESC",
+      "explanation": "Monthly late arrival analysis",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late analysis"
+      ]
+    },
+    {
+      "id": "report_005",
+      "category": "overtime_report",
+      "question": "Generate overtime report",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, COUNT(*) as OTDays, SUM(OT)/60 as TotalOTHours FROM dbo.vw_CompleteAttendanceReport WHERE OT > 0 AND MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) GROUP BY CorpEmpCode, EmpName, Dname ORDER BY TotalOTHours DESC",
+      "explanation": "Monthly overtime summary",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "overtime report"
+      ]
+    },
+    {
+      "id": "dashboard_001",
+      "category": "dashboard",
+      "question": "Get today's attendance summary",
+      "sql": "SELECT (SELECT COUNT(*) FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1) as TotalEmployees, (SELECT COUNT(*) FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status = 'Present') as Present, (SELECT COUNT(*) FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status = 'Absent') as Absent, (SELECT COUNT(*) FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status LIKE '%Leave%') as OnLeave",
+      "explanation": "Dashboard summary with key metrics",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms",
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "subquery",
+        "dashboard metrics"
+      ]
+    },
+    {
+      "id": "dashboard_002",
+      "category": "dashboard",
+      "question": "Get real-time IN/OUT count",
+      "sql": "SELECT IN_Out_Status, COUNT(*) as Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND IN_Out_Status IS NOT NULL GROUP BY IN_Out_Status",
+      "explanation": "Current IN/OUT status of employees",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "real-time status"
+      ]
+    },
+    {
+      "id": "dashboard_003",
+      "category": "dashboard",
+      "question": "Average IN time today",
+      "sql": "SELECT AVG(CAST(InTime AS FLOAT)) as AvgInTime FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND InTime IS NOT NULL",
+      "explanation": "Calculate average check-in time",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "AVG",
+        "time calculation"
+      ]
+    },
+    {
+      "id": "time_001",
+      "category": "time_queries",
+      "question": "Show records from last week",
+      "sql": "SELECT CorpEmpCode, EmpName, ATDate, InTime, OutTime, Status FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(day, -7, GETDATE()) ORDER BY ATDate DESC, EmpName",
+      "explanation": "Last 7 days attendance records",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "DATEADD",
+        "date range"
+      ]
+    },
+    {
+      "id": "time_002",
+      "category": "time_queries",
+      "question": "Show records from last month",
+      "sql": "SELECT CorpEmpCode, EmpName, ATDate, Status FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(month, -1, GETDATE()) ORDER BY ATDate DESC",
+      "explanation": "Last month's attendance records",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "monthly data"
+      ]
+    },
+    {
+      "id": "time_003",
+      "category": "time_queries",
+      "question": "Show records for specific date range",
+      "sql": "SELECT CorpEmpCode, EmpName, ATDate, InTime, OutTime, Status FROM dbo.vw_CompleteAttendanceReport WHERE ATDate BETWEEN '2024-01-01' AND '2024-01-31' ORDER BY ATDate, EmpName",
+      "explanation": "Attendance for specific date range",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "BETWEEN",
+        "date range"
+      ]
+    },
+    {
+      "id": "analysis_001",
+      "category": "analysis",
+      "question": "Find employees with perfect attendance this month",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, COUNT(*) as WorkDays FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND Status = 'Present' GROUP BY CorpEmpCode, EmpName, Dname HAVING COUNT(*) >= 20 ORDER BY WorkDays DESC",
+      "explanation": "Employees with high attendance",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "HAVING",
+        "attendance analysis"
+      ]
+    },
+    {
+      "id": "analysis_002",
+      "category": "analysis",
+      "question": "Find employees with highest late arrivals",
+      "sql": "SELECT TOP 10 CorpEmpCode, EmpName, Dname, COUNT(*) as LateDays, SUM(LateArrival) as TotalLateMins FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND LateArrival > 0 GROUP BY CorpEmpCode, EmpName, Dname ORDER BY LateDays DESC",
+      "explanation": "Top 10 employees with most late arrivals",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "TOP",
+        "late analysis"
+      ]
+    },
+    {
+      "id": "analysis_003",
+      "category": "analysis",
+      "question": "Find most punctual employees",
+      "sql": "SELECT TOP 10 CorpEmpCode, EmpName, Dname, COUNT(*) as PresentDays, SUM(CASE WHEN LateArrival = 0 OR LateArrival IS NULL THEN 1 ELSE 0 END) as OnTimeDays FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND Status = 'Present' GROUP BY CorpEmpCode, EmpName, Dname ORDER BY OnTimeDays DESC",
+      "explanation": "Employees who are always on time",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "punctuality analysis"
+      ]
+    },
+    {
+      "id": "analysis_004",
+      "category": "analysis",
+      "question": "Find employees with highest overtime",
+      "sql": "SELECT TOP 10 CorpEmpCode, EmpName, Dname, SUM(OT)/60 as TotalOTHours FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND OT > 0 GROUP BY CorpEmpCode, EmpName, Dname ORDER BY TotalOTHours DESC",
+      "explanation": "Employees with most overtime hours",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "overtime analysis"
+      ]
+    },
+    {
+      "id": "analysis_005",
+      "category": "analysis",
+      "question": "Compare department attendance rates",
+      "sql": "SELECT Dname, COUNT(DISTINCT CorpEmpCode) as TotalEmployees, SUM(CASE WHEN Status = 'Present' THEN 1 ELSE 0 END) as PresentInstances, SUM(CASE WHEN Status = 'Absent' THEN 1 ELSE 0 END) as AbsentInstances, CAST(SUM(CASE WHEN Status = 'Present' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS DECIMAL(5,2)) as AttendanceRate FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) GROUP BY Dname ORDER BY AttendanceRate DESC",
+      "explanation": "Department attendance comparison",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "rate calculation",
+        "comparison"
+      ]
+    },
+    {
+      "id": "card_001",
+      "category": "card_management",
+      "question": "Show employees with their card numbers",
+      "sql": "SELECT CorpEmpCode, EmpName, PresentCardNo, Card FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND PresentCardNo IS NOT NULL AND PresentCardNo != ''",
+      "explanation": "List of employees with assigned access cards",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "card assignment"
+      ]
+    },
+    {
+      "id": "card_002",
+      "category": "card_management",
+      "question": "Show employees without cards",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND (PresentCardNo IS NULL OR PresentCardNo = '')",
+      "explanation": "Employees who don't have access cards",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "missing card"
+      ]
+    },
+    {
+      "id": "audit_001",
+      "category": "audit",
+      "question": "Show audit log for today",
+      "sql": "SELECT LogDateTime, CorpEmpCode, LogDetail, DetailType, IPAddress, Status FROM dbo.AuditLog WHERE CAST(LogDateTime AS DATE) = CAST(GETDATE() AS DATE) ORDER BY LogDateTime DESC",
+      "explanation": "Today's system audit events",
+      "tables_used": [
+        "AuditLog"
+      ],
+      "concepts": [
+        "TABLE",
+        "audit trail"
+      ]
+    },
+    {
+      "id": "audit_002",
+      "category": "audit",
+      "question": "Show login/logout events",
+      "sql": "SELECT LogDateTime, CorpEmpCode, LogDetail, IPAddress FROM dbo.AuditLog WHERE DetailType LIKE '%Login%' OR DetailType LIKE '%Logout%' ORDER BY LogDateTime DESC",
+      "explanation": "User login/logout tracking",
+      "tables_used": [
+        "AuditLog"
+      ],
+      "concepts": [
+        "TABLE",
+        "login tracking"
+      ]
+    },
+    {
+      "id": "comp_001",
+      "category": "comparison",
+      "question": "Compare today vs yesterday attendance",
+      "sql": "SELECT 'Today' as Day, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) UNION ALL SELECT 'Yesterday', COUNT(CASE WHEN Status = 'Present' THEN 1 END), COUNT(CASE WHEN Status = 'Absent' THEN 1 END) FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(DATEADD(day, -1, GETDATE()) AS DATE)",
+      "explanation": "Day over day attendance comparison",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "UNION ALL",
+        "comparison"
+      ]
+    },
+    {
+      "id": "comp_002",
+      "category": "comparison",
+      "question": "Compare this week vs last week",
+      "sql": "SELECT 'This Week' as Period, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(day, -7, GETDATE()) UNION ALL SELECT 'Last Week', COUNT(CASE WHEN Status = 'Present' THEN 1 END) FROM dbo.vw_CompleteAttendanceReport WHERE ATDate BETWEEN DATEADD(day, -14, GETDATE()) AND DATEADD(day, -7, GETDATE())",
+      "explanation": "Week over week comparison",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "weekly comparison"
+      ]
+    },
+    {
+      "id": "complex_001",
+      "category": "complex_queries",
+      "question": "Find employees who haven't punched in 3 days",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, MAX(ATDate) as LastAttendance FROM dbo.vw_CompleteAttendanceReport WHERE Status = 'Present' GROUP BY CorpEmpCode, EmpName, Dname HAVING MAX(ATDate) < DATEADD(day, -3, GETDATE()) ORDER BY LastAttendance",
+      "explanation": "Identify inactive employees",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "HAVING",
+        "MAX",
+        "inactivity"
+      ]
+    },
+    {
+      "id": "complex_002",
+      "category": "complex_queries",
+      "question": "Running total of punches by hour",
+      "sql": "SELECT DATEPART(HOUR, PunchTime) as Hour, COUNT(*) as PunchCount, SUM(COUNT(*)) OVER (ORDER BY DATEPART(HOUR, PunchTime)) as RunningTotal FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) GROUP BY DATEPART(HOUR, PunchTime) ORDER BY Hour",
+      "explanation": "Cumulative punch count throughout the day",
+      "tables_used": [
+        "vw_RawPunchDetail"
+      ],
+      "concepts": [
+        "VIEW",
+        "window function",
+        "running total"
+      ]
+    },
+    {
+      "id": "complex_003",
+      "category": "complex_queries",
+      "question": "Rank departments by attendance",
+      "sql": "SELECT Dname, PresentCount, RANK() OVER (ORDER BY PresentCount DESC) as Rank FROM (SELECT Dname, COUNT(*) as PresentCount FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status = 'Present' GROUP BY Dname) AS DeptAttendance",
+      "explanation": "Rank departments by number of present employees",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "RANK",
+        "subquery"
+      ]
+    },
+    {
+      "id": "university_001",
+      "category": "university",
+      "question": "How many students are enrolled?",
+      "sql": "SELECT COUNT(*) as StudentCount FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1",
+      "explanation": "CRITICAL: Use AccessType = 'Student' to count students, NOT Role column. AccessType is the correct column for student identification.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "student count",
+        "AccessType"
+      ]
+    },
+    {
+      "id": "university_002",
+      "category": "university",
+      "question": "Show faculty members by department",
+      "sql": "SELECT Dname, COUNT(*) as FacultyCount FROM dbo.vw_EmployeeMaster_Vms WHERE (Role = 'Teacher' OR DesName LIKE '%Professor%') AND Active = 1 GROUP BY Dname ORDER BY FacultyCount DESC",
+      "explanation": "Faculty distribution across departments",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "faculty analysis"
+      ]
+    },
+    {
+      "id": "university_003",
+      "category": "university",
+      "question": "Show student attendance today",
+      "sql": "SELECT Dname, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND AccessType = 'Student' GROUP BY Dname",
+      "explanation": "CRITICAL: Use AccessType = 'Student' for student attendance, NOT Role column. AccessType is the correct column for filtering students.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "student attendance",
+        "AccessType"
+      ]
+    },
+    {
+      "id": "university_004",
+      "category": "university",
+      "question": "List all staff members",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName, Role FROM dbo.vw_EmployeeMaster_Vms WHERE Role NOT IN ('Student', 'Visitor') AND Active = 1 ORDER BY Dname, EmpName",
+      "explanation": "All non-student staff",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "staff list"
+      ]
+    },
+    {
+      "id": "university_005",
+      "category": "university",
+      "question": "Show admin staff",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_EmployeeMaster_Vms WHERE Role = 'Admin' OR DesName LIKE '%Admin%' AND Active = 1",
+      "explanation": "Administrative staff members",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "admin staff"
+      ]
+    },
+    {
+      "id": "vehicle_001",
+      "category": "vehicle",
+      "question": "Show vehicle entry/exit records",
+      "sql": "SELECT VehicleNo, CardNo, INTIME, OUTTIME, DomainName as Gate, Status FROM dbo.View_Vehicle_IN_Out ORDER BY INTIME DESC",
+      "explanation": "Vehicle movement tracking",
+      "tables_used": [
+        "View_Vehicle_IN_Out"
+      ],
+      "concepts": [
+        "VIEW",
+        "vehicle tracking"
+      ]
+    },
+    {
+      "id": "vehicle_002",
+      "category": "vehicle",
+      "question": "Vehicles currently inside campus",
+      "sql": "SELECT VehicleNo, CardNo, INTIME, DomainName as EntryGate FROM dbo.View_Vehicle_IN_Out WHERE OUTTIME IS NULL AND CAST(INTIME AS DATE) = CAST(GETDATE() AS DATE)",
+      "explanation": "Vehicles that haven't exited",
+      "tables_used": [
+        "View_Vehicle_IN_Out"
+      ],
+      "concepts": [
+        "VIEW",
+        "vehicles on campus"
+      ]
+    },
+    {
+      "id": "search_001",
+      "category": "search",
+      "question": "Search all records for a keyword",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_EmployeeMaster_Vms WHERE EmpName LIKE '%keyword%' OR CorpEmpCode LIKE '%keyword%' OR Dname LIKE '%keyword%' AND Active = 1",
+      "explanation": "Multi-field search functionality",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "LIKE",
+        "multi-search"
+      ]
+    },
+    {
+      "id": "search_002",
+      "category": "search",
+      "question": "Find employee by card number",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, PresentCardNo FROM dbo.vw_EmployeeMaster_Vms WHERE PresentCardNo = '12345'",
+      "explanation": "Lookup by access card number",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "card lookup"
+      ]
+    },
+    {
+      "id": "special_001",
+      "category": "special_queries",
+      "question": "Show IN/OUT status for all employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, IN_Out_Status, InTime, OutTime FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 ORDER BY IN_Out_Status, EmpName",
+      "explanation": "Current IN/OUT status of all employees",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "real-time status"
+      ]
+    },
+    {
+      "id": "special_002",
+      "category": "special_queries",
+      "question": "Show employees currently IN",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime FROM dbo.vw_EmployeeMaster_Vms WHERE IN_Out_Status = 'IN' AND Active = 1 ORDER BY InTime DESC",
+      "explanation": "Employees currently on premises",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "current IN"
+      ]
+    },
+    {
+      "id": "special_003",
+      "category": "special_queries",
+      "question": "Show employees currently OUT",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, OutTime FROM dbo.vw_EmployeeMaster_Vms WHERE IN_Out_Status = 'OUT' AND Active = 1 ORDER BY OutTime DESC",
+      "explanation": "Employees who have left premises",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "current OUT"
+      ]
+    },
+    {
+      "id": "holiday_001",
+      "category": "holiday",
+      "question": "Show upcoming holidays",
+      "sql": "SELECT Hname as HolidayName, HDate FROM dbo.HolidayMaster WHERE HDate >= GETDATE() ORDER BY HDate",
+      "explanation": "List of upcoming holidays",
+      "tables_used": [
+        "HolidayMaster"
+      ],
+      "concepts": [
+        "TABLE",
+        "holiday list"
+      ]
+    },
+    {
+      "id": "holiday_002",
+      "category": "holiday",
+      "question": "Show holiday attendance status",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, Status FROM dbo.vw_CompleteAttendanceReport WHERE Status = 'Holiday' AND CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)",
+      "explanation": "Employees marked with holiday status",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "holiday status"
+      ]
+    },
+    {
+      "id": "export_001",
+      "category": "export",
+      "question": "Export attendance for Excel",
+      "sql": "SELECT CorpEmpCode as [Employee Number], EmpName as [Employee Name], Dname as [Department], CONVERT(VARCHAR, ATDate, 103) as [Date], CONVERT(VARCHAR, InTime, 108) as [In Time], CONVERT(VARCHAR, OutTime, 108) as [Out Time], WorkDuration/60 as [Work Hours], Status FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) ORDER BY ATDate, Dname, EmpName",
+      "explanation": "Format for Excel export with readable column names",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "CONVERT",
+        "export format"
+      ]
+    },
+    {
+      "id": "count_001",
+      "category": "counts",
+      "question": "Total count of all entities",
+      "sql": "SELECT (SELECT COUNT(*) FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1) as TotalEmployees, (SELECT COUNT(*) FROM dbo.Vw_TerminalDetail_VMS) as TotalDevices, (SELECT COUNT(DISTINCT Dname) FROM dbo.vw_EmployeeMaster_Vms) as TotalDepartments, (SELECT COUNT(DISTINCT BranchName) FROM dbo.vw_EmployeeMaster_Vms) as TotalBranches",
+      "explanation": "Summary counts of all main entities",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms",
+        "Vw_TerminalDetail_VMS"
+      ],
+      "concepts": [
+        "subquery",
+        "summary counts"
+      ]
+    },
+    {
+      "id": "edge_001",
+      "category": "edge_cases",
+      "question": "Find duplicate card numbers",
+      "sql": "SELECT PresentCardNo, COUNT(*) as UsageCount FROM dbo.vw_EmployeeMaster_Vms WHERE PresentCardNo IS NOT NULL AND PresentCardNo != '' AND Active = 1 GROUP BY PresentCardNo HAVING COUNT(*) > 1",
+      "explanation": "Identify cards assigned to multiple employees",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "HAVING",
+        "duplicate detection"
+      ]
+    },
+    {
+      "id": "edge_002",
+      "category": "edge_cases",
+      "question": "Find employees with no department",
+      "sql": "SELECT CorpEmpCode, EmpName FROM dbo.EmployeeMaster WHERE Dcode IS NULL OR SecCode IS NULL AND Active = 1",
+      "explanation": "Data quality check - employees without department",
+      "tables_used": [
+        "EmployeeMaster"
+      ],
+      "concepts": [
+        "TABLE",
+        "data quality"
+      ]
+    },
+    {
+      "id": "combined_001",
+      "category": "combined",
+      "question": "Full employee profile with attendance",
+      "sql": "SELECT e.CorpEmpCode, e.EmpName, e.Dname, e.DesName, e.Finger, e.Face, e.Card, e.IN_Out_Status, (SELECT COUNT(*) FROM dbo.vw_CompleteAttendanceReport a WHERE a.CorpEmpCode = e.CorpEmpCode AND a.Status = 'Present' AND MONTH(a.ATDate) = MONTH(GETDATE())) as MonthlyPresentDays FROM dbo.vw_EmployeeMaster_Vms e WHERE e.CorpEmpCode = 'EMP001'",
+      "explanation": "Complete employee profile with attendance stats",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms",
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "correlated subquery",
+        "profile view"
+      ]
+    },
+    {
+      "id": "status_001",
+      "category": "status_codes",
+      "question": "Explain attendance status codes",
+      "sql": "SELECT DISTINCT Status, COUNT(*) as Count FROM dbo.vw_CompleteAttendanceReport GROUP BY Status ORDER BY Count DESC",
+      "explanation": "Status values: Present, Absent, WO (Weekend Off), Holiday, Leave types, Half Day, etc.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "status codes"
+      ]
+    },
+    {
+      "id": "role_001",
+      "category": "roles",
+      "question": "Show all user roles in system",
+      "sql": "SELECT DISTINCT Role, COUNT(*) as Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Role ORDER BY Count DESC",
+      "explanation": "Different roles: Student, Teacher, Admin, Staff, Visitor, etc.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "role types"
+      ]
+    },
+    {
+      "id": "late_001",
+      "category": "late_arrival",
+      "question": "Who was late today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "explanation": "CRITICAL: Use vw_CompleteAttendanceReport for late arrivals - it has the LateArrival column (stored in minutes). Do NOT use vw_RawPunchDetail for late queries - it does not have LateArrival.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "attendance",
+        "LateArrival column",
+        "GETDATE"
+      ]
+    },
+    {
+      "id": "late_002",
+      "category": "late_arrival",
+      "question": "Show employees who came late this week",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, ATDate, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE)) AND ATDate <= CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY ATDate DESC, LateArrival DESC",
+      "explanation": "Weekly late arrival report using vw_CompleteAttendanceReport. LateArrival is in minutes.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "date range",
+        "DATEADD"
+      ]
+    },
+    {
+      "id": "late_003",
+      "category": "late_arrival",
+      "question": "List late comers for this month",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, ATDate, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND LateArrival > 0 ORDER BY ATDate DESC, LateArrival DESC",
+      "explanation": "Monthly late arrival report. Always use vw_CompleteAttendanceReport for late arrivals.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "monthly report",
+        "MONTH",
+        "YEAR"
+      ]
+    },
+    {
+      "id": "late_004",
+      "category": "late_arrival",
+      "question": "How many times was employee late this month?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, COUNT(*) as LateCount, SUM(LateArrival) as TotalLateMinutes, AVG(LateArrival) as AvgLateMinutes FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND LateArrival > 0 GROUP BY CorpEmpCode, EmpName, Dname ORDER BY LateCount DESC",
+      "explanation": "Late arrival frequency analysis. LateArrival is stored in minutes in vw_CompleteAttendanceReport.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "COUNT",
+        "SUM",
+        "AVG",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "late_005",
+      "category": "late_arrival",
+      "question": "Who was late more than 30 minutes today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND LateArrival > 30 ORDER BY LateArrival DESC",
+      "explanation": "Filter late arrivals by duration. LateArrival is in minutes, so >30 means more than 30 minutes late.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "threshold filter"
+      ]
+    },
+    {
+      "id": "late_006",
+      "category": "late_arrival",
+      "question": "Show department-wise late arrival summary",
+      "sql": "SELECT Dname, COUNT(*) as LateDays, SUM(LateArrival) as TotalLateMinutes, AVG(LateArrival) as AvgLateMinutes FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND LateArrival > 0 GROUP BY Dname ORDER BY LateDays DESC",
+      "explanation": "Department-wise late arrival analysis using vw_CompleteAttendanceReport.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "department analysis",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "early_001",
+      "category": "early_departure",
+      "question": "Who left early today?",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, OutTime, EarlyDeparture FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(GETDATE() AS DATE) AND EarlyDeparture > 0 ORDER BY EarlyDeparture DESC",
+      "explanation": "CRITICAL: Use vw_CompleteAttendanceReport for early departures - it has the EarlyDeparture column (in minutes).",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "early departure",
+        "EarlyDeparture column"
+      ]
+    },
+    {
+      "id": "early_002",
+      "category": "early_departure",
+      "question": "Show employees who left before time this week",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, ATDate, OutTime, EarlyDeparture FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE)) AND ATDate <= CAST(GETDATE() AS DATE) AND EarlyDeparture > 0 ORDER BY ATDate DESC, EarlyDeparture DESC",
+      "explanation": "Weekly early departure report. Always use vw_CompleteAttendanceReport.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "early departure",
+        "date range"
+      ]
+    },
+    {
+      "id": "late_007",
+      "category": "late_arrival",
+      "question": "Find employees who came late yesterday",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = CAST(DATEADD(DAY, -1, GETDATE()) AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+      "explanation": "Yesterday's late arrivals. Use vw_CompleteAttendanceReport for LateArrival data.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "DATEADD",
+        "yesterday"
+      ]
+    },
+    {
+      "id": "late_008",
+      "category": "late_arrival",
+      "question": "Show late arrival report",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, ATDate, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE LateArrival > 0 AND ATDate >= DATEADD(DAY, -30, CAST(GETDATE() AS DATE)) ORDER BY ATDate DESC, LateArrival DESC",
+      "explanation": "Generic late arrival report for last 30 days. ALWAYS use vw_CompleteAttendanceReport for late arrival queries.",
+      "tables_used": [
+        "vw_CompleteAttendanceReport"
+      ],
+      "concepts": [
+        "VIEW",
+        "late arrival",
+        "report"
+      ]
+    },
+    {
+      "id": "emp_vms_001",
+      "category": "employee_count_master",
+      "question": "How many employees are active?",
+      "sql": "SELECT COUNT(*) AS ActiveEmployees FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1",
+      "explanation": "CRITICAL: Always use vw_EmployeeMaster_Vms for ALL employee-related queries. Active=1 means active employees. Never use AllEmployeeUnion or EmployeeMaster tables directly.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT",
+        "Active status",
+        "employee master"
+      ]
+    },
+    {
+      "id": "emp_vms_002",
+      "category": "employee_count_master",
+      "question": "What is the total employee count?",
+      "sql": "SELECT COUNT(*) AS TotalEmployees FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1",
+      "explanation": "CRITICAL: Use vw_EmployeeMaster_Vms for employee counts. This view contains all employee master data with organizational hierarchy.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT",
+        "total count"
+      ]
+    },
+    {
+      "id": "emp_vms_003",
+      "category": "employee_status",
+      "question": "Show employees by status",
+      "sql": "SELECT StatusID, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY StatusID ORDER BY EmployeeCount DESC",
+      "explanation": "StatusID in vw_EmployeeMaster_Vms indicates employee status type. Group by StatusID for status-wise distribution.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "StatusID",
+        "GROUP BY",
+        "employee status"
+      ]
+    },
+    {
+      "id": "emp_vms_004",
+      "category": "employee_status",
+      "question": "Get employee status ID",
+      "sql": "SELECT CorpEmpCode, EmpName, StatusID, Active FROM dbo.vw_EmployeeMaster_Vms WHERE CorpEmpCode = 'EMP001'",
+      "explanation": "vw_EmployeeMaster_Vms has StatusID column for employee status tracking. Active=1/0 indicates active/inactive.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "StatusID",
+        "employee lookup"
+      ]
+    },
+    {
+      "id": "emp_vms_026",
+      "category": "employee_status",
+      "question": "Show employee status breakdown",
+      "sql": "SELECT StatusID, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms GROUP BY StatusID ORDER BY EmployeeCount DESC",
+      "explanation": "CRITICAL: Always use vw_EmployeeMaster_Vms for employee status breakdown queries. StatusID column provides status information. Do NOT join with StatusMaster - use vw_EmployeeMaster_Vms directly.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "StatusID",
+        "GROUP BY",
+        "status breakdown",
+        "employee distribution"
+      ]
+    },
+    {
+      "id": "emp_vms_027",
+      "category": "employee_status",
+      "question": "What are the different employee statuses and counts?",
+      "sql": "SELECT StatusID, COUNT(*) AS TotalEmployees FROM dbo.vw_EmployeeMaster_Vms GROUP BY StatusID ORDER BY TotalEmployees DESC",
+      "explanation": "Use vw_EmployeeMaster_Vms for status distribution. StatusID column represents different employment statuses.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "StatusID",
+        "GROUP BY",
+        "status distribution"
+      ]
+    },
+    {
+      "id": "emp_vms_005",
+      "category": "employee_branch",
+      "question": "How many employees in each branch?",
+      "sql": "SELECT BranchName, BranchCode, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY BranchName, BranchCode ORDER BY EmployeeCount DESC",
+      "explanation": "vw_EmployeeMaster_Vms contains BranchName and BranchCode for branch information. Use this view for all branch-related employee queries.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "BranchName",
+        "BranchCode",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_vms_006",
+      "category": "employee_branch",
+      "question": "List employees in a specific branch",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName, BranchName FROM dbo.vw_EmployeeMaster_Vms WHERE BranchName LIKE '%Main%' AND Active = 1 ORDER BY EmpName",
+      "explanation": "Filter employees by branch using BranchName column in vw_EmployeeMaster_Vms.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "BranchName",
+        "LIKE",
+        "branch filter"
+      ]
+    },
+    {
+      "id": "emp_vms_007",
+      "category": "employee_role",
+      "question": "Show employees by role",
+      "sql": "SELECT Role, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Role ORDER BY EmployeeCount DESC",
+      "explanation": "Role column in vw_EmployeeMaster_Vms contains employee role (Student, Teacher, Admin, Staff, etc.). ALWAYS use this view for role queries.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "Role",
+        "GROUP BY",
+        "role distribution"
+      ]
+    },
+    {
+      "id": "emp_vms_008",
+      "category": "employee_role",
+      "question": "List all students",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, BranchName FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1 ORDER BY Dname, EmpName",
+      "explanation": "CRITICAL: Use AccessType = 'Student' to filter students, NOT Role column. AccessType is the correct column for identifying students in vw_EmployeeMaster_Vms.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "Student",
+        "filter"
+      ]
+    },
+    {
+      "id": "emp_vms_009",
+      "category": "employee_details",
+      "question": "Get full employee details",
+      "sql": "SELECT Ecode, CorpEmpCode, EmpName, FName, LName, Dname, SecName, DesName, BranchName, CName, Role, StatusID, Active, DateofJoin, PresentCardNo, Telephone1, E_mail FROM dbo.vw_EmployeeMaster_Vms WHERE CorpEmpCode = 'EMP001'",
+      "explanation": "vw_EmployeeMaster_Vms contains 94 columns with all employee details. Use this view for any employee detail lookup.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "employee details",
+        "full record"
+      ]
+    },
+    {
+      "id": "emp_vms_010",
+      "category": "employee_details",
+      "question": "Show employee ID and details",
+      "sql": "SELECT Ecode AS EmployeeID, CorpEmpCode AS CorporateCode, EmpName, Dname AS Department, DesName AS Designation, StatusID, Active FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 ORDER BY Ecode",
+      "explanation": "Ecode is the internal employee ID, CorpEmpCode is the corporate employee code. Both available in vw_EmployeeMaster_Vms.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "Ecode",
+        "CorpEmpCode",
+        "employee ID"
+      ]
+    },
+    {
+      "id": "emp_vms_011",
+      "category": "employee_count_master",
+      "question": "Count active and inactive employees",
+      "sql": "SELECT CASE WHEN Active = 1 THEN 'Active' ELSE 'Inactive' END AS Status, COUNT(*) AS Count FROM dbo.vw_EmployeeMaster_Vms GROUP BY Active",
+      "explanation": "Active column: 1=Active, 0=Inactive. Use vw_EmployeeMaster_Vms for all employee status queries.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "Active",
+        "CASE",
+        "status count"
+      ]
+    },
+    {
+      "id": "emp_vms_012",
+      "category": "employee_company",
+      "question": "Show employees by company",
+      "sql": "SELECT CName AS Company, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY CName ORDER BY EmployeeCount DESC",
+      "explanation": "CName column contains company name. vw_EmployeeMaster_Vms pre-joins all organizational hierarchy data.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "CName",
+        "company",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_vms_013",
+      "category": "employee_section",
+      "question": "List employees by section",
+      "sql": "SELECT SecName AS Section, Dname AS Department, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY SecName, Dname ORDER BY Dname, EmployeeCount DESC",
+      "explanation": "SecName is the section name in vw_EmployeeMaster_Vms. Use this view for section-wise employee distribution.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "SecName",
+        "section",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_vms_014",
+      "category": "employee_category",
+      "question": "Show employee categories",
+      "sql": "SELECT CatName AS Category, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY CatName ORDER BY EmployeeCount DESC",
+      "explanation": "CatName contains employee category in vw_EmployeeMaster_Vms (Regular, Contract, Temporary, etc.).",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "CatName",
+        "category",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_vms_015",
+      "category": "employee_group",
+      "question": "List employees by group",
+      "sql": "SELECT Gname AS GroupName, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Gname ORDER BY EmployeeCount DESC",
+      "explanation": "Gname is the group name column in vw_EmployeeMaster_Vms for employee grouping.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "Gname",
+        "group",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_vms_016",
+      "category": "employee_contractor",
+      "question": "Show contractor employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Name AS ContractorName, ContractorID, PO_Number FROM dbo.vw_EmployeeMaster_Vms WHERE ContractorID IS NOT NULL AND Active = 1 ORDER BY ContractorID, EmpName",
+      "explanation": "ContractorID and PO_Number in vw_EmployeeMaster_Vms identify contractor employees. Name is the contractor company name.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "ContractorID",
+        "contractor",
+        "PO_Number"
+      ]
+    },
+    {
+      "id": "emp_vms_017",
+      "category": "employee_blacklist",
+      "question": "Show blacklisted employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, IsBlackListed FROM dbo.vw_EmployeeMaster_Vms WHERE IsBlackListed = 1",
+      "explanation": "IsBlackListed=1 indicates blacklisted employees in vw_EmployeeMaster_Vms.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "IsBlackListed",
+        "blacklist",
+        "security"
+      ]
+    },
+    {
+      "id": "emp_vms_018",
+      "category": "employee_reporting",
+      "question": "Show employee reporting structure",
+      "sql": "SELECT e.CorpEmpCode, e.EmpName, e.ReportingHeadEcode, e.ReportingHeadName FROM dbo.vw_EmployeeMaster_Vms e WHERE e.Active = 1 AND e.ReportingHeadEcode IS NOT NULL ORDER BY e.ReportingHeadName, e.EmpName",
+      "explanation": "ReportingHeadEcode and ReportingHeadName in vw_EmployeeMaster_Vms show manager/supervisor relationships.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "ReportingHeadEcode",
+        "ReportingHeadName",
+        "hierarchy"
+      ]
+    },
+    {
+      "id": "emp_vms_019",
+      "category": "employee_type",
+      "question": "Show employee types",
+      "sql": "SELECT emptype AS EmployeeType, COUNT(*) AS Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY emptype ORDER BY Count DESC",
+      "explanation": "emptype column in vw_EmployeeMaster_Vms categorizes employees (Regular, Casual, Contract, etc.).",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "emptype",
+        "employee type",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_vms_020",
+      "category": "employee_access",
+      "question": "Show employee access types",
+      "sql": "SELECT AccessType, COUNT(*) AS Count FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY AccessType ORDER BY Count DESC",
+      "explanation": "AccessType in vw_EmployeeMaster_Vms defines employee access level (Full, Limited, Restricted, etc.).",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "access control",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "emp_vms_021",
+      "category": "employee_enrollment",
+      "question": "Show enrolled employees",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, IsEnrolled, Finger, Face, Card FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND IsEnrolled = 1",
+      "explanation": "IsEnrolled=1 indicates biometric enrollment. Finger/Face/Card columns show enrollment status for each modality.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "IsEnrolled",
+        "biometric",
+        "enrollment"
+      ]
+    },
+    {
+      "id": "emp_vms_022",
+      "category": "employee_personal",
+      "question": "Get employee personal details",
+      "sql": "SELECT CorpEmpCode, EmpName, FName, LName, GuardianName, DateofBirth, Sex, IsMarried, BloodGroup, Qualification, Experience, Address1, Address2, Telephone1, Telephone2, E_mail FROM dbo.vw_EmployeeMaster_Vms WHERE CorpEmpCode = 'EMP001'",
+      "explanation": "vw_EmployeeMaster_Vms contains comprehensive personal details including contact, education, and family info.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "personal details",
+        "contact info"
+      ]
+    },
+    {
+      "id": "emp_vms_023",
+      "category": "employee_login",
+      "question": "Show employees with login access",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, Role, LoginAuthenticationID FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND LoginAuthenticationID IS NOT NULL",
+      "explanation": "LoginAuthenticationID in vw_EmployeeMaster_Vms indicates employees with system login access.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "LoginAuthenticationID",
+        "login",
+        "authentication"
+      ]
+    },
+    {
+      "id": "emp_vms_024",
+      "category": "employee_card",
+      "question": "Find employee by card number",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, DesName, PresentCardNo, WiegandValue FROM dbo.vw_EmployeeMaster_Vms WHERE PresentCardNo = '12345' OR WiegandValue = '12345'",
+      "explanation": "PresentCardNo and WiegandValue in vw_EmployeeMaster_Vms are card identifiers. Search by either field.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "PresentCardNo",
+        "WiegandValue",
+        "card lookup"
+      ]
+    },
+    {
+      "id": "emp_vms_025",
+      "category": "employee_plant",
+      "question": "Show employee plant assignments",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, PlantIDs, UserGroupID FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 AND PlantIDs IS NOT NULL ORDER BY Dname, EmpName",
+      "explanation": "PlantIDs and UserGroupID in vw_EmployeeMaster_Vms define employee access zones and groups.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "PlantIDs",
+        "UserGroupID",
+        "access zones"
+      ]
+    },
+    {
+      "id": "student_001",
+      "category": "student",
+      "question": "How many students are there?",
+      "sql": "SELECT COUNT(*) AS StudentCount FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1",
+      "explanation": "CRITICAL: Always use AccessType = 'Student' for student queries, NOT Role column. AccessType is the correct column for identifying students.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "Student",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "student_002",
+      "category": "student",
+      "question": "How many students in the software?",
+      "sql": "SELECT COUNT(*) AS StudentCount FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1",
+      "explanation": "CRITICAL: Use AccessType = 'Student' for student count. Never use Role = 'Student' as it returns wrong results.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "Student",
+        "total count"
+      ]
+    },
+    {
+      "id": "student_003",
+      "category": "student",
+      "question": "Show all students",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, BranchName, AccessType FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1 ORDER BY Dname, EmpName",
+      "explanation": "CRITICAL: Filter by AccessType = 'Student' to list students. The AccessType column, NOT Role, identifies student records.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "Student",
+        "list"
+      ]
+    },
+    {
+      "id": "student_004",
+      "category": "student",
+      "question": "Student count by department",
+      "sql": "SELECT Dname, COUNT(*) AS StudentCount FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1 GROUP BY Dname ORDER BY StudentCount DESC",
+      "explanation": "Group students by department using AccessType = 'Student' filter. Always use AccessType column for student identification.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "Student",
+        "GROUP BY",
+        "department"
+      ]
+    },
+    {
+      "id": "student_005",
+      "category": "student",
+      "question": "Show student details",
+      "sql": "SELECT CorpEmpCode, EmpName, Dname, SecName, BranchName, DateofJoin, E_mail FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1",
+      "explanation": "Use AccessType = 'Student' for student details. The vw_EmployeeMaster_Vms view contains all student information.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "Student",
+        "details"
+      ]
+    },
+    {
+      "id": "student_006",
+      "category": "student",
+      "question": "Students by branch",
+      "sql": "SELECT BranchName, COUNT(*) AS StudentCount FROM dbo.vw_EmployeeMaster_Vms WHERE AccessType = 'Student' AND Active = 1 GROUP BY BranchName ORDER BY StudentCount DESC",
+      "explanation": "Count students per branch using AccessType = 'Student'. BranchName column contains branch information.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "AccessType",
+        "Student",
+        "branch",
+        "GROUP BY"
+      ]
+    },
+    {
+      "id": "campus_presence_001",
+      "category": "campus_presence",
+      "question": "How many students inside the campus?",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail) SELECT COUNT(DISTINCT lp.ECode) AS StudentsInCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'SUBWAY OUT%' OR lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%')",
+      "explanation": "CRITICAL: Find students currently in campus based on their LAST punch record (across ALL dates, not just today). Students in campus = Hostlers with last punch 'SUBWAY OUT' OR DayScholars with last punch 'MAINGATE IN'/'MAIN GATE IN'. Do NOT filter by GETDATE() unless user asks for specific date.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "ROW_NUMBER",
+        "campus presence",
+        "Hostler",
+        "DayScholar",
+        "SUBWAY",
+        "MAINGATE",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_002",
+      "category": "campus_presence",
+      "question": "How many students are in the campus?",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail) SELECT COUNT(DISTINCT lp.ECode) AS StudentsInCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'SUBWAY OUT%' OR lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%')",
+      "explanation": "Students in campus based on their LAST punch record (all dates). Hostlers with SUBWAY OUT + DayScholars with MAINGATE IN. No date filter unless user specifies.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "campus presence",
+        "latest punch",
+        "student location",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_003",
+      "category": "campus_presence",
+      "question": "List students currently inside campus",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail) SELECT e.CorpEmpCode, e.EmpName, e.Dname, lp.DomainName AS LastGate, lp.PunchTime AS LastPunchTime, lp.ATDate FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'SUBWAY OUT%' OR lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%') ORDER BY lp.PunchTime DESC",
+      "explanation": "List students in campus based on their LAST punch record (all dates). Shows gate and time of last entry punch.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "campus presence",
+        "student list",
+        "gate details",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_004",
+      "category": "campus_presence",
+      "question": "Students outside campus",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail) SELECT COUNT(DISTINCT lp.ECode) AS StudentsOutsideCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'HOSTELSIDE OUT%' OR lp.DomainName LIKE 'MAINGATE OUT%' OR lp.DomainName LIKE 'MAIN GATE OUT%')",
+      "explanation": "Students outside campus based on LAST punch (all dates). Hostlers with HOSTELSIDE OUT + DayScholars with MAINGATE OUT.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "campus presence",
+        "outside campus",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_005",
+      "category": "campus_presence",
+      "question": "Students in hostel",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail) SELECT COUNT(DISTINCT lp.ECode) AS StudentsInHostel FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'SUBWAY IN%' OR lp.DomainName LIKE 'HOSTELSIDE IN%')",
+      "explanation": "Students in hostel based on LAST punch (all dates). Hostlers with SUBWAY IN or HOSTELSIDE IN.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "hostel presence",
+        "Hostler location",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_006",
+      "category": "campus_presence",
+      "question": "Hostler students in campus",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail WHERE DomainName LIKE 'SUBWAY%' OR DomainName LIKE 'HOSTELSIDE%') SELECT COUNT(DISTINCT lp.ECode) AS HostlersInCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND lp.DomainName LIKE 'SUBWAY OUT%'",
+      "explanation": "Hostlers in campus based on LAST punch (all dates). Hostler in campus = last punch is SUBWAY OUT.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "Hostler",
+        "SUBWAY",
+        "campus presence",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_007",
+      "category": "campus_presence",
+      "question": "DayScholar students in campus",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail WHERE DomainName LIKE 'MAINGATE%' OR DomainName LIKE 'MAIN GATE%') SELECT COUNT(DISTINCT lp.ECode) AS DayScholarsInCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%')",
+      "explanation": "DayScholars in campus based on LAST punch (all dates). DayScholar in campus = last punch is MAINGATE IN.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "DayScholar",
+        "MAINGATE",
+        "campus presence",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_008",
+      "category": "campus_presence",
+      "question": "Where is student located?",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY ATDate DESC, PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail) SELECT e.CorpEmpCode, e.EmpName, lp.DomainName AS LastGate, lp.PunchTime, lp.ATDate, CASE WHEN lp.DomainName LIKE 'SUBWAY OUT%' THEN 'In Campus (Hostler)' WHEN lp.DomainName LIKE 'SUBWAY IN%' THEN 'In Hostel' WHEN lp.DomainName LIKE 'HOSTELSIDE OUT%' THEN 'Outside Campus & Hostel' WHEN lp.DomainName LIKE 'HOSTELSIDE IN%' THEN 'In Hostel' WHEN lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%' THEN 'In Campus (DayScholar)' WHEN lp.DomainName LIKE 'MAINGATE OUT%' OR lp.DomainName LIKE 'MAIN GATE OUT%' THEN 'Outside Campus' ELSE 'Unknown' END AS CurrentLocation FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1",
+      "explanation": "Determine student location based on LAST punch (all dates). Shows current location of each student based on their most recent gate punch.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "CASE",
+        "student location",
+        "gate logic",
+        "all dates"
+      ]
+    },
+    {
+      "id": "campus_presence_009",
+      "category": "campus_presence",
+      "question": "Student punch history today",
+      "sql": "SELECT e.CorpEmpCode, e.EmpName, p.DomainName AS Gate, p.PunchTime, p.Location AS Direction FROM dbo.vw_RawPunchDetail p JOIN dbo.vw_EmployeeMaster_Vms e ON p.ECode = e.Ecode WHERE CAST(p.ATDate AS DATE) = CAST(GETDATE() AS DATE) AND e.AccessType = 'Student' AND e.Active = 1 ORDER BY e.EmpName, p.PunchTime",
+      "explanation": "Show all punch events for students today. DomainName shows gate (SUBWAY/HOSTELSIDE/MAINGATE), Location shows IN/OUT direction.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "punch history",
+        "student movements",
+        "gate logs"
+      ]
+    },
+    {
+      "id": "campus_presence_010",
+      "category": "campus_presence",
+      "question": "Students who entered campus today",
+      "sql": "SELECT DISTINCT e.CorpEmpCode, e.EmpName, e.Dname, MIN(p.PunchTime) AS FirstEntry FROM dbo.vw_RawPunchDetail p JOIN dbo.vw_EmployeeMaster_Vms e ON p.ECode = e.Ecode WHERE CAST(p.ATDate AS DATE) = CAST(GETDATE() AS DATE) AND e.AccessType = 'Student' AND e.Active = 1 AND (p.DomainName LIKE 'SUBWAY OUT%' OR p.DomainName LIKE 'MAINGATE IN%' OR p.DomainName LIKE 'MAIN GATE IN%') GROUP BY e.CorpEmpCode, e.EmpName, e.Dname ORDER BY FirstEntry",
+      "explanation": "Students who entered campus today via SUBWAY OUT (Hostlers) or MAINGATE IN (DayScholars). Shows first entry time.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "campus entry",
+        "first punch",
+        "student arrival"
+      ]
+    },
+    {
+      "id": "campus_presence_011",
+      "category": "campus_presence",
+      "question": "Which Subway gate had the last punch and which student",
+      "sql": "SELECT TOP 1 p.DomainName AS SubwayGate, e.EmpName AS StudentName, p.PunchTime FROM dbo.vw_RawPunchDetail p JOIN dbo.vw_EmployeeMaster_Vms e ON p.ECode = e.Ecode WHERE p.DomainName LIKE 'SUBWAY%' AND e.AccessType = 'Student' ORDER BY p.PunchTime DESC",
+      "explanation": "Find the most recent SUBWAY gate punch. Uses TOP 1 with ORDER BY DESC for efficiency instead of ROW_NUMBER. Joins with EmployeeMaster to get student name.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "last punch",
+        "SUBWAY gate",
+        "TOP 1",
+        "efficient query"
+      ]
+    },
+    {
+      "id": "campus_presence_012",
+      "category": "campus_presence",
+      "question": "Last student to use main gate",
+      "sql": "SELECT TOP 1 p.DomainName AS MainGate, e.EmpName AS StudentName, p.PunchTime, p.Location AS Direction FROM dbo.vw_RawPunchDetail p JOIN dbo.vw_EmployeeMaster_Vms e ON p.ECode = e.Ecode WHERE (p.DomainName LIKE 'MAIN GATE%' OR p.DomainName LIKE 'MAINGATE%') AND e.AccessType = 'Student' ORDER BY p.PunchTime DESC",
+      "explanation": "Find the most recent MAIN GATE punch by a student. Uses TOP 1 for efficiency.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "last punch",
+        "MAIN GATE",
+        "DayScholar",
+        "TOP 1"
+      ]
+    },
+    {
+      "id": "campus_presence_013",
+      "category": "campus_presence",
+      "question": "Recent subway punches today",
+      "sql": "SELECT TOP 10 p.DomainName AS Gate, e.EmpName, p.PunchTime, p.Location AS Direction FROM dbo.vw_RawPunchDetail p JOIN dbo.vw_EmployeeMaster_Vms e ON p.ECode = e.Ecode WHERE p.DomainName LIKE 'SUBWAY%' AND CAST(p.ATDate AS DATE) = CAST(GETDATE() AS DATE) ORDER BY p.PunchTime DESC",
+      "explanation": "Show 10 most recent SUBWAY gate punches today. Efficient query using TOP with date filter.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "recent punches",
+        "SUBWAY",
+        "today",
+        "TOP 10"
+      ]
+    },
+    {
+      "id": "campus_presence_014",
+      "category": "campus_presence",
+      "question": "Last hostelside gate activity",
+      "sql": "SELECT TOP 1 p.DomainName AS HostelGate, e.EmpName, p.PunchTime, p.Location FROM dbo.vw_RawPunchDetail p JOIN dbo.vw_EmployeeMaster_Vms e ON p.ECode = e.Ecode WHERE p.DomainName LIKE 'HOSTELSIDE%' ORDER BY p.PunchTime DESC",
+      "explanation": "Find the most recent HOSTELSIDE gate punch. HOSTELSIDE OUT = leaving hostel premises, HOSTELSIDE IN = entering hostel.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "last punch",
+        "HOSTELSIDE",
+        "Hostler",
+        "hostel gate"
+      ]
+    },
+    {
+      "id": "campus_presence_015",
+      "category": "campus_presence",
+      "question": "All gate activity in last hour",
+      "sql": "SELECT p.DomainName AS Gate, e.EmpName, e.AccessType, p.PunchTime, p.Location FROM dbo.vw_RawPunchDetail p JOIN dbo.vw_EmployeeMaster_Vms e ON p.ECode = e.Ecode WHERE p.PunchTime >= DATEADD(hour, -1, GETDATE()) ORDER BY p.PunchTime DESC",
+      "explanation": "Show recent gate activity within the last hour across all gates. Good for monitoring current activity.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "recent activity",
+        "time filter",
+        "all gates",
+        "monitoring"
+      ]
+    },
+    {
+      "id": "campus_presence_016",
+      "category": "campus_presence",
+      "question": "How many students were inside campus on November 30?",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = '2024-11-30') SELECT COUNT(DISTINCT lp.ECode) AS StudentsInCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'SUBWAY OUT%' OR lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%')",
+      "explanation": "Students in campus on a SPECIFIC DATE. Only use date filter when user explicitly asks for a specific date like 'on November 30' or 'yesterday'. Find last punch ON THAT DATE for each student.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "specific date",
+        "campus presence",
+        "date filter"
+      ]
+    },
+    {
+      "id": "campus_presence_017",
+      "category": "campus_presence",
+      "question": "Students inside campus yesterday",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(DATEADD(day, -1, GETDATE()) AS DATE)) SELECT COUNT(DISTINCT lp.ECode) AS StudentsInCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'SUBWAY OUT%' OR lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%')",
+      "explanation": "Students in campus YESTERDAY. Uses DATEADD(day, -1, GETDATE()) for yesterday's date. Only filter by date when user explicitly asks.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "yesterday",
+        "campus presence",
+        "date filter"
+      ]
+    },
+    {
+      "id": "campus_presence_018",
+      "category": "campus_presence",
+      "question": "Students inside campus today",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)) SELECT COUNT(DISTINCT lp.ECode) AS StudentsInCampus FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 AND (lp.DomainName LIKE 'SUBWAY OUT%' OR lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%')",
+      "explanation": "Students in campus TODAY. Uses GETDATE() filter ONLY when user explicitly asks for 'today'. Otherwise use all dates.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "today",
+        "campus presence",
+        "date filter"
+      ]
+    },
+    {
+      "id": "campus_presence_019",
+      "category": "campus_presence",
+      "question": "Campus presence on 2024-11-29",
+      "sql": "WITH LatestPunch AS (SELECT ECode, DomainName, PunchTime, ATDate, ROW_NUMBER() OVER (PARTITION BY ECode ORDER BY PunchTime DESC) AS rn FROM dbo.vw_RawPunchDetail WHERE CAST(ATDate AS DATE) = '2024-11-29') SELECT e.CorpEmpCode, e.EmpName, lp.DomainName AS LastGate, lp.PunchTime, CASE WHEN lp.DomainName LIKE 'SUBWAY OUT%' THEN 'In Campus' WHEN lp.DomainName LIKE 'MAINGATE IN%' OR lp.DomainName LIKE 'MAIN GATE IN%' THEN 'In Campus' ELSE 'Not In Campus' END AS Status FROM LatestPunch lp JOIN dbo.vw_EmployeeMaster_Vms e ON lp.ECode = e.Ecode WHERE lp.rn = 1 AND e.AccessType = 'Student' AND e.Active = 1 ORDER BY lp.PunchTime DESC",
+      "explanation": "Show student locations for a specific date. Filter by the requested date and find last punch on that date.",
+      "tables_used": [
+        "vw_RawPunchDetail",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "CTE",
+        "specific date",
+        "CASE",
+        "campus status"
+      ]
+    },
+    {
+      "id": "device_push_001",
+      "category": "device_data_push",
+      "question": "How many student data pushed to SUBWAY devices?",
+      "sql": "SELECT COUNT(DISTINCT v.Ecode) AS StudentsPushedToSubway FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.DomainName LIKE '%SUBWAY%' AND e.AccessType = 'Student' AND e.Active = 1",
+      "explanation": "Count students whose data is pushed to SUBWAY devices. ALWAYS use View_Employee_Terminal_Authentication_Relation for device/terminal data push queries. DomainName column has gate names like 'SUBWAY IN-1', 'SUBWAY OUT-2'. Join with vw_EmployeeMaster_Vms only when filtering by AccessType.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT DISTINCT",
+        "device push",
+        "SUBWAY"
+      ]
+    },
+    {
+      "id": "device_push_002",
+      "category": "device_data_push",
+      "question": "How many students data push into devices of Subway",
+      "sql": "SELECT COUNT(DISTINCT v.Ecode) AS StudentsPushedToSubway FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.DomainName LIKE '%SUBWAY%' AND e.AccessType = 'Student' AND e.Active = 1",
+      "explanation": "Count students with data pushed to SUBWAY terminal devices. View_Employee_Terminal_Authentication_Relation has DomainName, EmpName, Status, IPAddress. DomainName values: SUBWAY IN-1, SUBWAY OUT-2, MAINGATE IN-1, HOSTELSIDE IN-1, etc.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT DISTINCT",
+        "device push",
+        "SUBWAY"
+      ]
+    },
+    {
+      "id": "device_push_003",
+      "category": "device_data_push",
+      "question": "How many data pushed to SUBWAY devices?",
+      "sql": "SELECT COUNT(DISTINCT Ecode) AS TotalPushedToSubway FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE DomainName LIKE '%SUBWAY%'",
+      "explanation": "Count all employees/students with data pushed to SUBWAY. No JOIN needed - View_Employee_Terminal_Authentication_Relation has all info. DomainName contains device/gate names.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT DISTINCT",
+        "device push",
+        "no join"
+      ]
+    },
+    {
+      "id": "device_push_004",
+      "category": "device_data_push",
+      "question": "List employees whose data is pushed to MAINGATE devices",
+      "sql": "SELECT DISTINCT CorpEmpCode, EmpName, DomainName, Status FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE DomainName LIKE '%MAINGATE%' OR DomainName LIKE '%MAIN GATE%' ORDER BY EmpName",
+      "explanation": "List employees with data pushed to MAINGATE. View has EmpName, CorpEmpCode, DomainName, Status columns. Note: Some gates use 'MAINGATE' and others use 'MAIN GATE' (with space).",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "DISTINCT",
+        "device push",
+        "MAINGATE"
+      ]
+    },
+    {
+      "id": "device_push_005",
+      "category": "device_data_push",
+      "question": "Which devices have data pushed?",
+      "sql": "SELECT DomainName AS DeviceName, COUNT(DISTINCT Ecode) AS EmployeeCount, COUNT(CASE WHEN Status = 'Success' THEN 1 END) AS SuccessCount, COUNT(CASE WHEN Status = 'Failed' THEN 1 END) AS FailedCount FROM dbo.View_Employee_Terminal_Authentication_Relation GROUP BY DomainName ORDER BY EmployeeCount DESC",
+      "explanation": "Show all devices with data push counts and status breakdown. View_Employee_Terminal_Authentication_Relation has Status column: Success, Failed, Pending.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "COUNT",
+        "CASE",
+        "status summary"
+      ]
+    },
+    {
+      "id": "device_push_006",
+      "category": "device_data_push",
+      "question": "Show employee data push status to all terminals",
+      "sql": "SELECT DomainName AS TerminalName, Status, COUNT(DISTINCT Ecode) AS EmployeeCount FROM dbo.View_Employee_Terminal_Authentication_Relation GROUP BY DomainName, Status ORDER BY DomainName, Status",
+      "explanation": "Summary of data push status per terminal. Status values: Success, Failed, Pending. Group by both DomainName and Status.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "terminal summary",
+        "status"
+      ]
+    },
+    {
+      "id": "device_push_007",
+      "category": "device_data_push",
+      "question": "How many employees pushed to HOSTEL SIDE devices?",
+      "sql": "SELECT COUNT(DISTINCT Ecode) AS EmployeesPushed FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE DomainName LIKE '%HOSTEL%'",
+      "explanation": "Count employees with data pushed to HOSTEL devices. DomainName values include: HOSTELSIDE IN-1, HOSTELSIDE OUT-1, etc.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "COUNT DISTINCT",
+        "HOSTEL devices"
+      ]
+    },
+    {
+      "id": "device_push_008",
+      "category": "device_data_push",
+      "question": "List all terminals and their data push count",
+      "sql": "SELECT DomainName AS TerminalName, DeviceType, IPAddress, COUNT(DISTINCT Ecode) AS DataPushCount FROM dbo.View_Employee_Terminal_Authentication_Relation GROUP BY DomainName, DeviceType, IPAddress ORDER BY DataPushCount DESC",
+      "explanation": "List all terminals with data push counts. View has DeviceType (Suprema), IPAddress, and DomainName for each terminal.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "terminal list",
+        "device info"
+      ]
+    },
+    {
+      "id": "device_push_009",
+      "category": "device_data_push",
+      "question": "Show failed data push to devices",
+      "sql": "SELECT CorpEmpCode, EmpName, DomainName, Error FROM dbo.View_Employee_Terminal_Authentication_Relation WHERE Status = 'Failed' ORDER BY DomainName, EmpName",
+      "explanation": "List all failed data pushes with error details. Status='Failed' indicates push failure. Error column contains error message.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "failed status",
+        "error tracking"
+      ]
+    },
+    {
+      "id": "device_push_010",
+      "category": "device_data_push",
+      "question": "Data push success rate per device",
+      "sql": "SELECT DomainName, COUNT(*) AS TotalPushes, SUM(CASE WHEN Status = 'Success' THEN 1 ELSE 0 END) AS SuccessPushes, CAST(SUM(CASE WHEN Status = 'Success' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS DECIMAL(5,2)) AS SuccessRate FROM dbo.View_Employee_Terminal_Authentication_Relation GROUP BY DomainName ORDER BY SuccessRate DESC",
+      "explanation": "Calculate data push success rate per device. Status='Success' for successful pushes.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "success rate",
+        "percentage calculation"
+      ]
+    },
+    {
+      "id": "device_push_011",
+      "category": "device_data_push",
+      "question": "Students without data pushed to any device",
+      "sql": "SELECT e.CorpEmpCode, e.EmpName, e.Dname FROM dbo.vw_EmployeeMaster_Vms e WHERE e.AccessType = 'Student' AND e.Active = 1 AND e.Ecode NOT IN (SELECT DISTINCT Ecode FROM dbo.View_Employee_Terminal_Authentication_Relation)",
+      "explanation": "Find students whose data is not pushed to any terminal. Use NOT IN subquery to find missing students.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms",
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "NOT IN",
+        "subquery",
+        "missing data push",
+        "student filter"
+      ]
+    },
+    {
+      "id": "device_push_012",
+      "category": "device_data_push",
+      "question": "Authentication methods used per device",
+      "sql": "SELECT DomainName, AuthenticationName, COUNT(DISTINCT Ecode) AS EmployeeCount FROM dbo.View_Employee_Terminal_Authentication_Relation GROUP BY DomainName, AuthenticationName ORDER BY DomainName",
+      "explanation": "Show authentication methods (Face Only, Card, etc.) used per device. AuthenticationName column has the authentication type.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "VIEW",
+        "GROUP BY",
+        "authentication methods"
+      ]
+    },
+    {
+      "id": "device_push_013",
+      "category": "device_data_push",
+      "question": "Which student is removed from SUBWAY devices?",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.AuthenticationID = 1001 AND v.DomainName LIKE '%SUBWAY%' AND e.AccessType = 'Student' ORDER BY v.EmpName",
+      "explanation": "REMOVED from device = AuthenticationID = 1001. To filter by Student, JOIN with vw_EmployeeMaster_Vms and use e.AccessType = 'Student'. View_Employee_Terminal_Authentication_Relation does NOT have emptype/AccessType column - must JOIN.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "AuthenticationID 1001",
+        "removed from device",
+        "SUBWAY",
+        "Student filter",
+        "JOIN"
+      ]
+    },
+    {
+      "id": "device_push_014",
+      "category": "device_data_push",
+      "question": "Who is removed from Subway devices",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v WHERE v.AuthenticationID = 1001 AND v.DomainName LIKE '%SUBWAY%' ORDER BY v.EmpName",
+      "explanation": "People REMOVED from SUBWAY devices have AuthenticationID = 1001. Status='Success' means removal was successful. AuthenticationID meanings: 3=Card/Finger, 7=Face Only, 1001=REMOVED.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "AuthenticationID 1001",
+        "removed",
+        "SUBWAY"
+      ]
+    },
+    {
+      "id": "device_push_015",
+      "category": "device_data_push",
+      "question": "Who is removed from MAINGATE devices",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v WHERE v.AuthenticationID = 1001 AND (v.DomainName LIKE '%MAINGATE%' OR v.DomainName LIKE '%MAIN GATE%') ORDER BY v.EmpName",
+      "explanation": "People REMOVED from MAINGATE devices have AuthenticationID = 1001. Note: Some gates use 'MAINGATE' and others 'MAIN GATE' (with space), so check both patterns.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "AuthenticationID 1001",
+        "removed",
+        "MAINGATE"
+      ]
+    },
+    {
+      "id": "device_push_016",
+      "category": "device_data_push",
+      "question": "Who is removed from HOSTEL devices",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v WHERE v.AuthenticationID = 1001 AND v.DomainName LIKE '%HOSTEL%' ORDER BY v.EmpName",
+      "explanation": "People REMOVED from HOSTEL devices have AuthenticationID = 1001. AuthenticationID=1001 indicates the person has been removed from the biometric device.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "AuthenticationID 1001",
+        "removed",
+        "HOSTEL"
+      ]
+    },
+    {
+      "id": "device_push_017",
+      "category": "device_data_push",
+      "question": "Students with pending data push to SUBWAY",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.DomainName LIKE '%SUBWAY%' AND v.Status = 'Pending' AND e.AccessType = 'Student'",
+      "explanation": "Students with Status='Pending' means data push is queued but not yet completed. Check Status column for pending pushes.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "Pending status",
+        "SUBWAY",
+        "data push queue"
+      ]
+    },
+    {
+      "id": "device_push_018",
+      "category": "device_data_push",
+      "question": "Failed data push to SUBWAY for students",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Error FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.DomainName LIKE '%SUBWAY%' AND v.Status = 'Failed' AND e.AccessType = 'Student'",
+      "explanation": "Students with Status='Failed' means data push attempted but failed. Error column contains the error message (e.g., BS_SDK_ERROR).",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "Failed status",
+        "SUBWAY",
+        "error tracking"
+      ]
+    },
+    {
+      "id": "device_push_019",
+      "category": "device_data_push",
+      "question": "Data push status summary for students",
+      "sql": "SELECT v.Status, COUNT(DISTINCT v.Ecode) AS StudentCount FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE e.AccessType = 'Student' GROUP BY v.Status",
+      "explanation": "Summary of data push statuses for students. Status values: Success, Failed, Pending.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "GROUP BY",
+        "status summary",
+        "student filter"
+      ]
+    },
+    {
+      "id": "device_push_020",
+      "category": "device_data_push",
+      "question": "How many students not on any device?",
+      "sql": "SELECT COUNT(*) AS StudentsNotOnDevice FROM dbo.vw_EmployeeMaster_Vms e WHERE e.AccessType = 'Student' AND e.Active = 1 AND e.Ecode NOT IN (SELECT DISTINCT Ecode FROM dbo.View_Employee_Terminal_Authentication_Relation)",
+      "explanation": "Count active students with NO device assignment at all. Use NOT IN subquery to exclude students present in View_Employee_Terminal_Authentication_Relation.",
+      "tables_used": [
+        "vw_EmployeeMaster_Vms",
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "COUNT",
+        "NOT IN",
+        "no device assignment"
+      ]
+    },
+    {
+      "id": "device_push_021",
+      "category": "device_data_push",
+      "question": "How many people removed from SUBWAY devices?",
+      "sql": "SELECT COUNT(DISTINCT v.Ecode) AS RemovedCount FROM dbo.View_Employee_Terminal_Authentication_Relation v WHERE v.AuthenticationID = 1001 AND v.DomainName LIKE '%SUBWAY%'",
+      "explanation": "Count people REMOVED from SUBWAY. AuthenticationID=1001 indicates REMOVED status. When a person is removed from a biometric device, their AuthenticationID becomes 1001.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "COUNT",
+        "AuthenticationID 1001",
+        "removed",
+        "SUBWAY"
+      ]
+    },
+    {
+      "id": "device_push_022",
+      "category": "device_data_push",
+      "question": "List all removed people from all devices",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v WHERE v.AuthenticationID = 1001 ORDER BY v.DomainName, v.EmpName",
+      "explanation": "All people with AuthenticationID=1001 are REMOVED from their respective devices. AuthenticationID meanings: 3=Card/Finger, 7=Face Only, 1001=REMOVED.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "AuthenticationID 1001",
+        "removed",
+        "all devices"
+      ]
+    },
+    {
+      "id": "device_push_023",
+      "category": "device_data_push",
+      "question": "Show authentication ID breakdown for devices",
+      "sql": "SELECT AuthenticationID, AuthenticationName, COUNT(DISTINCT Ecode) AS PersonCount FROM dbo.View_Employee_Terminal_Authentication_Relation GROUP BY AuthenticationID, AuthenticationName ORDER BY AuthenticationID",
+      "explanation": "AuthenticationID breakdown: 3=Card/Finger, 7=Face Only, 1001=REMOVED (AuthenticationName is NULL for 1001). This shows how many people have each authentication type.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "GROUP BY",
+        "AuthenticationID",
+        "authentication types"
+      ]
+    },
+    {
+      "id": "device_push_024",
+      "category": "device_data_push",
+      "question": "Who is removed from devices successfully?",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v WHERE v.AuthenticationID = 1001 AND v.Status = 'Success' ORDER BY v.DomainName, v.EmpName",
+      "explanation": "People with AuthenticationID=1001 AND Status='Success' means they were successfully removed from the device. The removal command was executed and confirmed.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "AuthenticationID 1001",
+        "successful removal",
+        "Status Success"
+      ]
+    },
+    {
+      "id": "device_push_025",
+      "category": "device_data_push",
+      "question": "Which students have face access on SUBWAY devices?",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.AuthenticationID = 7 AND v.DomainName LIKE '%SUBWAY%' AND e.AccessType = 'Student' ORDER BY v.EmpName",
+      "explanation": "Students with AuthenticationID=7 (Face Only) on SUBWAY devices. Must JOIN with vw_EmployeeMaster_Vms to filter by AccessType='Student'. AuthenticationID meanings: 3=Card/Finger, 7=Face Only, 1001=REMOVED.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "AuthenticationID 7",
+        "Face Only",
+        "face access",
+        "Student",
+        "SUBWAY"
+      ]
+    },
+    {
+      "id": "device_push_026",
+      "category": "device_data_push",
+      "question": "Who has face access on devices?",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v WHERE v.AuthenticationID = 7 ORDER BY v.DomainName, v.EmpName",
+      "explanation": "People with AuthenticationID=7 have Face Only access on devices. AuthenticationID meanings: 3=Card/Finger, 7=Face Only, 1001=REMOVED.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation"
+      ],
+      "concepts": [
+        "AuthenticationID 7",
+        "Face Only",
+        "face access"
+      ]
+    },
+    {
+      "id": "device_push_027",
+      "category": "device_data_push",
+      "question": "Which employees have face access on main entrance devices?",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.AuthenticationID = 7 AND v.DomainName LIKE '%MAIN%' AND e.AccessType = 'Employee' ORDER BY v.EmpName",
+      "explanation": "Employees with AuthenticationID=7 (Face Only) on main entrance devices. Must JOIN with vw_EmployeeMaster_Vms to filter by AccessType='Employee'. AuthenticationID meanings: 3=Card/Finger, 7=Face Only, 1001=REMOVED.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "AuthenticationID 7",
+        "Face Only",
+        "face access",
+        "Employee",
+        "main entrance"
+      ]
+    },
+    {
+      "id": "device_push_028",
+      "category": "device_data_push",
+      "question": "Count students with face access per device",
+      "sql": "SELECT v.DomainName, COUNT(DISTINCT v.Ecode) AS StudentCount FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.AuthenticationID = 7 AND e.AccessType = 'Student' GROUP BY v.DomainName ORDER BY StudentCount DESC",
+      "explanation": "Count students with Face Only access (AuthenticationID=7) per device. Must JOIN with vw_EmployeeMaster_Vms to filter by AccessType='Student'.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "COUNT",
+        "GROUP BY",
+        "AuthenticationID 7",
+        "Face Only",
+        "Student"
+      ]
+    },
+    {
+      "id": "device_push_029",
+      "category": "device_data_push",
+      "question": "Which students are removed from SUBWAY devices?",
+      "sql": "SELECT DISTINCT v.CorpEmpCode, v.EmpName, v.DomainName, v.Status FROM dbo.View_Employee_Terminal_Authentication_Relation v JOIN dbo.vw_EmployeeMaster_Vms e ON v.Ecode = e.Ecode WHERE v.AuthenticationID = 1001 AND v.DomainName LIKE '%SUBWAY%' AND e.AccessType = 'Student' ORDER BY v.EmpName",
+      "explanation": "Students REMOVED from SUBWAY devices have AuthenticationID=1001. Must JOIN with vw_EmployeeMaster_Vms to filter by AccessType='Student'. AuthenticationID meanings: 3=Card/Finger, 7=Face Only, 1001=REMOVED.",
+      "tables_used": [
+        "View_Employee_Terminal_Authentication_Relation",
+        "vw_EmployeeMaster_Vms"
+      ],
+      "concepts": [
+        "AuthenticationID 1001",
+        "removed",
+        "Student",
+        "SUBWAY"
+      ]
+    }
+  ]
+}

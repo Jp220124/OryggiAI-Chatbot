@@ -1,0 +1,11 @@
+SELECT TOP 5
+    dm.Dname AS DepartmentName,
+    COUNT(edr.Ecode) AS EmployeeCount
+FROM
+    dbo.DeptMaster AS dm
+INNER JOIN
+    dbo.EmpDepartRole AS edr ON dm.Dcode = edr.Dcode
+GROUP BY
+    dm.Dname
+ORDER BY
+    EmployeeCount DESC

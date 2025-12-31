@@ -1,0 +1,73 @@
+============================================================
+    OryggiAI Gateway Agent - Fix Service Login Error (1069)
+============================================================
+
+PROBLEM:
+--------
+The Gateway Agent service won't start and shows:
+"Error 1069: The service did not start due to a logon failure"
+
+This happens when Windows cannot verify the password you entered
+during installation.
+
+
+SOLUTION:
+---------
+
+Step 1: Open PowerShell as Administrator
+   - Press Windows key
+   - Type "PowerShell"
+   - Right-click "Windows PowerShell"
+   - Select "Run as administrator"
+
+Step 2: Open the Service Editor
+   Copy and paste this command:
+
+   & "C:\Program Files (x86)\OryggiAI\Gateway\nssm.exe" edit OryggiGatewayAgent
+
+   Press Enter. A window will open.
+
+Step 3: Fix the Password
+   - In the window that opens, click the "Log on" tab
+   - You will see your username already filled in
+   - Re-enter your Windows password (the password you use to log into your computer)
+   - Click "Edit service" button at the bottom
+
+Step 4: Start the Service
+   In the same PowerShell window, type:
+
+   net start OryggiGatewayAgent
+
+   Press Enter.
+
+Step 5: Verify It's Working
+   - Open your web browser
+   - Go to OryggiAI and check the Gateway page
+   - Your gateway should now show as "Online"
+
+
+STILL NOT WORKING?
+------------------
+
+Option A: Check the logs
+   In PowerShell, run:
+
+   Get-Content "C:\ProgramData\OryggiAI\logs\gateway-console.log" -Tail 30
+
+   This will show the last 30 lines of the log file.
+
+Option B: Reinstall
+   1. Go to Control Panel > Programs > Uninstall a program
+   2. Find "OryggiAI Gateway Agent" and uninstall it
+   3. Download and run the installer again
+   4. Make sure to enter the correct Windows password when asked
+
+
+NEED HELP?
+----------
+Contact OryggiAI support with:
+- The error message you see
+- The log file contents (from Option A above)
+
+
+============================================================

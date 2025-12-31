@@ -1,0 +1,38 @@
+# ============================================================
+# OryggiAI Gateway Agent Configuration - LOCAL TEST
+# ============================================================
+# Configured to connect to local backend on port 9000
+# ============================================================
+
+# Local SQL Server Connection
+# ---------------------------
+# Configure your local database connection here
+database:
+  host: "localhost"
+  port: 1433
+  database: "master"
+  username: ""
+  password: ""
+  driver: "ODBC Driver 17 for SQL Server"
+  use_windows_auth: true
+  connection_timeout: 30
+  query_timeout: 60
+
+# Gateway Connection to OryggiAI SaaS (Direct to Uvicorn - Port 3000)
+# ------------------------------------
+# Using port 3000 directly as IIS/ARR has WebSocket proxy issues
+gateway:
+  saas_url: "ws://103.197.77.163:3000/api/gateway/ws"
+  gateway_token: "gw__NkIwBA-YUQNQ2cOIFapniJSDFoD3RuGbSW9C2owqgc"
+  heartbeat_interval: 30
+  reconnect_delay: 5
+  max_reconnect_attempts: 3
+  ssl_verify: false
+
+# Logging Configuration
+# ---------------------
+logging:
+  level: "DEBUG"
+  file: "gateway_agent.log"
+  max_size_mb: 10
+  backup_count: 5

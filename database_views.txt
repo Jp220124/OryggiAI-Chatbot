@@ -1,0 +1,3759 @@
+DATABASE VIEWS ANALYSIS
+================================================================================
+
+View: dbo.AllEmployeeUnion
+Definition:
+CREATE VIEW [dbo].[AllEmployeeUnion]
+AS
+SELECT        [Ecode], [CorpEmpCode], [Active], [Gcode], [Catcode], [DesCode], [SecCode], [EmpName], [GuardianName], [DateofBirth], [DateofJoin], [PresentCardNo], [Sex], [IsMarried], [Qualification], [Experience], [Address1], [Telephone1], 
+                         [E_mail], [Address2], [Telephone2], [BloodGroup], [LeavingDate], [LeavingReason], [Password], [Role], [DefaultPolicy], [PermissableLateArrival], [PermissbleeEarlyDeparture], [MinWorkHourForPresent], [IsHalfDayAllowed], 
+                         [MinWorkHourForHalfDay], [IsShortDayAllowed], [MinWorkHourForShortDay], [OvertimeAllowed], [MinDurationReqForOvertime], [OnePunchPresentMarking], [FWOAssigned], [FirstWO], [SWOAssigned], [SWO], [SWOFirst], 
+                         [SWOSecond], [SWOThird], [SWOFourth], [SWOFifth], [SWOType], [WorkMinuteFomula], [ESINo], [IsBlackListed], [ReportingHeadEcode], [FP1_ID], [FP2_ID], [DFP_ID], [FName], [LName], [IsEnrolled], [WiegandValue], 
+                         [LoginAuthenticationID], [LastUpdate], [UserID], [Password2], [queryString], [guid], [userDefined1], [IN_Out_Status], [ContractorID], [Latitude], [Longitude], [formatID], [facilityCode], [ContarctManualEndDate], [PO_Number], 
+                         [ServerSync], [emptype], [Created_Date], [VehicleDetail], [StatusID], [2DStatus]
+FROM            EmployeeMaster
+UNION
+SELECT        [Ecode], [CorpEmpCode], [Active], [Gcode], [Catcode], [DesCode], [SecCode], [EmpName], [GuardianName], [DateofBirth], [DateofJoin], [PresentCardNo], [Sex], [IsMarried], [Qualification], [Experience], [Address1], [Telephone1], 
+                         [E_mail], [Address2], [Telephone2], [BloodGroup], [LeavingDate], [LeavingReason], [Password], [Role], [DefaultPolicy], [PermissableLateArrival], [PermissbleeEarlyDeparture], [MinWorkHourForPresent], [IsHalfDayAllowed], 
+                         [MinWorkHourForHalfDay], [IsShortDayAllowed], [MinWorkHourForShortDay], [OvertimeAllowed], [MinDurationReqForOvertime], [OnePunchPresentMarking], [FWOAssigned], [FirstWO], [SWOAssigned], [SWO], [SWOFirst], 
+                         [SWOSecond], [SWOThird], [SWOFourth], [SWOFifth], [SWOType], [WorkMinuteFomula], [ESINo], [IsBlackListed], [ReportingHeadEcode], [FP1_ID], [FP2_ID], [DFP_ID], [FName], [LName], [IsEnrolled], [WiegandValue], 
+                         [LoginAuthenticationID], [LastUpdate], [UserID], [Password2], [queryString], [guid], [userDefined1], [IN_Out_Status], [ContractorID], [Latitude], [Longitude], [formatID], [facilityCode], [ContarctManualEndDate], [PO_Number], 
+                         [ServerSync], [emptype], [Created_Date], [VehicleDetail], [StatusID], [2DStatus]
+FROM            EmployeeMaster_Deleted
+
+
+================================================================================
+
+View: dbo.Employee_Hikvision_Image
+Definition:
+CREATE VIEW dbo.Employee_Hikvision_Image AS
+SELECT 
+    Ecode,
+    CorpEmpCode,
+    CASE 
+        WHEN dbo.FileExists('C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\Hikvision\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg') = 1
+        THEN 'C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\Hikvision\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg'
+        ELSE NULL
+    END AS ImagePath
+FROM 
+    Oryggi.dbo.EmployeeMaster;
+
+================================================================================
+
+View: dbo.Employee_Suprema_Unwarped_Image
+Definition:
+CREATE VIEW dbo.Employee_Suprema_Unwarped_Image AS
+SELECT 
+    Ecode,
+    CorpEmpCode,
+    CASE 
+        WHEN dbo.FileExists('C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\Suprema\UnwarpedImage\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg') = 1
+        THEN 'C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\Suprema\UnwarpedImage\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg'
+        ELSE NULL
+    END AS ImagePath
+FROM 
+    Oryggi.dbo.EmployeeMaster;
+
+================================================================================
+
+View: dbo.Employee_Suprema_warped_Image
+Definition:
+CREATE VIEW dbo.Employee_Suprema_warped_Image AS
+SELECT 
+    Ecode,
+    CorpEmpCode,
+    CASE 
+        WHEN dbo.FileExists('C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\Suprema\warpedImage\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg') = 1
+        THEN 'C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\Suprema\warpedImage\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg'
+        ELSE NULL
+    END AS ImagePath
+FROM 
+    Oryggi.dbo.EmployeeMaster;
+
+================================================================================
+
+View: dbo.Employee_User_Image
+Definition:
+CREATE VIEW dbo.Employee_User_Image AS
+SELECT 
+    Ecode,
+    CorpEmpCode,
+    CASE 
+        WHEN dbo.FileExists('C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg') = 1
+        THEN 'C:\inetpub\wwwroot\OryggiWebServceCoreApi\Photos\UserImage\' + CorpEmpCode + '_' + CAST(Ecode AS NVARCHAR(10)) + '.jpg'
+        ELSE NULL
+    END AS ImagePath
+FROM 
+    Oryggi.dbo.EmployeeMaster;
+
+================================================================================
+
+View: dbo.GTMS_User_Observation
+Definition:
+
+CREATE VIEW [dbo].[GTMS_User_Observation]
+AS
+select distinct otype.RecordID AS ObserTypeID, obs.RecordID AS ObserRoundID, obs.PlantID, ISNULL(obs.SequenceNo, '') AS SequenceNo, ISNULL(obs.PlaceCategory, '') AS PlaceCategory, ISNULL(obs.PlaceName, '') AS PlaceName, 
+otype.TypeName AS TaskName, ISNULL(CONVERT(char(5), obs.TaskStartDate, 108), '') AS TaskTime, ISNULL(obs.TaskDuration, '') AS TaskDuration, ISNULL(obs.TaskDescription, '') AS TaskDescription, ISNULL(NULL, '') 
+AS ProcessName, ISNULL(obs.Repeat, '') AS Repeat, ISNULL(obs.TaskStartDate, '') AS TaskStartDate, ISNULL(obs.RepeatType, '') AS RepeatType, ISNULL(obs.Frequency, '') AS Frequency, ISNULL(obs.EndDate, '') AS EndDate, 
+ISNULL(obs.BeforeTolerance, 0) AS BeforeTolerance, ISNULL(obs.AfterTolerance, 0) AS AfterTolerance, ISNULL(obs.Active, 0) AS Active, 
+obs.Ecode UserID
+from Vedanta_Observation_Round obs 
+inner join Vedanta_Observation_Type otype on otype.RecordID = obs.TypeID
+inner join GTMSTaskGroup GTP on obs.TaskGroupID=GTP.TaskGroupID
+
+--from Vedanta_Observation_Round obs 
+--inner join Vedanta_Observation_Type otype on otype.RecordID = obs.TypeID
+--inner join RoundCheckPoint_RTL rtl on obs.RecordID=rtl.RoundID
+--inner join Vedanta_Plant_Checkpoint pnt on pnt.RecordID=rtl.CheckPointID
+ 
+
+================================================================================
+
+View: dbo.Vedanta_Admin_Checkpoint
+Definition:
+
+CREATE VIEW [dbo].[Vedanta_Admin_Checkpoint]
+AS
+SELECT DISTINCT 
+                  ISNULL(Location, '') AS Location, ISNULL(Latitude, '') AS Latitude, ISNULL(Longitude, '') AS Longitude, ISNULL(GeofenceType, '') AS GeofenceType, ISNULL(Radius, '') AS Radius, ISNULL(Lat_Lng_Lst, '') AS Lat_Lng_Lst, 
+                  RecordID AS CheckPointID, CheckPointName, ISNULL(Call_Sign, '') AS Call_Sign, '' AS PlantName, PlantID, '' AS CategoryName, 0 AS UserID, 0 AS CategoryID, '' AS Data, '' AS PetrollType, 0 AS PetrollTypeID, '' AS TaskStartDate, 
+                  '' AS EndDate, Severity
+FROM     dbo.Vedanta_Plant_Checkpoint AS cp
+
+
+
+
+
+
+================================================================================
+
+View: dbo.Vedanta_User_Cat_Plant_Checkpoint
+Definition:
+
+CREATE VIEW [dbo].[Vedanta_User_Cat_Plant_Checkpoint]
+AS
+SELECT distinct pramod.*, ISNULL(cp.Location, '') AS Location, ISNULL(cp.Latitude, '') AS Latitude, ISNULL(cp.Longitude, '') AS Longitude, ISNULL(cp.GeofenceType, '') AS GeofenceType, ISNULL(cp.Radius, '') 
+                         AS Radius, ISNULL(cp.Lat_Lng_Lst, '') AS Lat_Lng_Lst, cp.RecordID AS CheckPointID, cp.CheckPointName, cp.Severity, ISNULL(cp.Call_Sign, '') AS Call_Sign
+FROM            (SELECT        LTRIM(RTRIM(plant)) PlantName, PlantID PlantID, CatName[CategoryName], [Ecode] UserID, CatCode CategoryID, t2.Data, [Type] PetrollType, TypeID[PetrollTypeID], TaskStartDate, EndDate
+                          FROM            [vw_ObservationRound] CROSS apply
+                                                        (SELECT        Data
+                                                          FROM            dbo.Split([vw_ObservationRound].CheckPointIDs, ',')) t2 ) pramod INNER JOIN
+                         RoundCheckPoint_RTL rtl ON pramod.Data = rtl.CheckPointID INNER JOIN
+                         Vedanta_Plant_Checkpoint cp ON rtl.CheckPointID = cp.RecordID
+
+
+
+
+
+
+================================================================================
+
+View: dbo.Vedanta_User_Cat_Plant_Checkpoint2
+Definition:
+CREATE VIEW [dbo].[Vedanta_User_Cat_Plant_Checkpoint2]
+AS
+select '' [CategoryName], obs.Ecode UserID, 
+obs.RecordID CategoryID, 0 [Data], otype.TypeName PetrollType, TypeID [PetrollTypeID], TaskStartDate, EndDate,
+ISNULL(cp.Location, '') AS Location, ISNULL(cp.Latitude, '') AS Latitude, 
+ISNULL(cp.Longitude, '') AS Longitude, ISNULL(cp.GeofenceType, '') AS GeofenceType, ISNULL(cp.Radius, '') AS Radius, 
+ISNULL(cp.Lat_Lng_Lst, '') AS Lat_Lng_Lst, cp.RecordID AS CheckPointID, 
+cp.CheckPointName, cp.Severity, ISNULL(cp.Call_Sign, '') AS Call_Sign,
+LTRIM(RTRIM(PlantName)) PlantName, plant.RecordID PlantID
+from Vedanta_Observation_Round obs 
+inner join Vedanta_Observation_Type otype on otype.RecordID = obs.TypeID
+inner join GTMSTaskGroup GTP on obs.TaskGroupID=GTP.TaskGroupID
+inner join RoundCheckPoint_RTL rcp on rcp.RoundID=obs.RecordID
+INNER JOIN Vedanta_Plant_Checkpoint cp ON rcp.CheckPointID = cp.RecordID
+INNER JOIN Vedanta_Plant_Location plant ON plant.RecordID = cp.plantid
+ 
+
+================================================================================
+
+View: dbo.Vedanta_User_Plant_Relation
+Definition:
+
+
+CREATE VIEW [dbo].[Vedanta_User_Plant_Relation]
+AS
+SELECT        dbo.Vedanta_Plant_Location.*, dbo.EmployeeMaster.Ecode, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.Gcode, dbo.EmployeeMaster.Catcode, dbo.EmployeeMaster.DesCode, 
+                         dbo.EmployeeMaster.SecCode, dbo.EmployeeMaster.Active AS Expr1, dbo.EmployeeMaster.StatusID, dbo.EmployeeMaster.emptype
+FROM            dbo.Vedanta_Plant_Location INNER JOIN
+                         dbo.Vedanta_User_Category_RTL ON dbo.Vedanta_Plant_Location.RecordID = dbo.Vedanta_User_Category_RTL.PlantID INNER JOIN
+                         dbo.EmployeeMaster ON dbo.Vedanta_User_Category_RTL.UserID = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_All_Alert_Log
+Definition:
+CREATE VIEW [dbo].[View_All_Alert_Log]
+AS
+SELECT        dbo.MachineRawPunchDL.CardNo, dbo.MachineRawPunchDL.PunchTime, dbo.MachineRawPunchDL.IsManual, dbo.MachineRawPunchDL.InOut, dbo.MachineRawPunchDL.RtcProcessed, 
+                         dbo.MachineRawPunchDL.HRExecutiveID, dbo.MachineRawPunchDL.CreateTime, dbo.MachineRawPunchDL.Channel, dbo.MachineRawPunchDL.ID, dbo.MachineRawPunchDL.Acknowledgement, 
+                         dbo.MachineRawPunchDL.AcknowledgementDateTime, dbo.MachineRawPunchDL.Remark, dbo.MachineMaster.MachineID, dbo.MachineMaster.DeviceType, dbo.MachineMaster.TerminalID, dbo.MachineMaster.IPAddress, 
+                         dbo.MachineMaster.DomainName, dbo.vw_EmployeeMaster_Vms.Ecode, dbo.vw_EmployeeMaster_Vms.CorpEmpCode, dbo.vw_EmployeeMaster_Vms.EmpName, dbo.vw_EmployeeMaster_Vms.PresentCardNo, 
+                         dbo.vw_EmployeeMaster_Vms.StatusID, dbo.Alert_Master.OEM, dbo.Alert_Master.DeviceAlertCode, dbo.Alert_Master.SeverityID, dbo.Alert_Master.LanguageID, dbo.Alert_Master.Remarks, dbo.Alert_Master.ID AS AlertID, 
+                         dbo.Alert_Master.Name AS LogDetails, dbo.Alert_Master.NotificationTypeID, dbo.Alert_Master.Acknowledgement AS Acknowledgement_needed, dbo.NotificationTypeMaster.Name AS NotificationName, 
+                         dbo.NotificationTypeMaster.Remarks AS NotificationRemark, dbo.vw_EmployeeMaster_Vms.Role
+FROM            dbo.MachineRawPunchDL WITH (NOLOCK) INNER JOIN
+                         dbo.MachineMaster WITH (NOLOCK) ON dbo.MachineRawPunchDL.MachineID = dbo.MachineMaster.MachineID INNER JOIN
+                         dbo.Alert_Master WITH (NOLOCK) ON dbo.MachineRawPunchDL.nEventLogIdn = dbo.Alert_Master.ID INNER JOIN
+                         dbo.NotificationTypeMaster ON dbo.Alert_Master.NotificationTypeID = dbo.NotificationTypeMaster.NotificationTypeID LEFT OUTER JOIN
+                         dbo.vw_EmployeeMaster_Vms WITH (NOLOCK) ON dbo.MachineRawPunchDL.ECode = dbo.vw_EmployeeMaster_Vms.Ecode
+ 
+
+================================================================================
+
+View: dbo.View_BDW_MPunch
+Definition:
+CREATE VIEW [dbo].[View_BDW_MPunch]
+AS
+SELECT dbo.EmployeeMaster.CorpEmpCode AS EmployeeID, dbo.MachineRawPunch.CardNo, dbo.MachineRawPunch.PunchTime, dbo.EmployeeMaster.EmpName, dbo.MachineRawPunch.name AS PunchLocation, 
+                  dbo.MachineRawPunch.IsManual, dbo.MachineRawPunch.InOut, dbo.MachineRawPunch.Status, dbo.MachineMaster.Location AS DeviceLocation, dbo.EmployeeMaster.Role, dbo.MachineMaster.DomainName, 
+                  dbo.MachineMaster.IPAddress, dbo.MachineMaster.Sno, dbo.MachineMaster.Create_Date, dbo.EmployeeMaster.Image, dbo.EmployeeMaster.Latitude, dbo.MachineMaster.TerminalID, dbo.DeptMaster.Dname
+FROM     dbo.MachineRawPunch INNER JOIN
+                  dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID INNER JOIN
+                  dbo.EmployeeMaster ON dbo.MachineRawPunch.CardNo = dbo.EmployeeMaster.PresentCardNo INNER JOIN
+                  dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                  dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_ComapnyMaster
+Definition:
+
+CREATE VIEW [dbo].[View_ComapnyMaster]
+AS
+SELECT        dbo.EmployeeMaster.Ecode, dbo.EmployeeMaster.CorpEmpCode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Address, dbo.CompanyMaster.PinCode, dbo.CompanyMaster.Logo, dbo.CompanyMaster.TelephoneNo, 
+                         dbo.CompanyMaster.Email, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dcode, dbo.SectionMaster.SecCode
+FROM            dbo.EmployeeMaster INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Contractor_Detail
+Definition:
+
+Create VIEW [dbo].[View_Contractor_Detail]
+AS
+SELECT        dbo.ContractorMaster.ContractorID, dbo.ContractorMaster.Contractor_Code, dbo.ContractorMaster.Name, dbo.ContractorMaster.Address, dbo.ContractorMaster.Email, dbo.ContractorMaster.Mobile, 
+                         dbo.ContractorMaster.Description, dbo.Contractor_Detail.Client_ID, dbo.Contractor_Detail.PO_Number, dbo.Contractor_Detail.PO_Date, dbo.Contractor_Detail.Job_Detail, dbo.Contractor_Detail.Servce_Start_Date, 
+                         dbo.Contractor_Detail.Max_Labour_Limt, dbo.Contractor_Detail.Status, dbo.Contractor_Detail.Remark, dbo.Contractor_Detail.CreatedDate, dbo.Contractor_Detail.LastModifiedDate, dbo.Contractor_Detail.Servce_End_Date
+FROM            dbo.ContractorMaster INNER JOIN
+                         dbo.Contractor_Detail ON dbo.ContractorMaster.ContractorID = dbo.Contractor_Detail.ContractorID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_EmpDepartRole
+Definition:
+
+CREATE VIEW [dbo].[View_EmpDepartRole]
+AS
+SELECT dbo.EmpDepartRole.Ecode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname, dbo.EmpDepartRole.Dcode, dbo.SectionMaster.SecName, 
+                  dbo.SectionMaster.SecCode
+FROM     dbo.DeptMaster INNER JOIN
+                  dbo.SectionMaster ON dbo.DeptMaster.Dcode = dbo.SectionMaster.Dcode INNER JOIN
+                  dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                  dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode RIGHT OUTER JOIN
+                  dbo.EmpDepartRole ON dbo.SectionMaster.Dcode = dbo.EmpDepartRole.Dcode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Employee_Terminal_Authentication_Relation
+Definition:
+CREATE VIEW [dbo].[View_Employee_Terminal_Authentication_Relation]
+AS
+SELECT        dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.Ecode, dbo.MachineMaster.IPAddress, dbo.MachineMaster.DeviceType, dbo.MachineMaster.Location, dbo.MachineMaster.DomainName, 
+                         dbo.AuthenticationMaster.AuthenticationName, dbo.Access_Schedules.Schedule_Name, dbo.Employee_Terminal_Authentication_Relation.WhiteList, dbo.Employee_Terminal_Authentication_Relation.VIP_list_flag, 
+                         dbo.Employee_Terminal_Authentication_Relation.Expiry_date, dbo.Employee_Terminal_Authentication_Relation.DataLocation, dbo.Employee_Terminal_Authentication_Relation.Status, 
+                         dbo.Employee_Terminal_Authentication_Relation.Error, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.PresentCardNo, dbo.Employee_Terminal_Authentication_Relation.TerminalID, 
+                         dbo.Employee_Terminal_Authentication_Relation.AuthenticationID, dbo.Employee_Terminal_Authentication_Relation.ScheduleID, dbo.EmployeeMaster.IsBlackListed, dbo.MachineMaster.ControllerID
+FROM            dbo.Employee_Terminal_Authentication_Relation INNER JOIN
+                         dbo.EmployeeMaster ON dbo.Employee_Terminal_Authentication_Relation.Ecode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.AuthenticationMaster ON dbo.Employee_Terminal_Authentication_Relation.AuthenticationID = dbo.AuthenticationMaster.AuthenticationID INNER JOIN
+                         dbo.MachineMaster ON dbo.Employee_Terminal_Authentication_Relation.TerminalID = dbo.MachineMaster.TerminalID INNER JOIN
+                         dbo.Access_Schedules ON dbo.Employee_Terminal_Authentication_Relation.ScheduleID = dbo.Access_Schedules.ScheduleID
+WHERE        (dbo.MachineMaster.DeviceType NOT LIKE 'SEMAC%')
+
+================================================================================
+
+View: dbo.View_EmployeeByUserGroupPolicy
+Definition:
+ 
+CREATE VIEW [dbo].[View_EmployeeByUserGroupPolicy]
+AS
+SELECT        dbo.EmployeeMaster.Ecode, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.Active, dbo.EmployeeMaster.SecCode, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.DateofJoin, 
+                         dbo.EmployeeMaster.PresentCardNo, dbo.DeptMaster.Dcode, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchCode, dbo.EmployeeMaster.Gcode, dbo.EmployeeMaster.Catcode, dbo.EmployeeMaster.DesCode, 
+                         dbo.CompanyMaster.CName, dbo.BranchMaster.BranchName, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName, dbo.CatMaster.CatName, dbo.DesignationMaster.DesName, dbo.GradeMaster.Gname, 
+                         dbo.FingerMaster.FingerName AS Finger1, FingerMaster_1.FingerName AS Finger2, dbo.EmployeeMaster.IsEnrolled, dbo.EmployeeMaster.GuardianName, dbo.EmployeeMaster.DateofBirth, dbo.EmployeeMaster.Sex, 
+                         dbo.EmployeeMaster.IsMarried, dbo.EmployeeMaster.Qualification, dbo.EmployeeMaster.Experience, dbo.EmployeeMaster.Address1, dbo.EmployeeMaster.Telephone1, dbo.EmployeeMaster.E_mail, 
+                         dbo.EmployeeMaster.Address2, dbo.EmployeeMaster.Telephone2, dbo.EmployeeMaster.BloodGroup, dbo.EmployeeMaster.LeavingDate, dbo.EmployeeMaster.LeavingReason, dbo.EmployeeMaster.Password, 
+                         dbo.EmployeeMaster.Role, dbo.EmployeeMaster.DefaultPolicy, dbo.EmployeeMaster.PermissableLateArrival, dbo.EmployeeMaster.PermissbleeEarlyDeparture, dbo.EmployeeMaster.MinWorkHourForPresent, 
+                         dbo.EmployeeMaster.IsHalfDayAllowed, dbo.EmployeeMaster.MinWorkHourForHalfDay, dbo.EmployeeMaster.IsShortDayAllowed, dbo.EmployeeMaster.OvertimeAllowed, dbo.EmployeeMaster.MinWorkHourForShortDay, 
+                         dbo.EmployeeMaster.MinDurationReqForOvertime, dbo.EmployeeMaster.OnePunchPresentMarking, dbo.EmployeeMaster.FWOAssigned, dbo.EmployeeMaster.FirstWO, dbo.EmployeeMaster.SWOAssigned, 
+                         dbo.EmployeeMaster.SWO, dbo.EmployeeMaster.SWOFirst, dbo.EmployeeMaster.SWOSecond, dbo.EmployeeMaster.SWOThird, dbo.EmployeeMaster.SWOFourth, dbo.EmployeeMaster.SWOFifth, 
+                         dbo.EmployeeMaster.SWOType, dbo.EmployeeMaster.Image, dbo.EmployeeMaster.WorkMinuteFomula, dbo.EmployeeMaster.ESINo, dbo.EmployeeMaster.IsBlackListed, dbo.EmployeeMaster.ReportingHeadEcode, 
+                         dbo.EmployeeMaster.FP1_ID, dbo.EmployeeMaster.FP2_ID, dbo.EmployeeMaster.DFP_ID, dbo.EmployeeMaster.FName, dbo.EmployeeMaster.LName, dbo.EmployeeMaster.WiegandValue, dbo.EmployeeMaster.LastUpdate, 
+                         dbo.EmployeeMaster.LoginAuthenticationID, dbo.EmployeeMaster.ContarctManualEndDate, dbo.EmployeeMaster.StatusID, dbo.StatusMaster.StatusName, dbo.View_Contractor_Detail.Name, 
+                         dbo.View_Contractor_Detail.ContractorID, dbo.View_Contractor_Detail.PO_Number, dbo.PinMaster.Pin, dbo.EmployeeMaster.[2DStatus], CASE WHEN
+                             (SELECT        COUNT(*)
+                               FROM            Biometric AS BT
+                               WHERE        [Format] IN (1, 2, 3, 6, 402) AND FingerID IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10) AND BT.Ecode = EmployeeMaster.Ecode) > 0 THEN 'YES' ELSE 'NO' END AS Finger, CASE WHEN
+                             (SELECT        COUNT(*)
+                               FROM            Biometric AS BT
+                               WHERE        [Format] IN (203, 206) AND FingerID IN (1, 2, 3, 4) AND BT.Ecode = EmployeeMaster.Ecode) > 0 THEN 'YES' ELSE 'NO' END AS LeftHand, CASE WHEN
+                             (SELECT        COUNT(*)
+                               FROM            Biometric AS BT
+                               WHERE        [Format] IN (203, 206) AND FingerID IN (7, 8, 9, 10) AND BT.Ecode = EmployeeMaster.Ecode) > 0 THEN 'YES' ELSE 'NO' END AS RightHand, CASE WHEN
+                             (SELECT        COUNT(*)
+                               FRO
+
+================================================================================
+
+View: dbo.View_EmployeeESIPF
+Definition:
+
+CREATE VIEW [dbo].[View_EmployeeESIPF]
+AS
+SELECT        dbo.EmployeeMaster.Ecode, dbo.ESIC.ESICNo, dbo.PF.PFNo
+FROM            dbo.EmployeeMaster INNER JOIN
+                         dbo.ESIC ON dbo.EmployeeMaster.Ecode = dbo.ESIC.Ecode INNER JOIN
+                         dbo.PF ON dbo.EmployeeMaster.Ecode = dbo.PF.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_FACE_V1
+Definition:
+
+CREATE VIEW [dbo].[View_FACE_V1]
+AS
+SELECT DISTINCT Ecode, Format, FingerID, CaptureDate, Quality, OperatorID, Enable
+FROM            dbo.Biometric
+WHERE        (Format IN (250, 401))
+
+
+
+================================================================================
+
+View: dbo.View_FingerDetail
+Definition:
+CREATE VIEW dbo.View_FingerDetail
+AS
+SELECT dbo.FingerMaster.FingerName AS Finger, dbo.TemplateFormat.FormatType AS Format, dbo.Biometric.Quality AS Score, dbo.Biometric.Ecode, dbo.Biometric.Format AS FormatID, dbo.FingerMaster.FingerID, dbo.Biometric.CheckedStatus, 
+                  dbo.Biometric.DuplicateEcode, dbo.Biometric.DuplicateFingerID
+FROM     dbo.Biometric INNER JOIN
+                  dbo.FingerMaster ON dbo.Biometric.FingerID = dbo.FingerMaster.FingerID INNER JOIN
+                  dbo.TemplateFormat ON dbo.Biometric.Format = dbo.TemplateFormat.Format
+ 
+
+================================================================================
+
+View: dbo.View_ForExcelExport
+Definition:
+CREATE VIEW [dbo].[View_ForExcelExport]
+AS
+SELECT        dbo.EmployeeMaster.CorpEmpCode AS [Employee Number], dbo.AttendanceRegister.InTime AS [In Date], dbo.AttendanceRegister.OutTime AS [Out Date], dbo.BranchMaster.BranchName AS [In Location], 
+                         dbo.BranchMaster.BranchName AS [Out Location], dbo.AttendanceRegister.ShiftStartTime AS [Shift Starttime], dbo.AttendanceRegister.ShiftEndTime AS [Shift Endtime], dbo.AttendanceRegister.ATDate AS [Attendance Date], 
+                         '0' AS [Time Zone]
+FROM            dbo.DeptMaster INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.SectionMaster ON dbo.DeptMaster.Dcode = dbo.SectionMaster.Dcode INNER JOIN
+                         dbo.AttendanceRegister INNER JOIN
+                         dbo.ShiftMaster ON dbo.AttendanceRegister.SCode = dbo.ShiftMaster.Scode INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AttendanceRegister.ECode = dbo.EmployeeMaster.Ecode ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.Active = 1) AND (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Group_By_DCode
+Definition:
+
+CREATE VIEW [dbo].[View_Group_By_DCode]
+AS
+SELECT DISTINCT dbo.MachineMaster.Dcode, dbo.[Group].GroupID, dbo.[Group].Name, dbo.[Group].IsFixed, dbo.[Group].Note
+FROM            dbo.GroupAccession WITH (NOLOCK) INNER JOIN
+                         dbo.[Group] ON dbo.GroupAccession.GroupID = dbo.[Group].GroupID INNER JOIN
+                         dbo.Door ON dbo.GroupAccession.DoorID = dbo.Door.DoorID INNER JOIN
+                         dbo.MachineMaster ON dbo.Door.TerminalID = dbo.MachineMaster.TerminalID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_HalfDayPresent
+Definition:
+CREATE VIEW [dbo].[View_HalfDayPresent]
+AS
+SELECT        dbo.AttendanceRegister.ECode, dbo.DeptMaster.Dname
+FROM            dbo.AttendanceRegister INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AttendanceRegister.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode
+WHERE        (dbo.AttendanceRegister.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.AttendanceRegister.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND 
+                         (dbo.AttendanceRegister.Status IN ('HalfDayPresent')) AND (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Hospital_VMS_Patient_Details
+Definition:
+
+CREATE VIEW [dbo].[View_Hospital_VMS_Patient_Details]
+AS
+SELECT CorpEmpCode, EmpName, PresentCardNo, Role
+FROM     dbo.EmployeeMaster
+WHERE  (Role = 'Patient')
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_ID_Card_Template
+Definition:
+
+CREATE VIEW [dbo].[View_ID_Card_Template]
+AS
+SELECT        Template_ID, _Cmp_Logo, Firm_Name, _Cmp_Name, Firm_Color, Firm_Font, Template_Size, Template_Name, Template_Type, TemplateBorderColor, Template_Color, TemplateBackground, Font_Color, Font_Type, Font_Size, 
+                         Font_Style, Employee_ID, _EID, CardNo_Color, CardNo_Font, Aadhar, _aadhar, Aadhar_Font, Aadhar_Color, Full_Name, _Full_Name, Full_Name_Color, Full_Name_Font, Contact_No, _Contact_No, Contact_Color, Contact_Font, 
+                         Address, _Address, Address_Font, Address_Color, Image, ImgSize, QR, QrSize, Desig, _desig, Desig_Color, Desig_Font, _vehicleType, _Regd_No, Vehicle_Font, Vehicle_Color, ICNo, _ICNo, ICNo_Font, ICNo_Color, SAP_No, 
+                         _SAP_No, SAP_No_Color, SAP_No_Font, Rank, _Rank, Rank_Font, Rank_Color, Dept, _Dept, Dept_Color, Dept_Font, P_No, _P_No, P_No_Color, P_No_Font, BloodGroup, _BloodGroup, BloodGroup_Color, BloodGroup_Font, 
+                         DateOfIssue, _DateOfIssue, DateOfIssue_Color, DateOfIssue_Font, Signature, _Sign, Sign_Color, Sign_Font, Note, _note, Note_Color, Note_Font, Passport, _Passport, Passport_Color, Passport_Font, Visa, _Visa, Visa_Color, 
+                         Visa_Font, Rename_FName, Rename_Visa, Rename_Passport, Rename_BldGrp, Rename_SAPno, Rename_Pno, Rename_Dept, Rename_Rank, Rename_ICNo, Rename_DOI, Rename_EID, Rename_Firm, Rename_Desig, 
+                         Rename_Aadhar, Rename_Address, Rename_ContactNo, Rename_Qualification, _Cmp_Logo_Size, SignPicSize, SignPic_Location, SignPic, Name_hindi_Location, _Name_hindi_Location, Name_hindi_Font, Name_hindi_Color, 
+                         Rename_Name_hindi_lbl, Desig_hindi_Location, _Desig_hindi_Location, Desig_hindi_Font, Desig_hindi_Color, Rename_Desig_hindi_lbl, Image2_Location, Image2_Size
+FROM            dbo.ID_Card_Template
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_MachinePunch
+Definition:
+
+CREATE VIEW [dbo].[View_MachinePunch] AS SELECT dbo.MachineRawPunchDL.PunchTime As PunchDateTime, dbo.MachineRawPunchDL.CardNo As [Card No],EmployeeMaster.EmpName As [Employee Name], dbo.MachineMaster.DomainName As [Terminal Name],dbo.MachineMaster.TerminalID, dbo.MachineMaster.IPAddress, dbo.MachineMaster.Sno, dbo.MachineRawPunchDL.Action, dbo.MachineRawPunchDL.Status FROM dbo.MachineRawPunchDL   INNER JOIN dbo.MachineMaster ON dbo.MachineRawPunchDL.MachineID = dbo.MachineMaster.MachineID left JOIN dbo.EmployeeMaster ON dbo.EmployeeMaster.PresentCardNo = dbo.MachineRawPunchDL.CardNo
+ UNION  SELECT  dbo.MachineRawPunch.PunchTime As PunchDateTime, dbo.MachineRawPunch.CardNo As [Card No],EmployeeMaster.EmpName As [Employee Name], dbo.MachineMaster.DomainName As [Terminal Name],dbo.MachineMaster.TerminalID, dbo.MachineMaster.IPAddress, dbo.MachineMaster.Sno, dbo.MachineRawPunch.Action, dbo.MachineRawPunch.Status FROM dbo.MachineRawPunch   INNER JOIN dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID left JOIN dbo.EmployeeMaster ON dbo.EmployeeMaster.PresentCardNo = dbo.MachineRawPunch.CardNo 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_MachineRawPunch_WithLocation
+Definition:
+
+CREATE VIEW [dbo].[View_MachineRawPunch_WithLocation]
+AS
+SELECT        dbo.EmployeeMaster.CorpEmpCode AS EmployeeID, dbo.MachineRawPunch.CardNo, dbo.EmployeeMaster.EmpName, dbo.MachineRawPunch.PunchTime, dbo.MachineRawPunch.fname AS RoaterBranch, 
+                         dbo.MachineRawPunch.name AS PunchBranch, dbo.MachineRawPunch.Action, dbo.MachineRawPunch.ReadStatus AS [Athentication Status], dbo.MachineRawPunch.MachineID, dbo.MachineRawPunch.Status
+FROM            dbo.MachineRawPunch INNER JOIN
+                         dbo.EmployeeMaster ON dbo.MachineRawPunch.CardNo = dbo.EmployeeMaster.PresentCardNo
+
+
+
+================================================================================
+
+View: dbo.View_MachineRawPunchWithMachineAndEmployee
+Definition:
+--===============================================================================================================================================================
+
+CREATE VIEW [dbo].[View_MachineRawPunchWithMachineAndEmployee]
+AS
+SELECT   dbo.MachineRawPunch.CardNo, dbo.MachineRawPunch.PunchTime, dbo.MachineRawPunch.IsManual, dbo.MachineRawPunch.InOut, dbo.MachineRawPunch.MachineID, 
+                         dbo.MachineRawPunch.RtcProcessed, dbo.MachineRawPunch.HRExecutiveID, dbo.MachineRawPunch.Action, dbo.MachineRawPunch.Status, dbo.MachineRawPunch.fname, 
+                         dbo.MachineRawPunch.name, dbo.MachineRawPunch.AccessLogID, dbo.MachineRawPunch.nEventLogIdn, dbo.MachineRawPunch.CreateTime, dbo.MachineRawPunch.ReadStatus, 
+                         dbo.MachineRawPunch.LogImage, dbo.MachineRawPunch.ServerSync, dbo.MachineRawPunch.OutPunchTime, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.Ecode, 
+                         dbo.EmployeeMaster.Active, dbo.EmployeeMaster.EmpName, dbo.MachineMaster.IPAddress
+FROM         dbo.MachineMaster 
+				INNER JOIN dbo.MachineRawPunch ON dbo.MachineMaster.MachineID = dbo.MachineRawPunch.MachineID 
+				INNER JOIN dbo.EmployeeMaster ON dbo.EmployeeMaster.PresentCardNo = dbo.MachineRawPunch.CardNo 
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_MPunch
+Definition:
+
+CREATE VIEW [dbo].[View_MPunch]
+AS
+SELECT DISTINCT 
+                         dbo.MachineRawPunch.CardNo, dbo.MachineRawPunch.fname AS Roster, dbo.MachineRawPunch.name AS PunchLocation, dbo.MachineRawPunch.ReadStatus, dbo.MachineRawPunch.nEventLogIdn, 
+                         dbo.MachineRawPunch.IsManual, dbo.MachineRawPunch.InOut, dbo.MachineRawPunch.Action, dbo.MachineRawPunch.Status, dbo.MachineMaster.Location AS DeviceLocation, 
+                         dbo.EmployeeMaster.CorpEmpCode AS EmployeeID, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.Role, dbo.MachineRawPunch.PunchTime, dbo.MachineMaster.TerminalID, dbo.MachineMaster.DomainName, 
+                         dbo.MachineRawPunch.TransactionId, dbo.MachineMaster.IPAddress, dbo.MachineMaster.Sno, CASE WHEN Sex = 1 THEN 'Male' WHEN Sex = 0 THEN 'Female' END AS Gender, dbo.MachineRawPunch.CreateTime, 
+                         dbo.MachineRawPunch.MachineID, dbo.MachineMaster.DeviceType, dbo.TerminalPolicy.TerminalGroupID
+FROM            dbo.MachineRawPunch INNER JOIN
+                         dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID INNER JOIN
+                         dbo.TerminalPolicy ON dbo.MachineMaster.TerminalID = dbo.TerminalPolicy.TerminalID LEFT OUTER JOIN
+                         dbo.EmployeeMaster ON dbo.MachineRawPunch.CardNo = dbo.EmployeeMaster.PresentCardNo
+
+
+
+================================================================================
+
+View: dbo.View_MPunchDL
+Definition:
+
+CREATE VIEW [dbo].[View_MPunchDL]
+AS
+SELECT DISTINCT 
+                         dbo.MachineRawPunchDL.CardNo, dbo.MachineRawPunchDL.fname AS Roster, dbo.MachineRawPunchDL.name AS PunchLocation, dbo.MachineRawPunchDL.ReadStatus, dbo.MachineRawPunchDL.nEventLogIdn, 
+                         dbo.MachineRawPunchDL.IsManual, dbo.MachineRawPunchDL.InOut, dbo.MachineRawPunchDL.Action, dbo.MachineRawPunchDL.Status, dbo.MachineMaster.Location AS DeviceLocation, 
+                         dbo.EmployeeMaster.CorpEmpCode AS EmployeeID, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.Role, dbo.MachineRawPunchDL.PunchTime, dbo.MachineMaster.TerminalID, dbo.MachineMaster.DomainName, 
+                         dbo.MachineRawPunchDL.TransactionId, dbo.MachineMaster.IPAddress, dbo.MachineMaster.Sno, CASE WHEN Sex = 1 THEN 'Male' WHEN Sex = 0 THEN 'Female' END AS Gender, dbo.MachineMaster.MachineID, 
+                         dbo.MachineMaster.DeviceType, dbo.MachineRawPunchDL.CreateTime, dbo.TerminalPolicy.TerminalGroupID
+FROM            dbo.MachineRawPunchDL INNER JOIN
+                         dbo.MachineMaster ON dbo.MachineRawPunchDL.MachineID = dbo.MachineMaster.MachineID INNER JOIN
+                         dbo.TerminalPolicy ON dbo.MachineMaster.TerminalID = dbo.TerminalPolicy.TerminalID LEFT OUTER JOIN
+                         dbo.EmployeeMaster ON dbo.MachineRawPunchDL.CardNo = dbo.EmployeeMaster.PresentCardNo
+
+
+
+================================================================================
+
+View: dbo.View_MPunchV3
+Definition:
+CREATE VIEW [dbo].[View_MPunchV3]
+AS
+SELECT DISTINCT 
+                  dbo.MachineRawPunch.CardNo, dbo.MachineRawPunch.fname AS Roster, dbo.MachineRawPunch.name AS PunchLocation, dbo.MachineRawPunch.ReadStatus, dbo.MachineRawPunch.nEventLogIdn, dbo.MachineRawPunch.IsManual, dbo.MachineRawPunch.InOut, 
+                  dbo.MachineRawPunch.Action, dbo.MachineRawPunch.Status, dbo.MachineMaster.Location AS DeviceLocation, dbo.EmployeeMaster.CorpEmpCode AS EmployeeID, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.Role, dbo.MachineRawPunch.PunchTime, 
+                  dbo.MachineMaster.TerminalID, dbo.MachineMaster.DomainName, dbo.MachineRawPunch.TransactionId, dbo.MachineMaster.IPAddress, dbo.MachineMaster.Sno, CASE WHEN Sex = 1 THEN 'Male' WHEN Sex = 0 THEN 'Female' END AS Gender, dbo.MachineRawPunch.CreateTime, 
+                  dbo.MachineRawPunch.MachineID, dbo.MachineMaster.DeviceType, dbo.SectionMaster.SecCode, dbo.DeptMaster.Dcode, dbo.BranchMaster.BranchCode, dbo.CompanyMaster.Ccode
+FROM        dbo.SectionMaster INNER JOIN
+                  dbo.EmployeeMaster ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode INNER JOIN
+                  dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                  dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                  dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode RIGHT OUTER JOIN
+                  dbo.MachineRawPunch INNER JOIN
+                  dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID ON dbo.EmployeeMaster.PresentCardNo = dbo.MachineRawPunch.CardNo
+
+================================================================================
+
+View: dbo.View_MpunchV4
+Definition:
+CREATE VIEW [dbo].[View_MpunchV4]
+AS
+SELECT DISTINCT 
+                  dbo.MachineRawPunch.CardNo, dbo.MachineRawPunch.fname AS Roster, dbo.MachineRawPunch.name AS PunchLocation, dbo.MachineRawPunch.ReadStatus, dbo.MachineRawPunch.nEventLogIdn, dbo.MachineRawPunch.IsManual, dbo.MachineRawPunch.InOut, 
+                  dbo.MachineRawPunch.Action, dbo.MachineRawPunch.Status, dbo.MachineMaster.Location AS DeviceLocation, dbo.EmployeeMaster.CorpEmpCode AS EmployeeID, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.Role, dbo.MachineRawPunch.PunchTime, 
+                  dbo.MachineMaster.TerminalID, dbo.MachineMaster.DomainName, dbo.MachineRawPunch.TransactionId, dbo.MachineMaster.IPAddress, dbo.MachineMaster.Sno, CASE WHEN Sex = 1 THEN 'Male' WHEN Sex = 0 THEN 'Female' END AS Gender, dbo.MachineRawPunch.CreateTime, 
+                  dbo.MachineRawPunch.MachineID, dbo.MachineMaster.DeviceType, dbo.SectionMaster.SecCode, dbo.DeptMaster.Dcode, dbo.BranchMaster.BranchCode, dbo.CompanyMaster.Ccode, dbo.TerminalPolicy.TerminalGroupID
+FROM        dbo.SectionMaster INNER JOIN
+                  dbo.EmployeeMaster ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode INNER JOIN
+                  dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                  dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                  dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode RIGHT OUTER JOIN
+                  dbo.TerminalPolicy RIGHT OUTER JOIN
+                  dbo.MachineRawPunch LEFT OUTER JOIN
+                  dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID ON dbo.TerminalPolicy.TerminalID = dbo.MachineMaster.TerminalID ON dbo.EmployeeMaster.PresentCardNo = dbo.MachineRawPunch.CardNo
+WHERE     (dbo.MachineRawPunch.nEventLogIdn =
+                      (SELECT     TOP (1) nEventLogIdn
+                       FROM        dbo.MachineRawPunch AS sub
+                       WHERE     (CardNo = dbo.MachineRawPunch.CardNo)
+                       ORDER BY PunchTime DESC))
+
+================================================================================
+
+View: dbo.View_ParkingLog
+Definition:
+
+CREATE VIEW [dbo].[View_ParkingLog]
+AS
+SELECT        dbo.MachineRawPunchDL.PunchTime As PunchDateTime, dbo.EmployeeMaster.CorpEmpCode AS EmployeeID, dbo.MachineRawPunchDL.CardNo, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.Role, dbo.CatMaster.CatName AS BusNO, 
+                         dbo.MachineMaster.DeviceType, dbo.MachineMaster.TerminalID, dbo.MachineMaster.DomainName AS DeviceName, dbo.MachineMaster.Location
+FROM            dbo.CatMaster INNER JOIN
+                         dbo.EmployeeMaster ON dbo.CatMaster.CatCode = dbo.EmployeeMaster.Catcode INNER JOIN
+                         dbo.MachineRawPunchDL ON dbo.EmployeeMaster.PresentCardNo = dbo.MachineRawPunchDL.CardNo INNER JOIN
+                         dbo.MachineMaster ON dbo.MachineRawPunchDL.MachineID = dbo.MachineMaster.MachineID
+WHERE        (dbo.MachineMaster.Location IN ('VehicleIN', 'VehicleOUT'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_SearchVisitor
+Definition:
+CREATE VIEW [dbo].[View_SearchVisitor]
+AS
+SELECT dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.Sex, dbo.EmployeeMaster.Address1, dbo.EmployeeMaster.Telephone1, dbo.EmployeeMaster.E_mail, dbo.EmployeeMaster.Image, dbo.Vistor_Details.ID_Proof_Type, 
+                  dbo.Vistor_Details.ID_Proof_Detail, dbo.Vistor_Details.ID_Proof_Image, dbo.Vistor_Details.MobileNumner, dbo.Vistor_Details.Document_Detail, dbo.Vistor_Details.Document_File, dbo.EmployeeMaster.FName, 
+                  dbo.EmployeeMaster.LName, dbo.Vistor_Details.ID, dbo.Vistor_Details.Ecode, dbo.Vistor_Details.Expected_IN_Time, dbo.Vistor_Details.OUT_Time, dbo.Vistor_Details.Expected_OUT_Time, dbo.Vistor_Details.IN_Time, 
+                  dbo.Vistor_Details.Status, dbo.Vistor_Details.Filter, dbo.Vistor_Details.Create_Time, dbo.PurposeMaster.PurposeType AS Purpose
+FROM     dbo.EmployeeMaster INNER JOIN
+                  dbo.Vistor_Details ON dbo.EmployeeMaster.Ecode = dbo.Vistor_Details.Ecode INNER JOIN
+                  dbo.PurposeMaster ON dbo.Vistor_Details.Purpose = dbo.PurposeMaster.PurposeID
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_SearchVisitor_Details
+Definition:
+CREATE VIEW [dbo].[View_SearchVisitor_Details]
+AS
+SELECT dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.Sex, dbo.EmployeeMaster.Address1, dbo.EmployeeMaster.Telephone1, dbo.EmployeeMaster.E_mail, dbo.EmployeeMaster.FName, dbo.EmployeeMaster.LName, 
+                  dbo.Vistor_Details.Whom_To_Visit, dbo.Vistor_Details.Purpose, dbo.Vistor_Details.ID_Proof_Type, dbo.Vistor_Details.ID_Proof_Detail, dbo.Vistor_Details.ID_Proof_Image, dbo.Vistor_Details.MobileNumner, 
+                  dbo.Vistor_Details.Document_File
+FROM     dbo.Vistor_Details INNER JOIN
+                  dbo.EmployeeMaster ON dbo.Vistor_Details.Ecode = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_ShiftMaster
+Definition:
+
+--=========================================================================================================================================================================
+CREATE VIEW [dbo].[View_ShiftMaster]
+AS
+SELECT        dbo.ShiftMaster.*
+FROM            dbo.ShiftMaster
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Student_Parent_IN_OUT_Status
+Definition:
+
+CREATE VIEW [dbo].[View_Student_Parent_IN_OUT_Status]
+AS
+SELECT        dbo.MultiReportingHeadRelation.ECode AS StudentEcode, dbo.EmployeeMaster.CorpEmpCode AS StudentCorpEmpCode, dbo.MultiReportingHeadRelation.ReportingHeadEcode AS ParentEcode, 
+                         dbo.EmployeeMaster.EmpName AS StudentName, dbo.EmployeeMaster.Role AS StudentRole, dbo.EmployeeMaster.PresentCardNo AS StudentPresentCardNo, EmployeeMaster_1.CorpEmpCode AS ParentCorpEmpCode, 
+                         EmployeeMaster_1.EmpName AS ParentName, EmployeeMaster_1.PresentCardNo AS ParentPresentCardNo, dbo.EmployeeMaster.IN_Out_Status AS StudentIN_Out_Status, 
+                         EmployeeMaster_1.IN_Out_Status AS ParentIN_Out_Status, EmployeeMaster_1.Telephone1 AS ParentMobile, EmployeeMaster_1.IsMarried AS SMS
+FROM            dbo.MultiReportingHeadRelation INNER JOIN
+                         dbo.EmployeeMaster ON dbo.MultiReportingHeadRelation.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.EmployeeMaster AS EmployeeMaster_1 ON dbo.MultiReportingHeadRelation.ReportingHeadEcode = EmployeeMaster_1.Ecode
+WHERE        (dbo.EmployeeMaster.Role = 'Student')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGINTime
+Definition:
+CREATE VIEW [dbo].[View_TodayAVGINTime]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.InTime AS TIME))), 0) AS AVInTime, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.BranchMaster.BranchName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGINTimeBranchWise_V2
+Definition:
+
+CREATE VIEW [dbo].[View_TodayAVGINTimeBranchWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.InTime AS TIME))), 0) AS AVInTime, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGINTimeCompanyWise_V2
+Definition:
+
+CREATE VIEW [dbo].[View_TodayAVGINTimeCompanyWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.InTime AS TIME))), 0) AS AVInTime, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode/*, dbo.BranchMaster.BranchName, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName*/
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode/*, dbo.BranchMaster.BranchName, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName*/
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGINTimeDeptWise_V2
+Definition:
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE VIEW [dbo].[View_TodayAVGINTimeDeptWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.InTime AS TIME))), 0) AS AVInTime/*, dbo.CompanyMaster.CName*/, dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode/*, dbo.SectionMaster.SecName*/
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY /*dbo.CompanyMaster.CName,*/ dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode/*, dbo.SectionMaster.SecName*/
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGINTimeSecWise_V2
+Definition:
+
+CREATE VIEW [dbo].[View_TodayAVGINTimeSecWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.InTime AS TIME))), 0) AS AVInTime/*, dbo.CompanyMaster.CName, dbo.BranchMaster.BranchName*/, dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY /*dbo.CompanyMaster.CName, dbo.BranchMaster.BranchName, */dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAvgOUTTime
+Definition:
+CREATE VIEW [dbo].[View_TodayAvgOUTTime]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.OutTime AS TIME))), 0) AS AVOutTime, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.BranchMaster.BranchName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGOUTTimeBranchWise_V2
+Definition:
+
+create VIEW [dbo].[View_TodayAVGOUTTimeBranchWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.OutTime AS TIME))), 0) AS AVOutTime,  dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName/*, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName*/
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY  dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName/*, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName*/
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGOUTTimeCompanyWise_V2
+Definition:
+
+
+
+
+create VIEW [dbo].[View_TodayAVGOUTTimeCompanyWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.OutTime AS TIME))), 0) AS AVOutTime, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode/*, dbo.BranchMaster.BranchName, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName*/
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode/*, dbo.BranchMaster.BranchName, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName*/
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGOUTTimeDeptWise_V2
+Definition:
+
+
+
+create VIEW [dbo].[View_TodayAVGOUTTimeDeptWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.OutTime AS TIME))), 0) AS AVOutTime,   dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname/*, dbo.SectionMaster.SecName*/
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY   dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname/*, dbo.SectionMaster.SecName*/
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGOUTTimeSecWise_V2
+Definition:
+
+
+
+
+create VIEW [dbo].[View_TodayAVGOUTTimeSecWise_V2]
+AS
+SELECT        DATEADD(SECOND, AVG(DATEDIFF(SECOND, 0, CAST(dbo.vw_CompleteAttendanceReport.OutTime AS TIME))), 0) AS AVOutTime,    dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY   dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGWorkHour
+Definition:
+CREATE VIEW [dbo].[View_TodayAVGWorkHour]
+AS
+SELECT        AVG(CONVERT(NUMERIC(18, 0), dbo.vw_CompleteAttendanceReport.WorkDuration / 60 + dbo.vw_CompleteAttendanceReport.WorkDuration % 60 / 100.0)) AS AVWorkTime, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.WorkDuration <> 0) AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND 
+                         (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.BranchMaster.BranchName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGWorkHourBranchWise_V2
+Definition:
+
+
+
+
+CREATE VIEW [dbo].[View_TodayAVGWorkHourBranchWise_V2]
+AS
+SELECT        AVG(CONVERT(NUMERIC(18, 0), dbo.vw_CompleteAttendanceReport.WorkDuration / 60 + dbo.vw_CompleteAttendanceReport.WorkDuration % 60 / 100.0)) AS AVWorkTime, dbo.BranchMaster.BranchName, dbo.CompanyMaster.Ccode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.WorkDuration <> 0) AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND 
+                         (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.BranchMaster.BranchName, dbo.CompanyMaster.Ccode
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGWorkHourCompnayWise_V2
+Definition:
+
+
+
+CREATE VIEW [dbo].[View_TodayAVGWorkHourCompnayWise_V2]
+AS
+SELECT        AVG(CONVERT(NUMERIC(18, 0), dbo.vw_CompleteAttendanceReport.WorkDuration / 60 + dbo.vw_CompleteAttendanceReport.WorkDuration % 60 / 100.0)) AS AVWorkTime, dbo.CompanyMaster.CName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.WorkDuration <> 0) AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND 
+                         (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.CompanyMaster.CName
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGWorkHourDeptWise_V2
+Definition:
+
+
+
+CREATE VIEW [dbo].[View_TodayAVGWorkHourDeptWise_V2]
+AS
+SELECT        AVG(CONVERT(NUMERIC(18, 0), dbo.vw_CompleteAttendanceReport.WorkDuration / 60 + dbo.vw_CompleteAttendanceReport.WorkDuration % 60 / 100.0)) AS AVWorkTime, dbo.DeptMaster.Dname, dbo.BranchMaster.BranchCode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.WorkDuration <> 0) AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND 
+                         (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.DeptMaster.Dname, dbo.BranchMaster.BranchCode
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayAVGWorkHourSecWise_V2
+Definition:
+
+
+
+CREATE VIEW [dbo].[View_TodayAVGWorkHourSecWise_V2]
+AS
+SELECT        AVG(CONVERT(NUMERIC(18, 0), dbo.vw_CompleteAttendanceReport.WorkDuration / 60 + dbo.vw_CompleteAttendanceReport.WorkDuration % 60 / 100.0)) AS AVWorkTime, dbo.SectionMaster.SecName, dbo.DeptMaster.Dcode, dbo.SectionMaster.SecCode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.WorkDuration <> 0) AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND 
+                         (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0))
+GROUP BY dbo.SectionMaster.SecName, dbo.DeptMaster.Dcode,dbo.SectionMaster.SecCode
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayPresentBranchWiseChart
+Definition:
+CREATE VIEW [dbo].[View_TodayPresentBranchWiseChart]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.InTime IS NOT NULL)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayPresentChart
+Definition:
+CREATE VIEW [dbo].[View_TodayPresentChart]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.DeptMaster.Dname
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.InTime IS NOT NULL)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayPresentChart_V2
+Definition:
+
+
+
+
+CREATE VIEW [dbo].[View_TodayPresentChart_V2]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode, dbo.vw_CompleteAttendanceReport.Status, dbo.vw_CompleteAttendanceReport. InTime
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+						 dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+						 dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.InTime IS NOT NULL) AND ( dbo.vw_CompleteAttendanceReport.status = 'fullDayPresent')
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayPresentDeviceWiseChart
+Definition:
+
+
+CREATE VIEW [dbo].[View_TodayPresentDeviceWiseChart]
+AS
+SELECT        dbo.View_Top1TodayDevicePunch.CardNo, dbo.MachineMaster.Location
+FROM            dbo.MachineMaster INNER JOIN
+                         dbo.View_Top1TodayDevicePunch ON dbo.MachineMaster.MachineID = dbo.View_Top1TodayDevicePunch.MachineID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TodayPresentGradeWiseChart
+Definition:
+CREATE VIEW [dbo].[View_TodayPresentGradeWiseChart]
+AS
+SELECT        dbo.AttendanceRegister.ECode, dbo.GradeMaster.Gname
+FROM            dbo.AttendanceRegister INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AttendanceRegister.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.GradeMaster ON dbo.EmployeeMaster.Gcode = dbo.GradeMaster.Gcode
+WHERE        (dbo.AttendanceRegister.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.AttendanceRegister.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND 
+                         (dbo.AttendanceRegister.InTime IS NOT NULL) AND (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Top1TodayDevicePunch
+Definition:
+
+
+CREATE VIEW [dbo].[View_Top1TodayDevicePunch]
+AS
+SELECT        t.CardNo, t.PunchTime, t.MachineID
+FROM            dbo.MachineRawPunch AS t INNER JOIN
+                             (SELECT        CardNo, MAX(PunchTime) AS MaxReviewDate
+                               FROM            dbo.MachineRawPunch
+                               GROUP BY CardNo) AS t1 ON t.CardNo = t1.CardNo AND t.PunchTime = t1.MaxReviewDate
+WHERE        (t.PunchTime >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (t.PunchTime < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalAbsentChart
+Definition:
+CREATE VIEW [dbo].[View_TotalAbsentChart]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.Status IN ('Absent', 'WeekOFF', ''))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalAbsentChart_V2
+Definition:
+
+
+
+CREATE VIEW [dbo].[View_TotalAbsentChart_V2]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.Status IN ('Absent', 'WeekOFF', ''))
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalEarlyDeparture
+Definition:
+
+CREATE VIEW [dbo].[View_TotalEarlyDeparture]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.EarlyDeparture > 0)
+
+
+
+================================================================================
+
+View: dbo.View_TotalEarlyDeparture_V2
+Definition:
+
+
+
+
+CREATE VIEW [dbo].[View_TotalEarlyDeparture_V2]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.EarlyDeparture > 0)
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalEmployee_Chart
+Definition:
+CREATE VIEW [dbo].[View_TotalEmployee_Chart]
+AS
+SELECT        dbo.EmployeeMaster.Ecode, dbo.DeptMaster.Dname
+FROM            dbo.EmployeeMaster INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode AND dbo.EmployeeMaster.CorpEmpCode <> 'Admin'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalEmployeeBranchWise_Chart
+Definition:
+CREATE VIEW [dbo].[View_TotalEmployeeBranchWise_Chart]
+AS
+SELECT        dbo.EmployeeMaster.Ecode, dbo.BranchMaster.BranchName
+FROM            dbo.EmployeeMaster INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode AND dbo.EmployeeMaster.CorpEmpCode <> 'Admin'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalEmployeeChart_V2
+Definition:
+
+
+
+
+
+CREATE VIEW [dbo].[View_TotalEmployeeChart_V2]
+AS
+
+SELECT        dbo.EmployeeMaster.Ecode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode 
+FROM          dbo.EmployeeMaster INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode AND dbo.EmployeeMaster.CorpEmpCode <> 'Admin' INNER JOIN
+						 dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalLateArrive
+Definition:
+CREATE VIEW [dbo].[View_TotalLateArrive]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.LateArrival > 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalLateArrive_V2
+Definition:
+
+
+
+CREATE VIEW [dbo].[View_TotalLateArrive_V2]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode,  dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.LateArrival > 0)
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalLeaveToday
+Definition:
+CREATE VIEW [dbo].[View_TotalLeaveToday]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.BranchMaster.BranchName
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.SCode = 2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalLeaveToday_V2
+Definition:
+
+
+
+
+
+CREATE VIEW [dbo].[View_TotalLeaveToday_V2]
+AS
+SELECT        dbo.vw_CompleteAttendanceReport.ECode, dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, dbo.SectionMaster.SecName, dbo.SectionMaster.SecCode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Ccode
+FROM            dbo.vw_CompleteAttendanceReport INNER JOIN
+                         dbo.EmployeeMaster ON dbo.vw_CompleteAttendanceReport.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+						 dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin') AND (dbo.vw_CompleteAttendanceReport.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.vw_CompleteAttendanceReport.ATDate < DATEADD(day, 
+                         DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.vw_CompleteAttendanceReport.SCode = 2)
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_TotalOverTime
+Definition:
+CREATE VIEW [dbo].[View_TotalOverTime]
+AS
+SELECT        dbo.AttendanceRegister.ECode, dbo.BranchMaster.BranchName
+FROM            dbo.AttendanceRegister INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AttendanceRegister.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode
+WHERE        (dbo.AttendanceRegister.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.AttendanceRegister.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.AttendanceRegister.OT > 0) AND 
+                         (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Vehicle_IN_Out
+Definition:
+
+CREATE VIEW [dbo].[View_Vehicle_IN_Out]
+AS
+SELECT        dbo.MachineRawPunch.name AS VehicleNo, dbo.MachineRawPunch.CardNo, dbo.MachineRawPunch.PunchTime AS INTIME, dbo.MachineRawPunch.OutPunchTime AS OUTTIME, dbo.MachineMaster.DomainName, 
+                         dbo.DeptMaster.Dname, dbo.MachineRawPunch.Status
+FROM            dbo.MachineRawPunch INNER JOIN
+                         dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID INNER JOIN
+                         dbo.DeptMaster ON dbo.MachineMaster.Dcode = dbo.DeptMaster.Dcode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_AL_DuplicateMaster
+Definition:
+CREATE VIEW [dbo].[View_VG_AL_DuplicateMaster]
+AS
+SELECT        dbo.EmployeeMaster.CorpEmpCode AS [Unique Code], dbo.EmployeeMaster.EmpName AS [Student Name], dbo.EmployeeMaster.Address1 AS StudentAddress, dbo.AuditLog.LogDetail, dbo.AuditLog.MacAddress, 
+                         dbo.AuditLog.IPAddress, dbo.AuditLog.Sno, dbo.AuditLog.SoftwareVer, dbo.AuditLog.DetailType, dbo.AuditLog.LogDateTime, dbo.AuditLog.OperatorEcode
+FROM            dbo.AuditLog INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AuditLog.Ecode = dbo.EmployeeMaster.Ecode
+WHERE        (dbo.AuditLog.LogDetail IN ('Online Enrollment', 'Offline Enrollment')) AND (dbo.AuditLog.DetailType LIKE '%Duplicate%')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_AL_IdentificationMaster
+Definition:
+CREATE VIEW [dbo].[View_VG_AL_IdentificationMaster]
+AS
+SELECT        dbo.EmployeeMaster.CorpEmpCode AS [Unique Code], dbo.EmployeeMaster.EmpName AS [Student Name], dbo.EmployeeMaster.Address1 AS StudentAddress, dbo.AuditLog.LogDetail, dbo.AuditLog.MacAddress, 
+                         dbo.AuditLog.IPAddress, dbo.AuditLog.Sno, dbo.AuditLog.SoftwareVer, dbo.AuditLog.DetailType, dbo.AuditLog.LogDateTime, dbo.AuditLog.OperatorEcode
+FROM            dbo.AuditLog INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AuditLog.Ecode = dbo.EmployeeMaster.Ecode
+WHERE        (dbo.AuditLog.LogDetail IN ('Online Identified', 'Offline Identified'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_DuplicateStudentCompleteDetail
+Definition:
+CREATE VIEW [dbo].[View_VG_DuplicateStudentCompleteDetail]
+AS
+SELECT        dbo.View_VG_AL_DuplicateMaster.[Unique Code], dbo.View_VG_AL_DuplicateMaster.[Student Name], dbo.View_VG_AL_DuplicateMaster.StudentAddress, dbo.View_VG_AL_DuplicateMaster.LogDetail, 
+                         dbo.View_VG_AL_DuplicateMaster.MacAddress, dbo.View_VG_AL_DuplicateMaster.IPAddress, dbo.View_VG_AL_DuplicateMaster.Sno, dbo.View_VG_AL_DuplicateMaster.SoftwareVer, 
+                         dbo.View_VG_AL_DuplicateMaster.DetailType, dbo.View_VG_AL_DuplicateMaster.LogDateTime, dbo.EmployeeMaster.E_mail AS OperatorID, dbo.EmployeeMaster.Address1 AS OperatorAddress
+FROM            dbo.View_VG_AL_DuplicateMaster INNER JOIN
+                         dbo.EmployeeMaster ON dbo.View_VG_AL_DuplicateMaster.OperatorEcode = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_Enroll_Task
+Definition:
+CREATE VIEW [dbo].[View_VG_Enroll_Task]
+AS
+SELECT        TaskID, TaskType, IPAddress, Status, CreatedBy, CreatedDateTime, ExecutionDateTime, ExecutedDateTime, Ecode, Remark, Priority, FP1, FP2, FP3, FP4, FP5, FP6, FP7, FP8, FP9, FP10, FP1Image, FP2Image, FP3Image, 
+                         FP4Image, FP5Image, FP6Image, FP7Image, FP8Image, FP9Image, FP10Image, FP1Score, FP2Score, FP3Score, FP4Score, FP5Score, FP6Score, FP7Score, FP8Score, FP9Score, FP10Score, FP1Remark, FP2Remark, FP3Remark,
+                          FP4Remark, FP5Remark, FP6Remark, FP7Remark, FP8Remark, FP9Remark, FP10Remark, MacAddress, ClientSno, TaskMode, DeviceSno, SoftwareVer
+FROM            dbo.Task
+WHERE        (TaskType = 'FingerVerify')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_EnrolledStudentCompleteDetail
+Definition:
+CREATE VIEW [dbo].[View_VG_EnrolledStudentCompleteDetail]
+AS
+SELECT        dbo.View_VG_StudentDetail.[Unique Code], dbo.View_VG_StudentDetail.Year, dbo.View_VG_StudentDetail.[Student Name], dbo.View_VG_StudentDetail.[Mobile No], dbo.View_VG_StudentDetail.DOB, 
+                         dbo.View_VG_StudentDetail.Gender, CASE WHEN dbo.View_VG_StudentDetail.[Enrollment Status] = 1 THEN 'true' ELSE 'false' END AS EnrolledStatus, dbo.EmployeeMaster.E_mail AS OperatorID, 
+                         dbo.EmployeeMaster.Address1 AS OperatorAddress, dbo.View_VG_StudentDetail.EnrolledDate, dbo.View_VG_StudentDetail.RightThumb, dbo.View_VG_StudentDetail.RightIndex, dbo.View_VG_StudentDetail.LeftThumb, 
+                         dbo.View_VG_StudentDetail.LeftIndex, dbo.View_VG_StudentDetail.RightThumbRemark, dbo.View_VG_StudentDetail.RightIndexRemark, dbo.View_VG_StudentDetail.LeftThumbRemark, 
+                         dbo.View_VG_StudentDetail.LeftIndexRemark, dbo.View_VG_StudentDetail.StudentLocation, dbo.View_VG_StudentDetail.TaskMode AS EnrollmentMode, dbo.View_VG_StudentDetail.Status
+FROM            dbo.View_VG_StudentDetail LEFT OUTER JOIN
+                         dbo.EmployeeMaster ON dbo.View_VG_StudentDetail.EnrolledBy = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_Enrollment_Log_Result
+Definition:
+CREATE VIEW [dbo].[View_VG_Enrollment_Log_Result]
+AS
+SELECT        dbo.View_VG_EVI_M_Result.LogID, dbo.View_VG_EVI_M_Result.StudentID, dbo.EmployeeMaster.CorpEmpCode AS [Operator ID], dbo.View_VG_EVI_M_Result.TerminalID, dbo.View_VG_EVI_M_Result.[Creation Time], 
+                         dbo.View_VG_EVI_M_Result.[Executed Time], dbo.View_VG_EVI_M_Result.FP3Score, dbo.View_VG_EVI_M_Result.FP4Score, dbo.View_VG_EVI_M_Result.FP5Score, dbo.View_VG_EVI_M_Result.FP6Score, 
+                         dbo.View_VG_EVI_M_Result.Result
+FROM            dbo.View_VG_EVI_M_Result LEFT OUTER JOIN
+                         dbo.EmployeeMaster ON dbo.View_VG_EVI_M_Result.CreatedBy = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_EVI_M_Result
+Definition:
+CREATE VIEW [dbo].[View_VG_EVI_M_Result]
+AS
+SELECT        dbo.Task.TaskID AS LogID, dbo.EmployeeMaster.CorpEmpCode AS StudentID, dbo.Task.CreatedBy, dbo.MachineMaster.TerminalID, dbo.Task.CreatedDateTime AS [Creation Time], 
+                         dbo.Task.ExecutedDateTime AS [Executed Time], dbo.Task.FP3Score, dbo.Task.FP4Score, dbo.Task.FP5Score, dbo.Task.FP6Score, dbo.Task.Status AS Result
+FROM            dbo.Task LEFT OUTER JOIN
+                         dbo.EmployeeMaster ON dbo.Task.Ecode = dbo.EmployeeMaster.Ecode LEFT OUTER JOIN
+                         dbo.MachineMaster ON dbo.Task.IPAddress = dbo.MachineMaster.IPAddress
+WHERE        (dbo.Task.TaskType = 'FingerVerify')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_Fingerprint_Exception
+Definition:
+CREATE VIEW [dbo].[View_VG_Fingerprint_Exception]
+AS
+SELECT        dbo.EmployeeMaster.CorpEmpCode AS StudentID, dbo.Task.FP3Remark AS LeftIndex, dbo.Task.FP4Remark AS LeftThumb, dbo.Task.FP5Remark AS RightThumb, dbo.Task.FP6Remark AS RightIndex, 
+                         dbo.Task.CreatedDateTime
+FROM            dbo.Task INNER JOIN
+                         dbo.EmployeeMaster ON dbo.Task.Ecode = dbo.EmployeeMaster.Ecode
+WHERE        (dbo.Task.FP3Remark <> 'No Exception') OR
+                         (dbo.Task.FP4Remark <> 'No Exception') OR
+                         (dbo.Task.FP5Remark <> 'No Exception') OR
+                         (dbo.Task.FP6Remark <> 'No Exception')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_Identification_Log_Result
+Definition:
+CREATE VIEW [dbo].[View_VG_Identification_Log_Result]
+AS
+SELECT        dbo.View_VG_View_VG_EVI_I_Result.LogID, dbo.View_VG_View_VG_EVI_I_Result.StudentID, dbo.EmployeeMaster.CorpEmpCode, dbo.View_VG_View_VG_EVI_I_Result.TerminalID, 
+                         dbo.View_VG_View_VG_EVI_I_Result.[Creation Time], dbo.View_VG_View_VG_EVI_I_Result.[Executed Time], dbo.View_VG_View_VG_EVI_I_Result.[Request Type], dbo.View_VG_View_VG_EVI_I_Result.[Fingerprint Quality], 
+                         dbo.View_VG_View_VG_EVI_I_Result.Result
+FROM            dbo.View_VG_View_VG_EVI_I_Result LEFT OUTER JOIN
+                         dbo.EmployeeMaster ON dbo.View_VG_View_VG_EVI_I_Result.OperatorID = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_IdentifiedStudentCompleteDetail
+Definition:
+CREATE VIEW [dbo].[View_VG_IdentifiedStudentCompleteDetail]
+AS
+SELECT        dbo.View_VG_AL_IdentificationMaster.[Unique Code], dbo.View_VG_AL_IdentificationMaster.[Student Name], dbo.View_VG_AL_IdentificationMaster.StudentAddress, dbo.View_VG_AL_IdentificationMaster.LogDetail, 
+                         dbo.View_VG_AL_IdentificationMaster.MacAddress, dbo.View_VG_AL_IdentificationMaster.IPAddress, dbo.View_VG_AL_IdentificationMaster.Sno, dbo.View_VG_AL_IdentificationMaster.SoftwareVer, 
+                         dbo.View_VG_AL_IdentificationMaster.DetailType, dbo.View_VG_AL_IdentificationMaster.LogDateTime, dbo.EmployeeMaster.E_mail AS OperatorID, dbo.EmployeeMaster.Address1 AS OperatorAddress
+FROM            dbo.View_VG_AL_IdentificationMaster INNER JOIN
+                         dbo.EmployeeMaster ON dbo.View_VG_AL_IdentificationMaster.OperatorEcode = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_Local_Enrollment_Rejected_Log_Result
+Definition:
+CREATE VIEW [dbo].[View_VG_Local_Enrollment_Rejected_Log_Result]
+AS
+SELECT        dbo.AuditLog.AuditLogID AS LogID, dbo.EmployeeMaster.CorpEmpCode AS StudentID, dbo.AuditLog.LogDateTime AS LogInOutDateTime, dbo.AuditLog.LogDetail + ' ' + dbo.AuditLog.DetailType AS [Application Access], 
+                         dbo.AuditLog.Remark, dbo.AuditLog.MacAddress, dbo.AuditLog.SoftwareVer AS ApplicationVersion
+FROM            dbo.AuditLog INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AuditLog.Ecode = dbo.EmployeeMaster.Ecode
+WHERE        (dbo.AuditLog.LogDetail IN ('Offline Enrollment')) AND (dbo.AuditLog.DetailType = 'EnrollFinger Rejected')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_LogIn_LogOut_Status
+Definition:
+CREATE VIEW [dbo].[View_VG_LogIn_LogOut_Status]
+AS
+SELECT        dbo.AuditLog.AuditLogID AS LogID, dbo.EmployeeMaster.CorpEmpCode AS [Operator ID ], dbo.AuditLog.LogDateTime AS LogInOutDateTime, dbo.AuditLog.LogDetail + ' ' + dbo.AuditLog.DetailType AS [Application Access], 
+                         dbo.AuditLog.Remark AS Reason, dbo.MachineMaster.TerminalID, dbo.AuditLog.MacAddress, dbo.AuditLog.SoftwareVer AS ApplicationVersion, dbo.MachineMaster.Sno, dbo.AuditLog.Sno AS LaptopSn
+FROM            dbo.AuditLog INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AuditLog.OperatorEcode = dbo.EmployeeMaster.Ecode LEFT OUTER JOIN
+                         dbo.MachineMaster ON dbo.AuditLog.Sno = dbo.MachineMaster.Sno
+WHERE        (dbo.AuditLog.DetailType IN ('LogIn', 'LogOut'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_Manual_BayPass
+Definition:
+CREATE VIEW [dbo].[View_VG_Manual_BayPass]
+AS
+SELECT        dbo.View_VG_View_VG_EVI_I_Result.StudentID, dbo.EmployeeMaster.CorpEmpCode AS OperatorID, dbo.View_VG_View_VG_EVI_I_Result.[Creation Time] AS DateTime, 
+                         dbo.View_VG_View_VG_EVI_I_Result.Reason AS ByPassType
+FROM            dbo.View_VG_View_VG_EVI_I_Result INNER JOIN
+                         dbo.EmployeeMaster ON dbo.View_VG_View_VG_EVI_I_Result.OperatorID = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_Operator Management
+Definition:
+CREATE VIEW [dbo].[View_VG_Operator Management]
+AS
+SELECT        Ecode AS [Operator ID], EmpName AS [Operator Name], Password, Role AS [Application Access], Active AS IsActive
+FROM            dbo.EmployeeMaster
+WHERE        (Role IN ('Enroll-Identify', 'Enroll', 'Identify'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_StudentDetail
+Definition:
+CREATE VIEW [dbo].[View_VG_StudentDetail]
+AS
+SELECT        dbo.EmployeeMaster.CorpEmpCode AS [Unique Code], dbo.EmployeeMaster.Qualification AS Year, dbo.EmployeeMaster.EmpName AS [Student Name], dbo.EmployeeMaster.Telephone1 AS [Mobile No], 
+                         dbo.EmployeeMaster.DateofBirth AS DOB, dbo.EmployeeMaster.Sex AS Gender, dbo.EmployeeMaster.Image AS Photograph, dbo.EmployeeMaster.IsBlackListed AS [Enrollment Status], 
+                         dbo.View_VG_Enroll_Task.CreatedBy AS EnrolledBy, dbo.View_VG_Enroll_Task.CreatedDateTime AS EnrolledDate, dbo.View_VG_Enroll_Task.FP5Score AS RightThumb, dbo.View_VG_Enroll_Task.FP6Score AS RightIndex, 
+                         dbo.View_VG_Enroll_Task.FP4Score AS LeftThumb, dbo.View_VG_Enroll_Task.FP3Score AS LeftIndex, dbo.View_VG_Enroll_Task.FP5Remark AS RightThumbRemark, dbo.View_VG_Enroll_Task.FP6Remark AS RightIndexRemark, 
+                         dbo.View_VG_Enroll_Task.FP4Remark AS LeftThumbRemark, dbo.View_VG_Enroll_Task.FP3Remark AS LeftIndexRemark, dbo.EmployeeMaster.Address1 AS StudentLocation, dbo.View_VG_Enroll_Task.TaskMode, 
+                         dbo.View_VG_Enroll_Task.Status
+FROM            dbo.EmployeeMaster LEFT OUTER JOIN
+                         dbo.View_VG_Enroll_Task ON dbo.EmployeeMaster.Ecode = dbo.View_VG_Enroll_Task.Ecode
+WHERE        (dbo.EmployeeMaster.Role = 'Employee')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_VG_View_VG_EVI_I_Result
+Definition:
+CREATE VIEW [dbo].[View_VG_View_VG_EVI_I_Result]
+AS
+SELECT        dbo.Task.TaskID AS LogID, dbo.EmployeeMaster.CorpEmpCode AS StudentID, dbo.Task.CreatedBy AS OperatorID, dbo.MachineMaster.TerminalID, dbo.Task.CreatedDateTime AS [Creation Time], 
+                         dbo.Task.ExecutedDateTime AS [Executed Time], dbo.Task.TaskType AS [Request Type], dbo.Task.FP3Score AS [Fingerprint Quality], dbo.Task.Status AS Result, dbo.Task.Remark AS Reason
+FROM            dbo.Task LEFT OUTER JOIN
+                         dbo.EmployeeMaster ON dbo.Task.Ecode = dbo.EmployeeMaster.Ecode LEFT OUTER JOIN
+                         dbo.MachineMaster ON dbo.Task.IPAddress = dbo.MachineMaster.IPAddress
+WHERE        (dbo.Task.TaskType IN ('IdentifyFinger', 'IdentifyFinger 1:1', 'ManualVerified Pass', 'ManualVerified Failed'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_View_TodayMissChart
+Definition:
+CREATE VIEW [dbo].[View_View_TodayMissChart]
+AS
+SELECT        dbo.AttendanceRegister.ECode, dbo.DeptMaster.Dname
+FROM            dbo.AttendanceRegister INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AttendanceRegister.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode
+WHERE        (dbo.AttendanceRegister.ATDate >= DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0)) AND (dbo.AttendanceRegister.ATDate < DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, 0)) AND (dbo.AttendanceRegister.Status IN ('Miss')) 
+                         AND (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Visitor_EnrollmentDetail
+Definition:
+CREATE VIEW [dbo].[View_Visitor_EnrollmentDetail]
+AS
+SELECT        M.Ecode, V.CorpEmpCode, V.FName, V.LName, M.Image, M.Whom_To_Visit, 
+                         M.Expected_IN_Time, M.IN_Time, M.Expected_OUT_Time, M.OUT_Time, M.Purpose, M.ID_Proof_Type, 
+                         M.ID_Proof_Detail, M.ID_Proof_Image, M.MobileNumner, M.OTP, M.Issued_Card_Number, M.Status, 
+                         M.TermnalGroupID, M.Document_Detail, M.Vachel_Number, M.Create_Time, V.Role, 
+                         E.CorpEmpCode AS WhomCorpEmpCode, dbo.PurposeMaster.PurposeType, V.EmpName, E.EmpName AS WhomEmpName, M.Filter, 
+                         M.ID, V.PresentCardNo, E.ReportingHeadEcode, V.Address1, V.IsBlackListed, V.E_mail, 
+                         E.E_mail AS EmpEmail, V.Sex, M.Document_File, M.Created_By, M.Remarks, M.NumberOfVisitors, 
+                         M.VisitorType, IDProofMaster.IDProofType AS IDProofName, DeptMaster.Dname AS WhomDepartmentName, V.VehicleDetail, M.QRCodeValue, 
+                         V.ServerSync, DeptMaster.Dcode, dbo.CompanyMaster.Ccode, dbo.BranchMaster.BranchCode, V.Catcode, V.SecCode, 
+                         V.DesCode, V.Gcode, M.Field1, M.AreaGroupID, AreaGroupMaster.AreaGroupName
+FROM            Vistor_Details M INNER JOIN
+                         EmployeeMaster V ON M.Ecode = V.Ecode INNER JOIN
+                         EmployeeMaster E ON M.Whom_To_Visit = E.Ecode INNER JOIN
+                         SectionMaster ON E.SecCode = SectionMaster.SecCode INNER JOIN
+                         DeptMaster ON SectionMaster.Dcode = DeptMaster.Dcode INNER JOIN
+						 BranchMaster ON BranchMaster.BranchCode = DeptMaster.BranchCode INNER JOIN
+						 CompanyMaster ON CompanyMaster.Ccode = BranchMaster.Ccode INNER JOIN
+                         PurposeMaster ON M.Purpose = PurposeMaster.PurposeID LEFT JOIN
+                         IDProofMaster ON M.ID_Proof_Type = IDProofMaster.IDProofID LEFT JOIN
+						 AreaGroupMaster ON AreaGroupMaster.AreaGroupID = M.AreaGroupID
+ 
+
+================================================================================
+
+View: dbo.View_VisitorLog
+Definition:
+
+CREATE VIEW [dbo].[View_VisitorLog]
+AS
+SELECT        TOP (100) PERCENT EmployeeMaster_1.CorpEmpCode AS EmployeeID, dbo.MachineRawPunch.CardNo, dbo.MachineRawPunch.fname AS FirstName, dbo.MachineRawPunch.name AS LastName, 
+                         dbo.MachineRawPunch.PunchTime, EmployeeMaster_1.Role,
+                             (SELECT        CorpEmpCode
+                               FROM            dbo.EmployeeMaster
+                               WHERE        (Ecode = ReportingHeadEcode)) AS EmployeeToMeet, dbo.MachineRawPunch.Action, dbo.MachineRawPunch.Status, dbo.MachineMaster.TerminalID, dbo.MachineMaster.DomainName AS DeviceName
+FROM            dbo.MachineRawPunch INNER JOIN
+                         dbo.EmployeeMaster AS EmployeeMaster_1 ON dbo.MachineRawPunch.nEventLogIdn = EmployeeMaster_1.Ecode INNER JOIN
+                         dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID
+WHERE        (dbo.MachineRawPunch.nEventLogIdn <> 0) AND (EmployeeMaster_1.Role NOT IN ('Employee', 'Admin'))
+
+
+
+================================================================================
+
+View: dbo.View_Vistor_Detail
+Definition:
+CREATE VIEW [dbo].[View_Vistor_Detail]
+AS
+SELECT dbo.Vistor_Details.Ecode, dbo.vw_EmployeeDetail2.CorpEmpCode, dbo.vw_EmployeeDetail2.FName, dbo.vw_EmployeeDetail2.LName, dbo.Vistor_Details.Image, dbo.Vistor_Details.Whom_To_Visit, dbo.Vistor_Details.Expected_IN_Time, 
+                  dbo.Vistor_Details.IN_Time, dbo.Vistor_Details.Expected_OUT_Time, dbo.Vistor_Details.OUT_Time, dbo.Vistor_Details.Purpose, dbo.Vistor_Details.ID_Proof_Type, dbo.Vistor_Details.ID_Proof_Detail, dbo.Vistor_Details.ID_Proof_Image, 
+                  dbo.Vistor_Details.MobileNumner, dbo.Vistor_Details.OTP, dbo.Vistor_Details.Issued_Card_Number, dbo.Vistor_Details.Status, dbo.Vistor_Details.TermnalGroupID, dbo.Vistor_Details.Document_Detail, dbo.Vistor_Details.Vachel_Number, 
+                  dbo.Vistor_Details.Create_Time, dbo.vw_EmployeeDetail2.Role, dbo.EmployeeMaster.CorpEmpCode AS WhomCorpEmpCode, dbo.PurposeMaster.PurposeType, dbo.vw_EmployeeDetail2.EmpName, 
+                  dbo.EmployeeMaster.EmpName AS WhomEmpName, dbo.Vistor_Details.Filter, dbo.Vistor_Details.ID, dbo.EmployeeMaster.Address1
+FROM     dbo.Vistor_Details INNER JOIN
+                  dbo.vw_EmployeeDetail2 ON dbo.Vistor_Details.Ecode = dbo.vw_EmployeeDetail2.Ecode INNER JOIN
+                  dbo.EmployeeMaster ON dbo.Vistor_Details.Whom_To_Visit = dbo.EmployeeMaster.Ecode INNER JOIN
+                  dbo.PurposeMaster ON dbo.Vistor_Details.Purpose = dbo.PurposeMaster.PurposeID
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.View_Vistor_Detail_1
+Definition:
+CREATE  VIEW [dbo].[View_Vistor_Detail_1] -- there was some error so created with new name
+AS
+SELECT dbo.Vistor_Details.Ecode, dbo.vw_EmployeeDetail2.CorpEmpCode, dbo.vw_EmployeeDetail2.FName, dbo.vw_EmployeeDetail2.LName, dbo.Vistor_Details.Image, dbo.Vistor_Details.Whom_To_Visit, dbo.Vistor_Details.Expected_IN_Time, 
+                  dbo.Vistor_Details.IN_Time, dbo.Vistor_Details.Expected_OUT_Time, dbo.Vistor_Details.OUT_Time, dbo.Vistor_Details.ID_Proof_Type, dbo.Vistor_Details.ID_Proof_Detail, dbo.Vistor_Details.ID_Proof_Image, 
+                  dbo.Vistor_Details.MobileNumner, dbo.Vistor_Details.OTP, dbo.Vistor_Details.Issued_Card_Number, dbo.Vistor_Details.Status, dbo.Vistor_Details.TermnalGroupID, dbo.Vistor_Details.Document_Detail, dbo.Vistor_Details.Vachel_Number, 
+                  dbo.Vistor_Details.Create_Time, dbo.vw_EmployeeDetail2.Role, dbo.EmployeeMaster.CorpEmpCode AS WhomCorpEmpCode, dbo.PurposeMaster.PurposeType AS Purpose, dbo.vw_EmployeeDetail2.EmpName, 
+                  dbo.EmployeeMaster.EmpName AS WhomEmpName, dbo.Vistor_Details.Filter, dbo.Vistor_Details.ID, dbo.EmployeeMaster.Address1
+FROM     dbo.Vistor_Details INNER JOIN
+                  dbo.vw_EmployeeDetail2 ON dbo.Vistor_Details.Ecode = dbo.vw_EmployeeDetail2.Ecode INNER JOIN
+                  dbo.EmployeeMaster ON dbo.Vistor_Details.Whom_To_Visit = dbo.EmployeeMaster.Ecode INNER JOIN
+                  dbo.PurposeMaster ON dbo.Vistor_Details.Purpose = dbo.PurposeMaster.PurposeID
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_Applications
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_Applications]
+  AS SELECT [dbo].[aspnet_Applications].[ApplicationName], [dbo].[aspnet_Applications].[LoweredApplicationName], [dbo].[aspnet_Applications].[ApplicationId], [dbo].[aspnet_Applications].[Description]
+  FROM [dbo].[aspnet_Applications]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_MembershipUsers
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_MembershipUsers]
+  AS SELECT [dbo].[aspnet_Membership].[UserId],
+            [dbo].[aspnet_Membership].[PasswordFormat],
+            [dbo].[aspnet_Membership].[MobilePIN],
+            [dbo].[aspnet_Membership].[Email],
+            [dbo].[aspnet_Membership].[LoweredEmail],
+            [dbo].[aspnet_Membership].[PasswordQuestion],
+            [dbo].[aspnet_Membership].[PasswordAnswer],
+            [dbo].[aspnet_Membership].[IsApproved],
+            [dbo].[aspnet_Membership].[IsLockedOut],
+            [dbo].[aspnet_Membership].[CreateDate],
+            [dbo].[aspnet_Membership].[LastLoginDate],
+            [dbo].[aspnet_Membership].[LastPasswordChangedDate],
+            [dbo].[aspnet_Membership].[LastLockoutDate],
+            [dbo].[aspnet_Membership].[FailedPasswordAttemptCount],
+            [dbo].[aspnet_Membership].[FailedPasswordAttemptWindowStart],
+            [dbo].[aspnet_Membership].[FailedPasswordAnswerAttemptCount],
+            [dbo].[aspnet_Membership].[FailedPasswordAnswerAttemptWindowStart],
+            [dbo].[aspnet_Membership].[Comment],
+            [dbo].[aspnet_Users].[ApplicationId],
+            [dbo].[aspnet_Users].[UserName],
+            [dbo].[aspnet_Users].[MobileAlias],
+            [dbo].[aspnet_Users].[IsAnonymous],
+            [dbo].[aspnet_Users].[LastActivityDate]
+  FROM [dbo].[aspnet_Membership] INNER JOIN [dbo].[aspnet_Users]
+      ON [dbo].[aspnet_Membership].[UserId] = [dbo].[aspnet_Users].[UserId]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_Profiles
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_Profiles]
+  AS SELECT [dbo].[aspnet_Profile].[UserId], [dbo].[aspnet_Profile].[LastUpdatedDate],
+      [DataSize]=  DATALENGTH([dbo].[aspnet_Profile].[PropertyNames])
+                 + DATALENGTH([dbo].[aspnet_Profile].[PropertyValuesString])
+                 + DATALENGTH([dbo].[aspnet_Profile].[PropertyValuesBinary])
+  FROM [dbo].[aspnet_Profile]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_Roles
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_Roles]
+  AS SELECT [dbo].[aspnet_Roles].[ApplicationId], [dbo].[aspnet_Roles].[RoleId], [dbo].[aspnet_Roles].[RoleName], [dbo].[aspnet_Roles].[LoweredRoleName], [dbo].[aspnet_Roles].[Description]
+  FROM [dbo].[aspnet_Roles]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_Users
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_Users]
+  AS SELECT [dbo].[aspnet_Users].[ApplicationId], [dbo].[aspnet_Users].[UserId], [dbo].[aspnet_Users].[UserName], [dbo].[aspnet_Users].[LoweredUserName], [dbo].[aspnet_Users].[MobileAlias], [dbo].[aspnet_Users].[IsAnonymous], [dbo].[aspnet_Users].[LastActivityDate]
+  FROM [dbo].[aspnet_Users]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_UsersInRoles
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_UsersInRoles]
+  AS SELECT [dbo].[aspnet_UsersInRoles].[UserId], [dbo].[aspnet_UsersInRoles].[RoleId]
+  FROM [dbo].[aspnet_UsersInRoles]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_WebPartState_Paths
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_WebPartState_Paths]
+  AS SELECT [dbo].[aspnet_Paths].[ApplicationId], [dbo].[aspnet_Paths].[PathId], [dbo].[aspnet_Paths].[Path], [dbo].[aspnet_Paths].[LoweredPath]
+  FROM [dbo].[aspnet_Paths]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_WebPartState_Shared
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_WebPartState_Shared]
+  AS SELECT [dbo].[aspnet_PersonalizationAllUsers].[PathId], [DataSize]=DATALENGTH([dbo].[aspnet_PersonalizationAllUsers].[PageSettings]), [dbo].[aspnet_PersonalizationAllUsers].[LastUpdatedDate]
+  FROM [dbo].[aspnet_PersonalizationAllUsers]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_aspnet_WebPartState_User
+Definition:
+
+  CREATE VIEW [dbo].[vw_aspnet_WebPartState_User]
+  AS SELECT [dbo].[aspnet_PersonalizationPerUser].[PathId], [dbo].[aspnet_PersonalizationPerUser].[UserId], [DataSize]=DATALENGTH([dbo].[aspnet_PersonalizationPerUser].[PageSettings]), [dbo].[aspnet_PersonalizationPerUser].[LastUpdatedDate]
+  FROM [dbo].[aspnet_PersonalizationPerUser]
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_Attendanceregister
+Definition:
+CREATE VIEW [dbo].[vw_Attendanceregister]
+AS
+SELECT        dbo.AttendanceRegister.ATDate, dbo.AttendanceRegister.ECode, dbo.AttendanceRegister.Status, dbo.AttendanceRegister.InTime, dbo.AttendanceRegister.OutTime, dbo.ShiftMaster.Sname, dbo.BranchMaster.BranchCode, 
+                         dbo.DeptMaster.Dcode, dbo.SectionMaster.SecCode, dbo.CompanyMaster.Ccode, dbo.EmployeeMaster.EmpName
+FROM            dbo.DeptMaster INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.SectionMaster ON dbo.DeptMaster.Dcode = dbo.SectionMaster.Dcode INNER JOIN
+                         dbo.AttendanceRegister INNER JOIN
+                         dbo.ShiftMaster ON dbo.AttendanceRegister.SCode = dbo.ShiftMaster.Scode INNER JOIN
+                         dbo.EmployeeMaster ON dbo.AttendanceRegister.ECode = dbo.EmployeeMaster.Ecode ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.Vw_BitsFormatCompanyCode
+Definition:
+CREATE VIEW Vw_BitsFormatCompanyCode AS 
+SELECT ID, Name, BitNumber, BitCompanyRel.Ccode, CName FROM BitMaster 
+INNER JOIN BitCompanyRel ON BitMaster.ID = BitCompanyRel.BitID
+INNER JOIN CompanyMaster ON BitCompanyRel.Ccode = CompanyMaster.Ccode
+ 
+
+================================================================================
+
+View: dbo.Vw_BitsFormatFacilityCodeCompany
+Definition:
+CREATE VIEW Vw_BitsFormatFacilityCodeCompany AS 
+SELECT BitID, Name, BitNumber, BitFacilityCodeRel.Ccode as Ccode, CompanyMaster.CName, FacilityCode 
+FROM BitFacilityCodeRel 
+INNER JOIN BitMaster ON BitFacilityCodeRel.BitID =  BitMaster.ID
+INNER JOIN CompanyMaster ON BitFacilityCodeRel.Ccode = CompanyMaster.Ccode
+ 
+
+================================================================================
+
+View: dbo.Vw_CompanyBranchDepartmentDetail_VMS
+Definition:
+CREATE VIEW [dbo].[Vw_CompanyBranchDepartmentDetail_VMS]
+AS
+SELECT        dbo.CompanyMaster.Ccode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Address, dbo.CompanyMaster.PinCode, dbo.BranchMaster.Location, dbo.BranchMaster.BranchName, dbo.BranchMaster.BranchCode, 
+                         dbo.DeptMaster.Dname, dbo.DeptMaster.Dcode
+FROM            dbo.CompanyMaster INNER JOIN
+                         dbo.BranchMaster ON dbo.CompanyMaster.Ccode = dbo.BranchMaster.Ccode INNER JOIN
+                         dbo.DeptMaster ON dbo.BranchMaster.BranchCode = dbo.DeptMaster.BranchCode
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_CompleteAttendanceReport
+Definition:
+CREATE VIEW [dbo].[vw_CompleteAttendanceReport]
+WITH SCHEMABINDING 
+AS
+SELECT TOP (100) PERCENT dbo.AttendanceRegister.AtCode, dbo.AttendanceRegister.ATDate, dbo.AttendanceRegister.ECode, dbo.AttendanceRegister.SCode, dbo.AttendanceRegister.LCCode, dbo.AttendanceRegister.Status, 
+                  dbo.AttendanceRegister.ShiftStartTime, dbo.AttendanceRegister.ShiftEndTime, dbo.AttendanceRegister.LunchStartTime, dbo.AttendanceRegister.LunchEndTime, dbo.AttendanceRegister.InTime, dbo.AttendanceRegister.OutTime, 
+                  dbo.AttendanceRegister.InManual, dbo.AttendanceRegister.OutManual, dbo.AttendanceRegister.LunchInTime, dbo.AttendanceRegister.LunchOutTime, dbo.AttendanceRegister.LateArrival, dbo.AttendanceRegister.EarlyDeparture, 
+                  dbo.AttendanceRegister.WorkDuration, dbo.AttendanceRegister.LeaveValue, dbo.AttendanceRegister.PresentValue, dbo.AttendanceRegister.AbsentValue, dbo.AttendanceRegister.HoliDayValue, dbo.AttendanceRegister.WOValue, 
+                  dbo.AttendanceRegister.OT, dbo.AttendanceRegister.In1, dbo.AttendanceRegister.Out1, dbo.AttendanceRegister.In2, dbo.AttendanceRegister.Out2, dbo.AttendanceRegister.In3, dbo.AttendanceRegister.Out3, 
+                  dbo.AttendanceRegister.In4, dbo.AttendanceRegister.Out4, dbo.AttendanceRegister.In5, dbo.AttendanceRegister.Out5, dbo.AttendanceRegister.In6, dbo.AttendanceRegister.Out6, dbo.AttendanceRegister.Locked, 
+                  dbo.BranchMaster.BranchName, dbo.BranchMaster.Location, dbo.CompanyMaster.CName, dbo.CompanyMaster.Address, dbo.CompanyMaster.PinCode, dbo.CompanyMaster.TelephoneNo, dbo.CompanyMaster.Email, 
+                  dbo.DesignationMaster.DesName, dbo.DeptMaster.Dname, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.Active, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.PresentCardNo, dbo.GradeMaster.Gname, 
+                  dbo.SectionMaster.SecName, dbo.ShiftMaster.Sname, dbo.ShiftMaster.isRTC, dbo.EmployeeMaster.Gcode, dbo.EmployeeMaster.Catcode, dbo.EmployeeMaster.DesCode, dbo.EmployeeMaster.SecCode, dbo.CatMaster.CatName, 
+                  dbo.BranchMaster.Ccode, dbo.DeptMaster.BranchCode, dbo.SectionMaster.Dcode, dbo.EmployeeMaster.E_mail, 'None' AS SPName, dbo.EmployeeMaster.IN_Out_Status, dbo.EmployeeMaster.Role, dbo.EmployeeMaster.StatusID, 
+                  dbo.AttendanceRegister.Intermediate, dbo.AttendanceRegister.WH1
+FROM     dbo.ShiftMaster INNER JOIN
+                  dbo.AttendanceRegister ON dbo.ShiftMaster.Scode = dbo.AttendanceRegister.SCode RIGHT OUTER JOIN
+                  dbo.DeptMaster LEFT OUTER JOIN
+                  dbo.DesignationMaster INNER JOIN
+                  dbo.EmployeeMaster INNER JOIN
+                  dbo.GradeMaster ON dbo.EmployeeMaster.Gcode = dbo.GradeMaster.Gcode ON dbo.DesignationMaster.DesCode = dbo.EmployeeMaster.DesCode INNER JOIN
+                  dbo.CatMaster ON dbo.EmployeeMaster.Catcode = dbo.CatMaster.CatCode RIGHT OUTER JOIN
+                  dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode ON dbo.DeptMaster.Dcode = dbo.SectionMaster.Dcode RIGHT OUTER JOIN
+                  dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode ON dbo.AttendanceRegister.ECode = dbo.EmployeeMaster.Ecode FULL OUTER JOIN
+                  dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode
+WHERE  (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+ORDER BY dbo.AttendanceRegister.ATDate
+ 
+
+================================================================================
+
+View: dbo.vw_Emp_EmpSalaryHead
+Definition:
+CREATE VIEW [dbo].[vw_Emp_EmpSalaryHead]
+AS
+SELECT     dbo.SalaryHeadMaster.SalaryHead, dbo.SalaryHeadMaster.Description, dbo.SalaryHeadMaster.Type, dbo.EmployeeSalaryHeadRelation.IsValuePercent, 
+                      dbo.EmployeeSalaryHeadRelation.Value, dbo.EmployeeMaster.Ecode, dbo.GradeMaster.Gname, dbo.SalaryHeadMaster.SHCode, 
+                      dbo.EmployeeSalaryHeadRelation.GradeValue, dbo.SalaryHeadMaster.IsBasic
+FROM         dbo.EmployeeMaster INNER JOIN
+                      dbo.EmployeeSalaryHeadRelation ON dbo.EmployeeMaster.Ecode = dbo.EmployeeSalaryHeadRelation.ECode INNER JOIN
+                      dbo.SalaryHeadMaster ON dbo.EmployeeSalaryHeadRelation.SHCode = dbo.SalaryHeadMaster.SHCode INNER JOIN
+                      dbo.GradeMaster ON dbo.EmployeeMaster.Gcode = dbo.GradeMaster.Gcode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_Emp_GradeSalaryHead
+Definition:
+CREATE VIEW [dbo].[vw_Emp_GradeSalaryHead]
+AS
+SELECT     dbo.EmployeeMaster.Ecode, dbo.GradeMaster.Gname, dbo.SalaryHeadMaster.SalaryHead, dbo.SalaryHeadMaster.Description, 
+                      dbo.SalaryHeadMaster.Type, dbo.GradeSalaryHeadRelation.Value, dbo.GradeSalaryHeadRelation.IsValuePercent, 
+                      dbo.SalaryHeadMaster.SHCode
+FROM         dbo.EmployeeMaster INNER JOIN
+                      dbo.GradeMaster ON dbo.EmployeeMaster.Gcode = dbo.GradeMaster.Gcode INNER JOIN
+                      dbo.GradeSalaryHeadRelation ON dbo.GradeMaster.Gcode = dbo.GradeSalaryHeadRelation.Gcode INNER JOIN
+                      dbo.SalaryHeadMaster ON dbo.GradeSalaryHeadRelation.SHCode = dbo.SalaryHeadMaster.SHCode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_EmployeeDetail
+Definition:
+CREATE VIEW [dbo].[vw_EmployeeDetail]
+AS
+SELECT 
+    dbo.EmployeeMaster.Ecode, 
+    dbo.EmployeeMaster.CorpEmpCode, 
+    dbo.EmployeeMaster.Active, 
+    dbo.EmployeeMaster.SecCode, 
+    dbo.EmployeeMaster.EmpName, 
+    dbo.EmployeeMaster.DateofJoin, 
+    dbo.EmployeeMaster.PresentCardNo, 
+    dbo.DeptMaster.Dcode, 
+    dbo.CompanyMaster.Ccode, 
+    dbo.BranchMaster.BranchCode, 
+    dbo.EmployeeMaster.Gcode, 
+    dbo.EmployeeMaster.Catcode, 
+    dbo.EmployeeMaster.DesCode, 
+    dbo.CompanyMaster.CName, 
+    dbo.BranchMaster.BranchName, 
+    dbo.DeptMaster.Dname, 
+    dbo.SectionMaster.SecName, 
+    dbo.CatMaster.CatName, 
+    dbo.DesignationMaster.DesName, 
+    dbo.GradeMaster.Gname, 
+    dbo.FingerMaster.FingerName AS Finger1, 
+    FingerMaster_1.FingerName AS Finger2, 
+    dbo.EmployeeMaster.IsEnrolled, 
+    dbo.EmployeeMaster.GuardianName, 
+    dbo.EmployeeMaster.DateofBirth, 
+    dbo.EmployeeMaster.Sex, 
+    dbo.EmployeeMaster.IsMarried, 
+    dbo.EmployeeMaster.Qualification, 
+    dbo.EmployeeMaster.Experience, 
+    dbo.EmployeeMaster.Address1, 
+    dbo.EmployeeMaster.Telephone1, 
+    dbo.EmployeeMaster.E_mail, 
+    dbo.EmployeeMaster.Address2, 
+    dbo.EmployeeMaster.Telephone2, 
+    dbo.EmployeeMaster.BloodGroup, 
+    dbo.EmployeeMaster.LeavingDate, 
+    dbo.EmployeeMaster.LeavingReason, 
+    dbo.EmployeeMaster.Password, 
+    dbo.EmployeeMaster.Role, 
+    dbo.EmployeeMaster.emptype, 
+    R.Role AS [AccessType], 
+    dbo.EmployeeMaster.DefaultPolicy, 
+    dbo.EmployeeMaster.PermissableLateArrival, 
+    dbo.EmployeeMaster.PermissbleeEarlyDeparture, 
+    dbo.EmployeeMaster.MinWorkHourForPresent, 
+    dbo.EmployeeMaster.IsHalfDayAllowed, 
+    dbo.EmployeeMaster.MinWorkHourForHalfDay, 
+    dbo.EmployeeMaster.IsShortDayAllowed, 
+    dbo.EmployeeMaster.OvertimeAllowed, 
+    dbo.EmployeeMaster.MinWorkHourForShortDay, 
+    dbo.EmployeeMaster.MinDurationReqForOvertime, 
+    dbo.EmployeeMaster.OnePunchPresentMarking, 
+    dbo.EmployeeMaster.FWOAssigned, 
+    dbo.EmployeeMaster.FirstWO, 
+    dbo.EmployeeMaster.SWOAssigned, 
+    dbo.EmployeeMaster.SWO, 
+    dbo.EmployeeMaster.SWOFirst, 
+    dbo.EmployeeMaster.SWOSecond, 
+    dbo.EmployeeMaster.SWOThird, 
+    dbo.EmployeeMaster.SWOFourth, 
+    dbo.EmployeeMaster.SWOFifth, 
+    dbo.EmployeeMaster.SWOType, 
+    dbo.EmployeeMaster.Image, 
+    dbo.EmployeeMaster.WorkMinuteFomula, 
+    dbo.EmployeeMaster.ESINo, 
+    dbo.EmployeeMaster.IsBlackListed, 
+    dbo.EmployeeMaster.ReportingHeadEcode, 
+    dbo.EmployeeMaster.FP1_ID, 
+    dbo.EmployeeMaster.FP2_ID, 
+    dbo.EmployeeMaster.DFP_ID, 
+    dbo.EmployeeMaster.FName, 
+    dbo.EmployeeMaster.LName, 
+    dbo.EmployeeMaster.WiegandValue, 
+    dbo.EmployeeMaster.LastUpdate, 
+    dbo.EmployeeMaster.LoginAuthenticationID, 
+    dbo.EmployeeMaster.Latitude, 
+    dbo.EmployeeMaster.Longitude, 
+    dbo.EmployeeMaster.UserID, 
+    dbo.EmployeeMaster.Password2, 
+    dbo.EmployeeMaster.queryString, 
+    dbo.EmployeeMaster.guid, 
+    dbo.EmployeeMaster.userDefined1, 
+    dbo.EmployeeMaster.IN_Out_Status, 
+    dbo.EmployeeMaster.ContractorID, 
+    dbo.EmployeeMaster.formatID, 
+    dbo.EmployeeMaster.facilityCode, 
+    dbo.EmployeeMaster.ContarctManualEndDate, 
+    dbo.EmployeeMaster.VehicleDetail, 
+    dbo.EmployeeMaster.ServerSync, 
+    dbo.EmployeeMaster.Name_hindi, 
+    dbo.EmployeeMaster.Card_Status, 
+    dbo.EmployeeMaster.Card_Template, 
+    dbo.DesignationMaster.DesName_hindi
+FROM 
+    dbo.BranchMaster 
+INNER JOIN dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode 
+INNER JOIN dbo.DeptMaster ON dbo.BranchMaster.BranchCode = dbo.DeptMaster.BranchCode 
+INNER JOIN dbo.SectionMaster ON dbo.DeptMaster.Dcode = dbo.SectionMaster.Dcode 
+INNER JOIN dbo.EmployeeMaster ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode 
+INNER JOIN dbo.CatMaster ON dbo.EmployeeMaster.Catcode = dbo.CatMaster.CatCode 
+INNER JOIN dbo.DesignationMaster ON
+
+================================================================================
+
+View: dbo.vw_EmployeeDetail2
+Definition:
+
+CREATE VIEW [dbo].[vw_EmployeeDetail2]
+AS
+SELECT dbo.vw_EmployeeDetail.Ecode, dbo.vw_EmployeeDetail.CorpEmpCode, dbo.vw_EmployeeDetail.Active, dbo.vw_EmployeeDetail.SecCode, dbo.vw_EmployeeDetail.EmpName, dbo.vw_EmployeeDetail.DateofJoin, 
+                  dbo.vw_EmployeeDetail.PresentCardNo, dbo.vw_EmployeeDetail.Dcode, dbo.vw_EmployeeDetail.Ccode, dbo.vw_EmployeeDetail.BranchCode, dbo.vw_EmployeeDetail.Gcode, dbo.vw_EmployeeDetail.Catcode, 
+                  dbo.vw_EmployeeDetail.DesCode, dbo.vw_EmployeeDetail.CName, dbo.vw_EmployeeDetail.BranchName, dbo.vw_EmployeeDetail.Dname, dbo.vw_EmployeeDetail.SecName, dbo.vw_EmployeeDetail.CatName, 
+                  dbo.vw_EmployeeDetail.DesName, dbo.vw_EmployeeDetail.Gname, dbo.vw_EmployeeDetail.Finger1, dbo.vw_EmployeeDetail.Finger2, dbo.vw_EmployeeDetail.IsEnrolled, dbo.vw_EmployeeDetail.GuardianName, 
+                  dbo.vw_EmployeeDetail.DateofBirth, dbo.vw_EmployeeDetail.Sex, dbo.vw_EmployeeDetail.IsMarried, dbo.vw_EmployeeDetail.Qualification, dbo.vw_EmployeeDetail.Experience, dbo.vw_EmployeeDetail.Address1, 
+                  dbo.vw_EmployeeDetail.Telephone1, dbo.vw_EmployeeDetail.E_mail, dbo.vw_EmployeeDetail.Address2, dbo.vw_EmployeeDetail.Telephone2, dbo.vw_EmployeeDetail.BloodGroup, dbo.vw_EmployeeDetail.LeavingDate, 
+                  dbo.vw_EmployeeDetail.LeavingReason, dbo.vw_EmployeeDetail.Password, dbo.vw_EmployeeDetail.Role, dbo.vw_EmployeeDetail.DefaultPolicy, dbo.vw_EmployeeDetail.PermissableLateArrival, 
+                  dbo.vw_EmployeeDetail.PermissbleeEarlyDeparture, dbo.vw_EmployeeDetail.MinWorkHourForPresent, dbo.vw_EmployeeDetail.IsHalfDayAllowed, dbo.vw_EmployeeDetail.MinWorkHourForHalfDay, 
+                  dbo.vw_EmployeeDetail.IsShortDayAllowed, dbo.vw_EmployeeDetail.OvertimeAllowed, dbo.vw_EmployeeDetail.MinWorkHourForShortDay, dbo.vw_EmployeeDetail.MinDurationReqForOvertime, 
+                  dbo.vw_EmployeeDetail.OnePunchPresentMarking, dbo.vw_EmployeeDetail.FWOAssigned, dbo.vw_EmployeeDetail.FirstWO, dbo.vw_EmployeeDetail.SWOAssigned, dbo.vw_EmployeeDetail.SWO, dbo.vw_EmployeeDetail.SWOFirst, 
+                  dbo.vw_EmployeeDetail.SWOSecond, dbo.vw_EmployeeDetail.SWOThird, dbo.vw_EmployeeDetail.SWOFourth, dbo.vw_EmployeeDetail.SWOFifth, dbo.vw_EmployeeDetail.SWOType, dbo.vw_EmployeeDetail.Image, 
+                  dbo.vw_EmployeeDetail.WorkMinuteFomula, dbo.vw_EmployeeDetail.ESINo, dbo.vw_EmployeeDetail.IsBlackListed, dbo.vw_EmployeeDetail.ReportingHeadEcode, dbo.vw_EmployeeDetail.FP1_ID, dbo.vw_EmployeeDetail.FP2_ID, 
+                  dbo.vw_EmployeeDetail.DFP_ID, dbo.vw_EmployeeDetail.FName, dbo.vw_EmployeeDetail.LName, dbo.vw_EmployeeDetail.WiegandValue, dbo.vw_EmployeeDetail.LastUpdate, dbo.vw_EmployeeDetail.LoginAuthenticationID, 
+                  dbo.FingerMaster.FingerName AS Face, dbo.vw_EmployeeDetail.Latitude, dbo.vw_EmployeeDetail.Longitude, dbo.vw_EmployeeDetail.UserID, dbo.vw_EmployeeDetail.Password2, dbo.vw_EmployeeDetail.queryString, 
+                  dbo.vw_EmployeeDetail.guid, dbo.vw_EmployeeDetail.userDefined1, dbo.vw_EmployeeDetail.IN_Out_Status, dbo.vw_EmployeeDetail.ContractorID, dbo.vw_EmployeeDetail.formatID, dbo.vw_EmployeeDetail.facilityCode, 
+                  dbo.vw_EmployeeDetail.ContarctManualEndDate, dbo.vw_EmployeeDetail.VehicleDetail, dbo.vw_EmployeeDetail.ServerSync, dbo.vw_EmployeeDetail.Name_hindi, dbo.vw_EmployeeDetail.Card_Status, 
+                  dbo.vw_EmployeeDetail.Card_Template, dbo.vw_EmployeeDetail.DesName_hindi, dbo.vw_EmployeeDetail.emptype
+FROM     dbo.FingerMaster RIGHT OUTER JOIN
+                  dbo.View_FACE_V1 ON dbo.FingerMaster.FingerID = dbo.View_FACE_V1.FingerID RIGHT OUTER JOIN
+                  dbo.vw_EmployeeDetail ON dbo.View_FACE_V1.Ecode = dbo.vw_EmployeeDetail.Ecode
+ 
+
+================================================================================
+
+View: dbo.vw_EmployeeHoliday
+Definition:
+CREATE VIEW [dbo].[vw_EmployeeHoliday]
+AS
+SELECT     dbo.EmployeeMaster.Ecode, dbo.EmployeeMaster.SecCode, dbo.SectionMaster.Dcode, dbo.HolidayDepartmentRelation.HCode, dbo.HolidayMaster.HDate
+FROM         dbo.HolidayMaster INNER JOIN
+                      dbo.HolidayDepartmentRelation ON dbo.HolidayMaster.Hcode = dbo.HolidayDepartmentRelation.HCode INNER JOIN
+                      dbo.SectionMaster INNER JOIN
+                      dbo.EmployeeMaster ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode ON dbo.HolidayDepartmentRelation.DCode = dbo.SectionMaster.Dcode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_EmployeeMaster_Vms
+Definition:
+CREATE VIEW [dbo].[vw_EmployeeMaster_Vms]
+AS
+SELECT  E.Ecode, E.CorpEmpCode, E.Active, E.SecCode, E.EmpName, E.DateofJoin, E.PresentCardNo, D.Dcode, C.Ccode, B.BranchCode, E.Gcode, E.Catcode, E.DesCode, 
+		C.CName, B.BranchName, D.Dname, S.SecName, CAT.CatName, DES.DesName, G.Gname, F.FingerName AS Finger1, F2.FingerName AS Finger2, E.IsEnrolled, 
+		E.GuardianName, E.DateofBirth, E.Sex, E.IsMarried, E.Qualification, E.Experience, E.Address1, E.Telephone1, E.Latitude, E.Longitude, E.E_mail, E.Address2, E.Telephone2, 
+		E.BloodGroup, E.LeavingDate, E.LeavingReason, E.Password, E.Role, E.emptype, R.Role AS [AccessType], E.DefaultPolicy, E.PermissableLateArrival, E.PermissbleeEarlyDeparture, 
+		E.MinWorkHourForPresent, E.IsHalfDayAllowed, E.MinWorkHourForHalfDay, E.IsShortDayAllowed, E.OvertimeAllowed, E.MinWorkHourForShortDay, 
+		E.MinDurationReqForOvertime, E.OnePunchPresentMarking, E.FWOAssigned, E.FirstWO, E.SWOAssigned, E.SWO, E.SWOFirst, E.SWOSecond, E.SWOThird, E.SWOFourth, 
+		E.SWOFifth, E.SWOType, E.Image, E.WorkMinuteFomula, E.ESINo, E.IsBlackListed, E.ReportingHeadEcode, E.FP1_ID, E.FP2_ID, E.DFP_ID, E.FName, E.LName, 
+		E.WiegandValue, E.LastUpdate, RE.EmpName AS [ReportingHeadName], E.LoginAuthenticationID, E.ContarctManualEndDate, E.StatusID, CONT.Name, 
+		CONT.ContractorID, CONT.PO_Number, E.Password2 AS Pin, E.[2DStatus], AT.InTime, AT.OutTime,
+		CASE WHEN BT1.Ecode IS NOT NULL THEN 'YES' ELSE 'NO' END AS Finger, CASE WHEN BT2.Ecode IS NOT NULL THEN 'YES' ELSE 'NO' END AS LeftHand,
+		CASE WHEN BT3.Ecode IS NOT NULL THEN 'YES' ELSE 'NO' END AS RightHand, CASE WHEN BT4.Ecode IS NOT NULL THEN 'YES' ELSE 'NO' END AS Face,
+		CASE WHEN EREL.Ecode IS NOT NULL THEN 'YES' ELSE 'NO' END AS Card,
+		STUFF((
+			SELECT ',' + CONVERT(VARCHAR(10), EC.PlantID) FROM Vedanta_User_Category_RTL EC WHERE E.Ecode = EC.UserID FOR XML PATH('')
+		), 1, 1, '') AS [PlantIDs],
+		STUFF((
+        SELECT ', ' + CAST(UGP.UserGroupID AS VARCHAR) FROM UserGroupPolicy UGP WHERE UGP.Ecode = E.Ecode FOR XML PATH('')
+		), 1, 2, '') AS UserGroupID
+FROM    CompanyMaster C 
+		INNER JOIN BranchMaster B ON C.Ccode = B.Ccode 
+		INNER JOIN DeptMaster D ON B.BranchCode = D.BranchCode 
+		INNER JOIN SectionMaster S ON D.Dcode = S.Dcode 
+		INNER JOIN EmployeeMaster E ON S.SecCode = E.SecCode 
+		INNER JOIN CatMaster CAT ON E.Catcode = CAT.CatCode 
+		INNER JOIN DesignationMaster DES ON E.DesCode = DES.DesCode 
+		INNER JOIN GradeMaster G ON E.Gcode = G.Gcode 
+		INNER JOIN RoleMaster R ON E.emptype = R.RoleId
+		LEFT JOIN View_Contractor_Detail CONT ON E.ContractorID = CONT.ContractorID 
+		LEFT JOIN FingerMaster F ON E.FP1_ID = F.FingerID 
+		LEFT JOIN FingerMaster F2 ON E.FP2_ID = F2.FingerID 
+		LEFT JOIN AttendanceRegister AT ON E.Ecode = AT.ECode AND CONVERT(DATE, ATDate) = CONVERT(DATE, GETDATE())
+		LEFT JOIN EmployeeMaster RE ON RE.Ecode = E.ReportingHeadEcode
+		LEFT JOIN (SELECT DISTINCT Ecode FROM Biometric WHERE [Format] IN (1,2,3,6,402) AND FingerID IN (1,2,3,4,5,6,7,8,9,10)) AS BT1 ON E.Ecode = BT1.Ecode 
+		LEFT JOIN (SELECT DISTINCT Ecode FROM Biometric WHERE [Format] IN (203,206) AND FingerID IN (1,2,3,4)) AS BT2 ON E.Ecode = BT2.Ecode
+		LEFT JOIN (SELECT DISTINCT Ecode FROM Biometric WHERE [Format] IN (203,206) AND FingerID IN (7,8,9,10)) AS BT3 ON E.Ecode = BT3.Ecode
+		LEFT JOIN (SELECT DISTINCT Ecode FROM Biometric WHERE FingerID = 11) AS BT4 ON E.Ecode = BT4.Ecode
+		LEFT JOIN (SELECT DISTINCT Ecode FROM Employee_Terminal_Authentication_Relation WHERE AuthenticationID IN(1,3,4,5,8,9,10) AND Status = 'Success') AS EREL ON E.Ecode = EREL.Ecode
+WHERE   E.CorpEmpCode <> 'Admin' AND E.Role <> 'Visitor'
+
+================================================================================
+
+View: dbo.vw_EmpSalary
+Definition:
+CREATE VIEW [dbo].[vw_EmpSalary]
+AS
+SELECT     dbo.SalaryHeadMaster.SalaryHead, dbo.SalaryHeadMaster.Type, dbo.PayrollStep2.SHCode, dbo.PayrollStep2.CalculatedValue, dbo.PayrollStep2.Ecode, 
+                      dbo.PayrollStep2.Month, dbo.PayrollStep2.Year
+FROM         dbo.SalaryHeadMaster INNER JOIN
+                      dbo.PayrollStep2 ON dbo.SalaryHeadMaster.SHCode = dbo.PayrollStep2.SHCode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_Holiday
+Definition:
+CREATE VIEW [dbo].[vw_Holiday]
+AS
+SELECT     dbo.CompanyMaster.CName, dbo.BranchMaster.BranchName, dbo.DeptMaster.Dname, dbo.SectionMaster.SecName, dbo.HolidayMaster.HDate, 
+                      dbo.HolidayMaster.Hname, dbo.HolidayMaster.Hcode AS Expr1, dbo.EmployeeMaster.Ecode, dbo.EmployeeMaster.CorpEmpCode, 
+                      dbo.EmployeeMaster.EmpName, dbo.HolidayDepartmentRelation.*, dbo.HolidayDepartmentRelation.HDCode AS Expr2, 
+                      dbo.HolidayDepartmentRelation.HCode AS Expr3, dbo.HolidayDepartmentRelation.DCode AS Expr4
+FROM         dbo.CompanyMaster INNER JOIN
+                      dbo.BranchMaster ON dbo.CompanyMaster.Ccode = dbo.BranchMaster.Ccode INNER JOIN
+                      dbo.DeptMaster ON dbo.BranchMaster.BranchCode = dbo.DeptMaster.BranchCode INNER JOIN
+                      dbo.SectionMaster ON dbo.DeptMaster.Dcode = dbo.SectionMaster.Dcode INNER JOIN
+                      dbo.EmployeeMaster ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode INNER JOIN
+                      dbo.HolidayDepartmentRelation ON dbo.DeptMaster.Dcode = dbo.HolidayDepartmentRelation.DCode INNER JOIN
+                      dbo.HolidayMaster ON dbo.HolidayDepartmentRelation.HCode = dbo.HolidayMaster.Hcode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_LeaveDetail
+Definition:
+CREATE VIEW [dbo].[vw_LeaveDetail]
+AS
+SELECT dbo.vw_EmployeeMaster_Vms.Ecode, dbo.vw_EmployeeMaster_Vms.CorpEmpCode, dbo.vw_EmployeeMaster_Vms.EmpName, dbo.vw_EmployeeMaster_Vms.Dcode, dbo.vw_EmployeeMaster_Vms.Dname,
+				  dbo.LeaveAccural.LACode, dbo.LeaveAccural.LeaveAllowedCYear - dbo.LeaveAccural.LeaveTaken AS Balance, dbo.LeaveAccural.LeaveAllowedCYear, dbo.LeaveAccural.LeaveYear, dbo.LeaveAccural.LCode, dbo.LeaveMaster.LshortName, dbo.LeaveMaster.MaxContinuousLeave,
+				  dbo.LeaveCard.LCCode, REPLACE(CONVERT(VARCHAR(11), dbo.LeaveCard.ApplicationDate, 105), ' ', '') AS ApplicationDate, REPLACE(CONVERT(VARCHAR(11), dbo.LeaveCard.StartDate, 105), ' ', '') AS StartDate, REPLACE(CONVERT(VARCHAR(11), 
+                  dbo.LeaveCard.EndDate, 105), ' ', '') AS EndDate, dbo.LeaveCard.LeaveAmount, dbo.LeaveCard.LeaveReason, dbo.LeaveCard.Status, dbo.LeaveCard.LeaveAmtType, dbo.LeaveCard.DaySegment, 
+                  dbo.LeaveCard.ApprovalRejectionDate, dbo.LeaveCard.ApprovalRejectionBy, dbo.LeaveCard.ApprovalRejectionReason, dbo.LeaveCard.CancelationReason, dbo.LeaveCard.CancelationDate, dbo.LeaveCard.CancelationBy
+FROM     dbo.vw_EmployeeMaster_Vms INNER JOIN
+                  dbo.LeaveAccural ON dbo.vw_EmployeeMaster_Vms.Ecode = dbo.LeaveAccural.ECode INNER JOIN
+                  dbo.LeaveMaster ON dbo.LeaveAccural.LCode = dbo.LeaveMaster.Lcode INNER JOIN
+                  dbo.LeaveCard ON dbo.LeaveAccural.LACode = dbo.LeaveCard.LACode
+WHERE  (dbo.vw_EmployeeMaster_Vms.CorpEmpCode <> 'Admin')
+
+================================================================================
+
+View: dbo.vw_LeaveDetailForHr
+Definition:
+
+CREATE VIEW [dbo].[vw_LeaveDetailForHr]
+AS
+SELECT        dbo.LeaveCard.LCCode, dbo.LeaveMaster.LshortName, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.EmpName, dbo.LeaveAccural.LACode, REPLACE(CONVERT(varchar(50), dbo.LeaveCard.ApplicationDate, 105), 
+                         ' ', '') AS ApplicationDate, REPLACE(CONVERT(varchar(50), dbo.LeaveCard.StartDate, 105), ' ', '') AS StartDate, REPLACE(CONVERT(varchar(50), dbo.LeaveCard.EndDate, 105), ' ', '/') AS EndDate, dbo.LeaveCard.LeaveAmount, 
+                         dbo.LeaveCard.LeaveAmtType, dbo.LeaveCard.DaySegment, dbo.LeaveCard.LeaveReason, dbo.LeaveCard.Status, dbo.LeaveCard.ApprovalRejectionDate, dbo.LeaveCard.ApprovalRejectionBy, dbo.LeaveCard.CancelationDate, 
+                         dbo.LeaveCard.ApprovalRejectionReason, dbo.LeaveCard.CancelationReason, dbo.LeaveCard.CancelationBy, dbo.LeaveCard.Updated, dbo.LeaveCard.Locked, dbo.SectionMaster.SecCode, dbo.EmployeeMaster.Ecode
+FROM            dbo.EmployeeMaster INNER JOIN
+                         dbo.LeaveAccural ON dbo.EmployeeMaster.Ecode = dbo.LeaveAccural.ECode INNER JOIN
+                         dbo.LeaveCard ON dbo.LeaveAccural.LACode = dbo.LeaveCard.LACode INNER JOIN
+                         dbo.LeaveMaster ON dbo.LeaveAccural.LCode = dbo.LeaveMaster.Lcode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+================================================================================
+
+View: dbo.vw_MasterReports
+Definition:
+CREATE VIEW [dbo].[vw_MasterReports]
+AS
+SELECT        dbo.CompanyMaster.Ccode, dbo.CompanyMaster.CName, dbo.CompanyMaster.Address, dbo.CompanyMaster.PinCode, dbo.CompanyMaster.TelephoneNo, dbo.CompanyMaster.Email, dbo.BranchMaster.BranchCode, 
+                         dbo.BranchMaster.BranchName, dbo.BranchMaster.Location, dbo.DeptMaster.Dcode, dbo.DeptMaster.Dname, dbo.EmployeeMaster.Ecode, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.Active, 
+                         dbo.EmployeeMaster.Gcode, dbo.EmployeeMaster.Catcode, dbo.EmployeeMaster.SecCode, dbo.EmployeeMaster.DesCode, dbo.EmployeeMaster.EmpName, dbo.EmployeeMaster.DateofJoin, 
+                         dbo.EmployeeMaster.PresentCardNo, dbo.EmployeeMaster.DateofBirth, dbo.EmployeeMaster.Experience, dbo.EmployeeMaster.BloodGroup, dbo.EmployeeMaster.LeavingDate, dbo.LeaveAccural.LACode, 
+                         dbo.LeaveAccural.ECode AS Expr1, dbo.LeaveAccural.LCode, dbo.LeaveAccural.LeaveAllowedCYear, dbo.LeaveAccural.LeaveAllowedPYear, dbo.LeaveAccural.LeaveTaken, dbo.LeaveAccural.LeaveYear, 
+                         dbo.SectionMaster.SecCode AS Expr2, dbo.SectionMaster.SecName, dbo.HolidayMaster.Hcode, dbo.HolidayMaster.Hname, dbo.HolidayMaster.HDate, dbo.LeaveMaster.Lcode AS Expr3, dbo.LeaveMaster.LshortName, 
+                         dbo.LeaveMaster.Ldescription, dbo.LeaveMaster.IsOffInclude, dbo.LeaveMaster.LeaveLimit, dbo.LeaveMaster.TreatedAsPresent, dbo.LeaveMaster.IsHolidayInclude, dbo.LeaveMaster.IsAutoAcuralAllowed, 
+                         dbo.LeaveMaster.IsCarriedForward, dbo.LeaveMaster.MaxContinuousLeave, dbo.ShiftMaster.Scode, dbo.ShiftMaster.Sname, dbo.ShiftMaster.StartTime, dbo.ShiftMaster.EndTime, dbo.ShiftMaster.LunchStartTime, 
+                         dbo.ShiftMaster.LunchEndTime, dbo.ShiftMaster.EndTimeforOutPunch, dbo.ShiftMaster.isRTC, dbo.ShiftMaster.IsLunchDeduct
+FROM            dbo.LeaveAccural INNER JOIN
+                         dbo.EmployeeMaster ON dbo.LeaveAccural.ECode = dbo.EmployeeMaster.Ecode INNER JOIN
+                         dbo.LeaveMaster ON dbo.LeaveAccural.LCode = dbo.LeaveMaster.Lcode INNER JOIN
+                         dbo.SectionMaster ON dbo.EmployeeMaster.SecCode = dbo.SectionMaster.SecCode INNER JOIN
+                         dbo.CompanyMaster INNER JOIN
+                         dbo.BranchMaster ON dbo.CompanyMaster.Ccode = dbo.BranchMaster.Ccode INNER JOIN
+                         dbo.DeptMaster ON dbo.BranchMaster.BranchCode = dbo.DeptMaster.BranchCode ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.LeaveCard ON dbo.LeaveMaster.Lcode = dbo.LeaveCard.Lcode CROSS JOIN
+                         dbo.ShiftMaster CROSS JOIN
+                         dbo.HolidayMaster
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_Material_Master
+Definition:
+CREATE VIEW [dbo].[vw_Material_Master]
+AS
+SELECT dbo.Material_Master.*
+FROM     dbo.Material_Master
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_Meeting_Persons
+Definition:
+CREATE VIEW [dbo].[vw_Meeting_Persons]
+AS
+SELECT        dbo.Ecode_Relation.VisitorDetail_ID, dbo.Ecode_Relation.R_Ecode, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.EmpName AS Person, dbo.EmployeeMaster.ReportingHeadEcode, dbo.EmployeeMaster.Image, 
+                         dbo.EmployeeMaster.FName, dbo.EmployeeMaster.LName
+FROM            dbo.Ecode_Relation INNER JOIN
+                         dbo.EmployeeMaster ON dbo.Ecode_Relation.R_Ecode = dbo.EmployeeMaster.Ecode
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_ObservationLogs
+Definition:
+CREATE VIEW [dbo].[vw_ObservationLogs]
+AS
+SELECT     ObsRound.RecordID AS RoundID, ObsRound.Ecode, ObsRound.CorpEmpCode, ObsRound.EmpName, ObsRound.Catcode, ObsRound.CatName, ObsRound.TaskStartDate AS TaskStartTime, ObsRound.EndDate AS TaskEndTime, ObsRound.PetrollingCategory, ObsRound.ShiftID, 
+                  ObsRound.Shift, ObsRound.PlantID, ObsRound.Plant, ObsRound.TypeID, ObsRound.Type, ObsRound.TaskGroupID, ObsRound.TaskGroupName, ObsRound.CheckPointIDs, ObsRound.[Total Check Points], ObsLog.RecordID AS LogID, ObsLog.CheckPointID, Ch.CheckPointName, Ch.CheckPointType, Ch.Severity AS CheckPointSeverity, 
+                  ObsLog.CheckPointStartTime, ObsLog.LogDateTime, ObsLog.StartTime, ObsLog.EndTime, CONVERT(VARCHAR(5), DATEADD(MINUTE, DATEDIFF(MINUTE, ObsLog.StartTime, ObsLog.EndTime), 0), 108) AS CheckPointDur, ObsLog.IdleDur, ObsLog.Photo, ObsLog.QuestionID, Ques.Question, Ques.Severity AS QuesSeverity, ObsLog.AnswerID, Ans.Answer, ObsLog.MajorObserID, Maj.CategoryName AS MajorCategory, 
+                  Maj.InputLabel AS MajObsInputLabel, ObsLog.MajorValue, ObsLog.MinorObserID, Min.CategoryName AS MinorCategory, Min.InputLabel AS MinObsInputLabel, ObsLog.MinorValue, ObsLog.Remark, ObsLog.Status
+FROM        dbo.vw_ObservationRound AS ObsRound LEFT OUTER JOIN
+                  dbo.Vedanta_Observation_Round_Log AS ObsLog ON ObsRound.RecordID = ObsLog.ObserRoundID LEFT OUTER JOIN
+                  dbo.Vedanta_Plant_Checkpoint AS Ch ON ObsLog.CheckPointID = Ch.RecordID LEFT OUTER JOIN
+                  dbo.Vedanta_Checklist_Question AS Ques ON ObsLog.QuestionID = Ques.RecordID LEFT OUTER JOIN
+                  dbo.Vedanta_Checklist_Answer AS Ans ON ObsLog.AnswerID = Ans.RecordID LEFT OUTER JOIN
+                  dbo.Vedanta_Major_Observation_Category AS Maj ON ObsLog.MajorObserID = Maj.RecordID LEFT OUTER JOIN
+                  dbo.Vedanta_Minor_Observation_Category AS Min ON ObsLog.MinorObserID = Min.RecordID
+ 
+
+================================================================================
+
+View: dbo.vw_ObservationRound
+Definition:
+CREATE VIEW [dbo].[vw_ObservationRound]
+AS
+SELECT 
+    V.[RecordID],
+    V.[Ecode],
+    E.[CorpEmpCode],
+    E.[EmpName],
+    E.[Catcode],
+    CAT.[CatName],
+    V.ShiftID,
+    G.[Gname] AS [Shift],
+    V.[TaskStartDate],
+    V.[EndDate],
+    V.[Frequency],
+    V.[CreatedDate],
+    V.[UpdatedDate],
+    V.[PetrollingCategory],
+    V.[PlantID],
+    P.[PlantName] AS [Plant],
+    V.[TypeID],
+    T.TypeName AS [Type],
+	V.TaskGroupID,
+	TG.TaskGroupName,
+    CP.[CheckPointIDs],
+    CP.[Total Check Points],
+	V.Status
+FROM 
+    dbo.Vedanta_Observation_Round V
+INNER JOIN 
+    EmployeeMaster E ON V.Ecode = E.Ecode
+INNER JOIN
+	CatMaster CAT ON E.Catcode = CAT.CatCode
+INNER JOIN 
+    dbo.GradeMaster G ON V.ShiftID = G.Gcode 
+INNER JOIN 
+    dbo.Vedanta_Plant_Location P ON V.PlantID = P.RecordID
+INNER JOIN 
+    dbo.Vedanta_Observation_Type T ON V.TypeID = T.RecordID
+INNER JOIN
+	dbo.GTMSTaskGroup TG ON V.TaskGroupID = TG.TaskGroupID
+OUTER APPLY 
+    (
+        SELECT 
+            STUFF(
+                (
+                    SELECT ',' + CONVERT(VARCHAR(10), R2.[CheckPointID])
+                    FROM dbo.RoundCheckPoint_RTL R2
+                    WHERE R2.[RoundID] = V.[RecordID]
+                    FOR XML PATH('')
+                ), 1, 1, ''
+            ) AS [CheckPointIDs],
+            COUNT(R2.[CheckPointID]) AS [Total Check Points]
+        FROM 
+            dbo.RoundCheckPoint_RTL R2
+        WHERE 
+            R2.[RoundID] = V.[RecordID]
+    ) CP
+ 
+
+================================================================================
+
+View: dbo.vw_RawPunchDetail
+Definition:
+
+CREATE VIEW [dbo].[vw_RawPunchDetail]
+AS
+SELECT  TOP (100) PERCENT dbo.MachineRawPunch.CardNo, CONVERT(datetime, dbo.MachineRawPunch.PunchTime, 106) AS ATDate, dbo.MachineRawPunch.PunchTime, dbo.MachineRawPunch.IsManual, 
+            dbo.MachineRawPunch.TransactionId, dbo.MachineRawPunch.InOut, dbo.MachineMaster.Location, dbo.EmployeeMaster.Image, dbo.MachineRawPunch.ECode, dbo.AllEmployeeUnion.CorpEmpCode, 
+            dbo.AllEmployeeUnion.EmpName, dbo.AllEmployeeUnion.SecCode, dbo.SectionMaster.Dcode, dbo.DeptMaster.Dname, dbo.DeptMaster.BranchCode, dbo.BranchMaster.Ccode, dbo.AllEmployeeUnion.Gcode, 
+            dbo.AllEmployeeUnion.Catcode, dbo.AllEmployeeUnion.DesCode, dbo.DesignationMaster.DesName, dbo.MachineRawPunch.MachineID, dbo.MachineMaster.TerminalID, dbo.MachineMaster.DomainName, 
+            dbo.AllEmployeeUnion.Role, dbo.AllEmployeeUnion.StatusID, dbo.MachineRawPunch.nEventLogIdn, dbo.MachineRawPunch.Status, dbo.MachineMaster.IPAddress,
+            (SELECT AuthenticationName FROM dbo.AuthenticationMaster WHERE AuthenticationID = dbo.MachineRawPunch.Channel) AS Authentication
+FROM    dbo.BranchMaster INNER JOIN
+            dbo.DeptMaster ON dbo.BranchMaster.BranchCode = dbo.DeptMaster.BranchCode INNER JOIN
+            dbo.SectionMaster ON dbo.DeptMaster.Dcode = dbo.SectionMaster.Dcode INNER JOIN
+            dbo.AllEmployeeUnion ON dbo.SectionMaster.SecCode = dbo.AllEmployeeUnion.SecCode INNER JOIN
+            dbo.DesignationMaster ON dbo.AllEmployeeUnion.DesCode = dbo.DesignationMaster.DesCode INNER JOIN
+            dbo.EmployeeMaster ON dbo.AllEmployeeUnion.Ecode = dbo.EmployeeMaster.Ecode RIGHT OUTER JOIN
+            dbo.MachineRawPunch INNER JOIN
+            dbo.MachineMaster ON dbo.MachineRawPunch.MachineID = dbo.MachineMaster.MachineID ON dbo.AllEmployeeUnion.Ecode = dbo.MachineRawPunch.ECode
+ORDER BY dbo.MachineRawPunch.PunchTime
+ 
+
+================================================================================
+
+View: dbo.Vw_TerminalDetail_VMS
+Definition:
+CREATE VIEW [dbo].[Vw_TerminalDetail_VMS]
+AS
+SELECT        dbo.MachineMaster.MachineID, dbo.MachineMaster.DeviceType, dbo.MachineMaster.TerminalID, dbo.MachineMaster.IPAddress, dbo.MachineMaster.DomainName, dbo.MachineMaster.PortNo, dbo.MachineMaster.Location, 
+                         dbo.MachineMaster.Connectiontype, dbo.MachineMaster.comboAppProtocol, dbo.MachineMaster.Sno, dbo.MachineMaster.LKey, dbo.MachineMaster.Connection_Status, dbo.MachineMaster.Configuration, 
+                         dbo.MachineMaster.DataLocation, dbo.MachineMaster.MIFAREStartBlock, dbo.MachineMaster.MIFARENoofBlocks, dbo.MachineMaster.MIFAREKeyPolicy, dbo.MachineMaster.CheckExpiryDate, 
+                         dbo.MachineMaster.EnableAccessSchedule, dbo.MachineMaster.EnableVIPAuthentication, dbo.MachineMaster.EnableWhiteList, dbo.MachineMaster.func_mode, dbo.MachineMaster.sdac_door_unlock_dur, 
+                         dbo.MachineMaster.sdac_max_door_held_open_dur, dbo.MachineMaster.sdac_push_btn_mode, dbo.MachineMaster.sdac_rte_egress_timeout, dbo.MachineMaster.sdac_rte_mode, dbo.MachineMaster.tom_mode, 
+                         dbo.MachineMaster.tom_duration, dbo.MachineMaster.audiovolume, dbo.MachineMaster.remote_msg_conffeedback_interface, dbo.MachineMaster.send_ethernet_state, dbo.MachineMaster.host_on_no_response, 
+                         dbo.MachineMaster.remote_msg_ip_confhost_1_ip, dbo.MachineMaster.remote_msg_ip_confhost_1_port, dbo.MachineMaster.bio_security_settingsffd_security_level, 
+                         dbo.MachineMaster.bio_security_settingsmatching_threshold, dbo.MachineMaster.enrollacquisition_threshold, dbo.MachineMaster.ControllerID, dbo.MachineMaster.DoorID, dbo.MachineMaster.sc_read_profile, 
+                         dbo.MachineMaster.Dcode, dbo.MachineMaster.APIKey, dbo.WiegandMaster.ProxPortInputFormat, dbo.WiegandMaster.ExternalPortInputFormat, dbo.WiegandMaster.ExternalPortInputType, dbo.WiegandMaster.ReadProfile, 
+                         dbo.WiegandMaster.EnrollUserID, dbo.WiegandMaster.ActivateWiegandOutput, dbo.WiegandMaster.VerificationPass, dbo.WiegandMaster.VerificationFail, dbo.WiegandMaster.IdentificationPass, 
+                         dbo.WiegandMaster.IdentificationFail, dbo.WiegandMaster.Duress, dbo.WiegandMaster.Tamper, dbo.WiegandMaster.ExternalPortOutputType, dbo.WiegandMaster.SetPulseWidthTo, dbo.WiegandMaster.SetIntervalTo, 
+                         dbo.WiegandMaster.InputDataLine, dbo.WiegandMaster.OutputDataLine, dbo.WiegandMaster.InputClockLine, dbo.WiegandMaster.OutputClockLine, dbo.MachineMaster.CardOnly, dbo.MachineMaster.FingerOnly, 
+                         dbo.MachineMaster.CardAndFinger, dbo.MachineMaster.CardAndPin, dbo.MachineMaster.CardAndFingerAndPin, dbo.MachineMaster.UserWithoutMask, dbo.MachineMaster.ImageLog, 
+                         dbo.MachineMaster.LOG_ACTION_USER_WITHOUT_MASK, dbo.MachineMaster.LOG_ACTION_REJECTED_BY_SCHEDULE, dbo.MachineMaster.LOG_ACTION_USER_RULE_CHECK_FAILURE, dbo.MachineMaster.ReadQRCode, 
+                         dbo.MachineMaster.FirmwareVersion, dbo.MachineMaster.CameraCommand, dbo.MachineMaster.HardwareTypeID, dbo.MachineMaster.DataConnectionOutputTypeID, dbo.MachineMaster.IOModuleTypeID, cbdd.BranchCode, 
+                         cbdd.Ccode, dcot.DataConnectionOutputTypeName, imt.IOModuleTypeName, dbo.MachineMaster.CameraIPAddress, dbo.MachineMaster.CameraUserName, dbo.MachineMaster.CameraPassword, 
+                         dbo.MachineMaster.Update_Date
+FROM            dbo.MachineMaster LEFT OUTER JOIN
+                         dbo.DataConnectionOutputTypeMaster AS dcot ON dcot.ID = dbo.MachineMaster.DataConnectionOutputTypeID LEFT OUTER JOIN
+                         dbo.Vw_CompanyBranchDepartmentDetail_VMS AS cbdd ON cbdd.Dcode = dbo.MachineMaster.Dcode LEFT OUTER JOIN
+                         dbo.WiegandMaster ON dbo.MachineMaster.TerminalID = dbo.WiegandMaster.TerminalID LEFT OUTER JOIN
+                         dbo.IOModuleTyp
+
+================================================================================
+
+View: dbo.VW_Vedanta_Checklist_Major_Options
+Definition:
+
+
+CREATE VIEW [dbo].[VW_Vedanta_Checklist_Major_Options]
+AS
+SELECT DISTINCT qartl.CheckPointID, ques.RecordID AS QuestionID, ans.RecordID AS AnswerID, rtl.MajorID, major.CategoryName, ISNULL(ques.Active, 0) AS Active, ISNULL(major.IsUserInput, 0) AS IsUserInput, major.InputLabel
+FROM            dbo.Vedanta_Question_Answer_RTL AS qartl INNER JOIN
+                         dbo.Vedanta_Checklist_Question AS ques ON qartl.QuestionID = ques.RecordID INNER JOIN
+                         dbo.Vedanta_Checklist_Answer AS ans ON qartl.AnswerID = ans.RecordID INNER JOIN
+                         dbo.Vedanta_Checklist_Major_Observation_RTL AS rtl ON qartl.AnswerID = rtl.AnswerID AND qartl.QuestionID = rtl.QuestionID INNER JOIN
+                         dbo.Vedanta_Major_Observation_Category AS major ON rtl.MajorID = major.RecordID
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.VW_Vedanta_Checklist_Minor_Options
+Definition:
+
+CREATE VIEW [dbo].[VW_Vedanta_Checklist_Minor_Options]
+AS
+SELECT DISTINCT 
+                         qartl.CheckPointID, ques.RecordID AS QuestionID, ans.RecordID AS AnswerID, rtl.MinorID, minor.CategoryName, ISNULL(ques.Active, 0) AS Active, ISNULL(minor.IsUserInput, 0) AS IsUserInput, ISNULL(minor.InputLabel, '') 
+                         AS InputLabel
+FROM            dbo.Vedanta_Question_Answer_RTL AS qartl INNER JOIN
+                         dbo.Vedanta_Checklist_Question AS ques ON qartl.QuestionID = ques.RecordID INNER JOIN
+                         dbo.Vedanta_Checklist_Answer AS ans ON qartl.AnswerID = ans.RecordID INNER JOIN
+                         dbo.Vedanta_Checklist_Minor_Observation_RTL AS rtl ON qartl.AnswerID = rtl.AnswerID AND qartl.QuestionID = rtl.QuestionID INNER JOIN
+                         dbo.Vedanta_Minor_Observation_Category AS minor ON rtl.MinorID = minor.RecordID
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.VW_Vedanta_CP_Ques_Ans_rtl
+Definition:
+CREATE VIEW [dbo].[VW_Vedanta_CP_Ques_Ans_rtl]
+AS
+SELECT        rtl.CheckPointID, ques.Severity, ques.RecordID AS QuestionID, ques.Question, rtl.AnswerID, ans.Answer
+FROM            dbo.Vedanta_Checklist_Question AS ques INNER JOIN
+                         dbo.Vedanta_Question_Answer_RTL AS rtl ON ques.RecordID = rtl.QuestionID INNER JOIN
+                         dbo.Vedanta_Checklist_Answer AS ans ON ans.RecordID = rtl.AnswerID INNER JOIN
+						 dbo.Vedanta_Plant_Checkpoint AS Ch ON Ch.RecordID = rtl.CheckPointID
+ 
+
+================================================================================
+
+View: dbo.VW_Vedanta_Plan_Observations
+Definition:
+
+CREATE VIEW [dbo].[VW_Vedanta_Plan_Observations]
+AS
+SELECT DISTINCT 
+                         otype.RecordID AS ObserTypeID, obs.RecordID AS ObserRoundID, obs.PlantID, ISNULL(obs.SequenceNo, '') AS SequenceNo, ISNULL(obs.PlaceCategory, '') AS PlaceCategory, ISNULL(obs.PlaceName, '') AS PlaceName, 
+                         otype.TypeName AS TaskName, ISNULL(CONVERT(char(5), obs.TaskStartDate, 108), '') AS TaskTime, ISNULL(obs.TaskDuration, '') AS TaskDuration, ISNULL(obs.TaskDescription, '') AS TaskDescription, ISNULL(NULL, '') 
+                         AS ProcessName, ISNULL(obs.Repeat, '') AS Repeat, ISNULL(obs.TaskStartDate, '') AS TaskStartDate, ISNULL(obs.RepeatType, '') AS RepeatType, ISNULL(obs.Frequency, '') AS Frequency, ISNULL(obs.EndDate, '') AS EndDate, 
+                         ISNULL(obs.BeforeTolerance, 0) AS BeforeTolerance, ISNULL(obs.AfterTolerance, 0) AS AfterTolerance, ISNULL(obs.Active, 0) AS Active, vw.UserID
+FROM            dbo.Vedanta_Observation_Type AS otype INNER JOIN
+                         dbo.Vedanta_Observation_Round AS obs ON otype.RecordID = obs.TypeID INNER JOIN
+                         dbo.Vedanta_User_Cat_Plant_Checkpoint AS vw ON obs.PlantID = vw.PlantID
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.vw_VisitorBasicDetail
+Definition:
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE VIEW [dbo].[vw_VisitorBasicDetail]
+AS
+SELECT        TOP (100) PERCENT dbo.Vistor_Details.ID, dbo.EmployeeMaster.Ecode, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.FName, dbo.EmployeeMaster.LName, dbo.EmployeeMaster.Sex, 
+                         dbo.EmployeeMaster.Address1, dbo.EmployeeMaster.E_mail, dbo.EmployeeMaster.Image, dbo.EmployeeMaster.IsBlackListed, dbo.EmployeeMaster.Telephone1, dbo.Vistor_Details.Expected_IN_Time, 
+                         dbo.Vistor_Details.ID_Proof_Type, dbo.Vistor_Details.ID_Proof_Detail, dbo.Vistor_Details.ID_Proof_Image, dbo.EmployeeMaster.VehicleDetail, dbo.Vistor_Details.QRCodeValue
+FROM            dbo.EmployeeMaster INNER JOIN
+                         dbo.Vistor_Details ON dbo.EmployeeMaster.Ecode = dbo.Vistor_Details.Ecode
+WHERE        (dbo.EmployeeMaster.Role = 'Visitor')
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+View: dbo.Vw_WiegandSettings
+Definition:
+CREATE VIEW Vw_WiegandSettings AS
+SELECT WiegandSettings.WiegandID, WiegandSettings.WName, WiegandSettings.FacilityCode, WiegandSettings.Bits, WiegandSettings.Offset, WiegandSettings.CommunicationProtocol, 
+WiegandSettings.Flag, WiegandSettings.ParityEven_Ln, WiegandSettings.ParityEven_Loc, WiegandSettings.ParityOdd_Ln, WiegandSettings.ParityOdd_Loc, 
+WiegandSettings.FacilityCode_Ln, WiegandSettings.FacilityCode_Loc, WiegandSettings.CardHolder_Ln, WiegandSettings.CardHolder_Loc, WiegandSettings.Ic_Ln, 
+WiegandSettings.Ic_Loc, WiegandSettings.Remark, WiegandSettings.Ccode, BitMaster.Name as BitsName FROM WiegandSettings WITH (NOLOCK)
+INNER JOIN BitMaster ON WiegandSettings.Bits =  BitMaster.ID
+ 
+
+================================================================================
+
+View: dbo.XXXvw_EmployeeDetail
+Definition:
+CREATE VIEW [dbo].[XXXvw_EmployeeDetail]
+AS
+SELECT        dbo.CompanyMaster.CName, dbo.DeptMaster.Dname, dbo.BranchMaster.BranchName, dbo.EmployeeMaster.CorpEmpCode, dbo.EmployeeMaster.EmpName, dbo.AttendanceRegister.Status, dbo.ShiftMaster.Sname, 
+                         dbo.ShiftMaster.StartTime, AttendanceRegister_1.LateArrival, AttendanceRegister_1.InTime, dbo.AttendanceRegister.ShiftEndTime, dbo.AttendanceRegister.OutTime, dbo.AttendanceRegister.EarlyDeparture, 
+                         dbo.AttendanceRegister.InTime AS Expr1, dbo.AttendanceRegister.Out1, dbo.AttendanceRegister.In2, dbo.AttendanceRegister.Out4, dbo.EmployeeMaster.OvertimeAllowed, dbo.AttendanceRegister.InManual, 
+                         dbo.AttendanceRegister.OutManual, dbo.EmployeeMaster.Ecode, AttendanceRegister_1.ShiftStartTime, dbo.EmployeeMaster.PresentCardNo, dbo.DeptMaster.Dcode, dbo.BranchMaster.BranchCode, dbo.CompanyMaster.Ccode, 
+                         dbo.EmployeeMaster.SecCode
+FROM            dbo.SectionMaster INNER JOIN
+                         dbo.DeptMaster ON dbo.SectionMaster.Dcode = dbo.DeptMaster.Dcode INNER JOIN
+                         dbo.EmployeeMaster ON dbo.SectionMaster.SecCode = dbo.EmployeeMaster.SecCode INNER JOIN
+                         dbo.BranchMaster ON dbo.DeptMaster.BranchCode = dbo.BranchMaster.BranchCode INNER JOIN
+                         dbo.CompanyMaster ON dbo.BranchMaster.Ccode = dbo.CompanyMaster.Ccode INNER JOIN
+                         dbo.AttendanceRegister ON dbo.EmployeeMaster.Ecode = dbo.AttendanceRegister.ECode INNER JOIN
+                         dbo.AttendanceRegister AS AttendanceRegister_1 ON dbo.EmployeeMaster.Ecode = AttendanceRegister_1.ECode INNER JOIN
+                         dbo.EmpShiftPatternRelation ON dbo.EmployeeMaster.Ecode = dbo.EmpShiftPatternRelation.ECode INNER JOIN
+                         dbo.ShiftPattern ON dbo.EmpShiftPatternRelation.SPCode = dbo.ShiftPattern.SPCode INNER JOIN
+                         dbo.ShiftMaster ON dbo.ShiftPattern.ShiftCode1 = dbo.ShiftMaster.Scode
+WHERE        (dbo.EmployeeMaster.CorpEmpCode <> 'Admin')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+

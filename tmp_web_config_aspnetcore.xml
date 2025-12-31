@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <system.webServer>
+        <handlers>
+            <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+        </handlers>
+        <aspNetCore processPath="C:\Users\sudo\Downloads\OryggiAI_SaaS\venv\Scripts\python.exe"
+                    arguments="-m uvicorn app.main:app --host 127.0.0.1 --port %ASPNETCORE_PORT%"
+                    stdoutLogEnabled="true"
+                    stdoutLogFile="C:\inetpub\logs\stdout"
+                    hostingModel="OutOfProcess"
+                    forwardWindowsAuthToken="false">
+            <environmentVariables>
+                <environmentVariable name="PYTHONUNBUFFERED" value="1" />
+            </environmentVariables>
+        </aspNetCore>
+        <webSocket enabled="true" />
+    </system.webServer>
+</configuration>

@@ -1,0 +1,220 @@
+{
+  "total_views": 130,
+  "categorized": {
+    "Employee & Organization": [
+      "AllEmployeeUnion",
+      "Employee_Hikvision_Image",
+      "Employee_Suprema_Unwarped_Image",
+      "Employee_Suprema_warped_Image",
+      "Employee_User_Image",
+      "GTMS_User_Observation",
+      "VW_Vedanta_Checklist_Major_Options",
+      "VW_Vedanta_Checklist_Minor_Options",
+      "VW_Vedanta_Plan_Observations",
+      "Vedanta_Admin_Checkpoint",
+      "Vedanta_User_Cat_Plant_Checkpoint",
+      "Vedanta_User_Cat_Plant_Checkpoint2",
+      "Vedanta_User_Plant_Relation",
+      "View_All_Alert_Log",
+      "View_BDW_MPunch",
+      "View_ComapnyMaster",
+      "View_EmpDepartRole",
+      "View_EmployeeByUserGroupPolicy",
+      "View_EmployeeESIPF",
+      "View_Employee_Terminal_Authentication_Relation",
+      "View_FingerDetail",
+      "View_ForExcelExport",
+      "View_HalfDayPresent",
+      "View_Hospital_VMS_Patient_Details",
+      "View_ID_Card_Template",
+      "View_MPunch",
+      "View_MPunchDL",
+      "View_MPunchV3",
+      "View_MachinePunch",
+      "View_MachineRawPunchWithMachineAndEmployee",
+      "View_MachineRawPunch_WithLocation",
+      "View_MpunchV4",
+      "View_ParkingLog",
+      "View_SearchVisitor",
+      "View_SearchVisitor_Details",
+      "View_Student_Parent_IN_OUT_Status",
+      "View_TodayAVGINTime",
+      "View_TodayAVGINTimeBranchWise_V2",
+      "View_TodayAVGINTimeCompanyWise_V2",
+      "View_TodayAVGINTimeDeptWise_V2",
+      "View_TodayAVGINTimeSecWise_V2",
+      "View_TodayAVGOUTTimeBranchWise_V2",
+      "View_TodayAVGOUTTimeCompanyWise_V2",
+      "View_TodayAVGOUTTimeDeptWise_V2",
+      "View_TodayAVGOUTTimeSecWise_V2",
+      "View_TodayAVGWorkHour",
+      "View_TodayAVGWorkHourBranchWise_V2",
+      "View_TodayAVGWorkHourCompnayWise_V2",
+      "View_TodayAVGWorkHourDeptWise_V2",
+      "View_TodayAVGWorkHourSecWise_V2",
+      "View_TodayAvgOUTTime",
+      "View_TodayPresentBranchWiseChart",
+      "View_TodayPresentChart",
+      "View_TodayPresentChart_V2",
+      "View_TodayPresentDeviceWiseChart",
+      "View_TodayPresentGradeWiseChart",
+      "View_TotalAbsentChart",
+      "View_TotalAbsentChart_V2",
+      "View_TotalEarlyDeparture",
+      "View_TotalEarlyDeparture_V2",
+      "View_TotalEmployeeBranchWise_Chart",
+      "View_TotalEmployeeChart_V2",
+      "View_TotalEmployee_Chart",
+      "View_TotalLateArrive",
+      "View_TotalLateArrive_V2",
+      "View_TotalLeaveToday",
+      "View_TotalLeaveToday_V2",
+      "View_TotalOverTime",
+      "View_VG_AL_DuplicateMaster",
+      "View_VG_AL_IdentificationMaster",
+      "View_VG_DuplicateStudentCompleteDetail",
+      "View_VG_EVI_M_Result",
+      "View_VG_EnrolledStudentCompleteDetail",
+      "View_VG_Enrollment_Log_Result",
+      "View_VG_Fingerprint_Exception",
+      "View_VG_Identification_Log_Result",
+      "View_VG_IdentifiedStudentCompleteDetail",
+      "View_VG_Local_Enrollment_Rejected_Log_Result",
+      "View_VG_LogIn_LogOut_Status",
+      "View_VG_Manual_BayPass",
+      "View_VG_Operator Management",
+      "View_VG_StudentDetail",
+      "View_VG_View_VG_EVI_I_Result",
+      "View_Vehicle_IN_Out",
+      "View_View_TodayMissChart",
+      "View_VisitorLog",
+      "View_Visitor_EnrollmentDetail",
+      "View_Vistor_Detail",
+      "View_Vistor_Detail_1",
+      "Vw_BitsFormatCompanyCode",
+      "Vw_BitsFormatFacilityCodeCompany",
+      "Vw_CompanyBranchDepartmentDetail_VMS",
+      "Vw_TerminalDetail_VMS",
+      "XXXvw_EmployeeDetail",
+      "vw_Attendanceregister",
+      "vw_CompleteAttendanceReport",
+      "vw_EmpSalary",
+      "vw_Emp_EmpSalaryHead",
+      "vw_Emp_GradeSalaryHead",
+      "vw_EmployeeDetail",
+      "vw_EmployeeDetail2",
+      "vw_EmployeeHoliday",
+      "vw_EmployeeMaster_Vms",
+      "vw_Holiday",
+      "vw_LeaveDetail",
+      "vw_LeaveDetailForHr",
+      "vw_MasterReports",
+      "vw_Meeting_Persons",
+      "vw_ObservationLogs",
+      "vw_ObservationRound",
+      "vw_RawPunchDetail",
+      "vw_VisitorBasicDetail",
+      "vw_aspnet_MembershipUsers"
+    ],
+    "Attendance": [
+      "View_ShiftMaster"
+    ],
+    "Punch Records": [
+      "View_Group_By_DCode",
+      "View_Top1TodayDevicePunch"
+    ],
+    "Biometric": [
+      "View_FACE_V1",
+      "View_VG_Enroll_Task"
+    ],
+    "Contractor": [
+      "View_Contractor_Detail"
+    ],
+    "Other": [
+      "VW_Vedanta_CP_Ques_Ans_rtl",
+      "Vw_WiegandSettings",
+      "vw_Material_Master",
+      "vw_aspnet_Applications",
+      "vw_aspnet_Profiles",
+      "vw_aspnet_Roles",
+      "vw_aspnet_Users",
+      "vw_aspnet_UsersInRoles",
+      "vw_aspnet_WebPartState_Paths",
+      "vw_aspnet_WebPartState_Shared",
+      "vw_aspnet_WebPartState_User"
+    ]
+  },
+  "priority_views": [
+    {
+      "name": "XXXvw_EmployeeDetail",
+      "description": "Employee with full org structure and attendance",
+      "found": true
+    },
+    {
+      "name": "vw_RawPunchDetail",
+      "description": "Raw punch records detail",
+      "found": true
+    },
+    {
+      "name": "View_BDW_MPunch",
+      "description": "Employee + Department + Machine Punch",
+      "found": true
+    },
+    {
+      "name": "View_ComapnyMaster",
+      "description": "Employee \u2192 Section \u2192 Dept \u2192 Branch \u2192 Company",
+      "found": true
+    },
+    {
+      "name": "View_EmployeeByUserGroupPolicy",
+      "description": "Complete employee info with policies",
+      "found": true
+    },
+    {
+      "name": "View_MPunch",
+      "description": "Machine punch with employee details",
+      "found": true
+    },
+    {
+      "name": "View_MPunchV3",
+      "description": "Machine punch with org hierarchy",
+      "found": true
+    },
+    {
+      "name": "vw_EmployeeMaster",
+      "description": "Employee master view if exists",
+      "found": false
+    },
+    {
+      "name": "View_ForExcelExport",
+      "description": "Attendance export view",
+      "found": true
+    }
+  ],
+  "complex_views": [
+    {
+      "name": "vw_EmployeeMaster_Vms",
+      "joins": 18
+    },
+    {
+      "name": "vw_EmployeeDetail",
+      "joins": 6
+    },
+    {
+      "name": "GTMS_User_Observation",
+      "joins": 5
+    },
+    {
+      "name": "Vedanta_User_Cat_Plant_Checkpoint2",
+      "joins": 5
+    },
+    {
+      "name": "View_MachinePunch",
+      "joins": 4
+    },
+    {
+      "name": "vw_ObservationRound",
+      "joins": 4
+    }
+  ]
+}

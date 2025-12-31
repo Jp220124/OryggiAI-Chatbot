@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OryggiAI - Database Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors - Gold Theme (matching dashboard.html) */
+            --primary-gradient-start: #FFD700;
+            --primary-gradient-end: #E6C200;
+            --primary-color: #FFD700;
+            --primary-hover: #E6C200;
+            --primary-dark: #CCAD00;
+            --primary: #FFD700;
+            --secondary: #E6C200;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #FFD700;
+            --info: #3b82f6;
+            --gradient: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+
+            /* Backgrounds - Light Theme */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafc;
+            --bg-dark: #f8fafc;
+            --bg-sidebar: #ffffff;
+
+            /* Text Colors */
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+
+            /* Borders */
+            --border-color: #e2e8f0;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text h1 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .logo-text span {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .nav-link.active {
+            background: var(--gradient);
+            color: #000;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(252, 129, 129, 0.1);
+            color: var(--error);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Database Cards */
+        .database-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .database-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .database-card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .database-info {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .database-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .database-icon.sqlserver {
+            background: rgba(255, 121, 0, 0.15);
+            color: #ff7900;
+        }
+
+        .database-icon.postgres {
+            background: rgba(51, 103, 145, 0.15);
+            color: #336791;
+        }
+
+        .database-icon.mysql {
+            background: rgba(0, 117, 143, 0.15);
+            color: #00758f;
+        }
+
+        .database-icon.oracle {
+            background: rgba(255, 0, 0, 0.15);
+            color: #f80000;
+        }
+
+        .database-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .database-type {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .database-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .database-status.ready {
+            background: rgba(72, 187, 120, 0.15);
+            color: var(--success);
+        }
+
+        .database-status.pending {
+            background: rgba(236, 201, 75, 0.15);
+            color: var(--warning);
+        }
+
+        .database-status.error {
+            background: rgba(252, 129, 129, 0.15);
+            color: var(--error);
+        }
+
+        .database-status.indexing {
+            background: rgba(99, 179, 237, 0.15);
+            color: var(--info);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .database-card-body {
+            padding: 1.25rem;
+        }
+
+        .database-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-value {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .database-card-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .form-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-error {
+            background: rgba(252, 129, 129, 0.1);
+            border: 1px solid rgba(252, 129, 129, 0.3);
+            color: var(--error);
+        }
+
+        .alert-success {
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            color: var(--success);
+        }
+
+        .alert-info {
+            background: rgba(99, 179, 237, 0.1);
+            border: 1px solid rgba(99, 179, 237, 0.3);
+            color: var(--info);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--primary);
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Loading */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        /* Connection String Builder */
+        .conn-string-preview {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 3px solid var(--error);
+        }
+
+        .toast.info {
+            border-left: 3px solid var(--info);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .database-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
+                    <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
+                    <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
+                </svg>
+                <div class="logo-text">
+                    <h1>OryggiAI</h1>
+                    <span>Tenant Portal</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <a href="dashboard.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="chat.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    Chat Assistant
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Management</div>
+                <a href="databases.html" class="nav-link active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                    </svg>
+                    Databases
+                </a>
+                <a href="gateway.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                    Gateway Agent
+                </a>
+                <a href="users.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Users
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Analytics</div>
+                <a href="usage.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Usage Stats
+                </a>
+                <a href="audit.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Audit Logs
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Settings</div>
+                <a href="settings.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Settings
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Loading...</div>
+                    <div class="user-role" id="userRole">User</div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Sign out">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Database Management</h1>
+                <p class="page-subtitle">Connect and manage your databases</p>
+            </div>
+            <button class="btn btn-primary" onclick="openAddModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Database
+            </button>
+        </div>
+
+        <!-- Database List -->
+        <div class="database-grid" id="databaseGrid">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <ellipse cx="12" cy="5" rx="9" ry="3" />
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                </svg>
+            </div>
+            <h3>No databases connected</h3>
+            <p>Connect your first database to start querying with AI</p>
+            <button class="btn btn-primary" onclick="openAddModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Database
+            </button>
+        </div>
+    </main>
+
+    <!-- Add Database Modal -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Database Connection</h2>
+                <button class="modal-close" onclick="closeAddModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-error" id="addError"></div>
+                <div class="alert alert-success" id="addSuccess"></div>
+
+                <form id="addDatabaseForm">
+                    <div class="form-group">
+                        <label class="form-label" for="dbName">Database Name *</label>
+                        <input type="text" id="dbName" name="db_name" class="form-input"
+                            placeholder="My Production Database" required>
+                        <p class="form-hint">A friendly name to identify this database</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="dbType">Database Type *</label>
+                        <select id="dbType" name="db_type" class="form-select" required onchange="updateConnectionFields()">
+                            <option value="">Select database type...</option>
+                            <option value="mssql">Microsoft SQL Server</option>
+                            <option value="postgresql">PostgreSQL</option>
+                            <option value="mysql">MySQL</option>
+                            <option value="oracle">Oracle</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="dbHost">Host / Server *</label>
+                            <input type="text" id="dbHost" name="host" class="form-input"
+                                placeholder="localhost or IP address" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="dbPort">Port *</label>
+                            <input type="number" id="dbPort" name="port" class="form-input"
+                                placeholder="1433" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="dbDatabase">Database Name *</label>
+                        <input type="text" id="dbDatabase" name="database" class="form-input"
+                            placeholder="mydatabase" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="dbUsername">Username *</label>
+                            <input type="text" id="dbUsername" name="username" class="form-input"
+                                placeholder="db_user" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="dbPassword">Password *</label>
+                            <input type="password" id="dbPassword" name="password" class="form-input"
+                                placeholder="Enter password" required>
+                        </div>
+                    </div>
+
+                    <div class="conn-string-preview" id="connStringPreview">
+                        Connection string will appear here...
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
+                <button class="btn btn-secondary" onclick="testConnection()">
+                    <span class="loading-spinner" id="testSpinner" style="display: none;"></span>
+                    Test Connection
+                </button>
+                <button class="btn btn-primary" onclick="addDatabase()">
+                    <span class="loading-spinner" id="addSpinner" style="display: none;"></span>
+                    Add Database
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const API_BASE = window.location.origin;
+
+        // Helper function to extract error message from various API response formats
+        function extractErrorMessage(detail, fallback = 'An error occurred') {
+            if (!detail) return fallback;
+            if (typeof detail === 'string') return detail;
+            if (Array.isArray(detail)) {
+                // FastAPI validation errors are arrays of objects with 'loc' and 'msg' properties
+                return detail.map(err => {
+                    const field = err.loc ? err.loc[err.loc.length - 1] : '';
+                    const msg = err.msg || err.message || 'Invalid value';
+                    return field ? `${field}: ${msg}` : msg;
+                }).join(', ');
+            }
+            if (typeof detail === 'object') {
+                return detail.msg || detail.message || detail.detail || detail.error || JSON.stringify(detail);
+            }
+            return String(detail);
+        }
+
+        // Check authentication
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Load user info
+        document.getElementById('userName').textContent = localStorage.getItem('full_name') || 'User';
+        document.getElementById('userRole').textContent = localStorage.getItem('role') || 'User';
+        const initials = (localStorage.getItem('full_name') || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById('userAvatar').textContent = initials.substring(0, 2);
+
+        // Default ports for database types
+        const defaultPorts = {
+            'mssql': 1433,
+            'postgresql': 5432,
+            'mysql': 3306,
+            'oracle': 1521
+        };
+
+        // Update port when database type changes
+        function updateConnectionFields() {
+            const dbType = document.getElementById('dbType').value;
+            if (dbType && defaultPorts[dbType]) {
+                document.getElementById('dbPort').value = defaultPorts[dbType];
+            }
+            updateConnectionString();
+        }
+
+        // Update connection string preview
+        function updateConnectionString() {
+            const dbType = document.getElementById('dbType').value;
+            const host = document.getElementById('dbHost').value || '<host>';
+            const port = document.getElementById('dbPort').value || '<port>';
+            const database = document.getElementById('dbDatabase').value || '<database>';
+            const username = document.getElementById('dbUsername').value || '<username>';
+
+            let connString = '';
+            switch (dbType) {
+                case 'mssql':
+                    connString = `Server=${host},${port};Database=${database};User Id=${username};Password=****;`;
+                    break;
+                case 'postgresql':
+                    connString = `postgresql://${username}:****@${host}:${port}/${database}`;
+                    break;
+                case 'mysql':
+                    connString = `mysql://${username}:****@${host}:${port}/${database}`;
+                    break;
+                case 'oracle':
+                    connString = `${username}/****@${host}:${port}/${database}`;
+                    break;
+                default:
+                    connString = 'Select a database type to preview connection string';
+            }
+
+            document.getElementById('connStringPreview').textContent = connString;
+        }
+
+        // Add input listeners for connection string preview
+        ['dbHost', 'dbPort', 'dbDatabase', 'dbUsername'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateConnectionString);
+        });
+
+        // Fetch databases
+        async function loadDatabases() {
+            try {
+                const response = await fetch(`${API_BASE}/api/tenant/databases`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const data = await response.json();
+                // API returns array directly, not wrapped in {databases: [...]}
+                renderDatabases(Array.isArray(data) ? data : []);
+            } catch (error) {
+                console.error('Failed to load databases:', error);
+                showToast('Failed to load databases', 'error');
+            }
+        }
+
+        // Render database cards
+        function renderDatabases(databases) {
+            const grid = document.getElementById('databaseGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (!databases || databases.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            grid.innerHTML = databases.map(db => {
+                const iconClass = getDbIconClass(db.db_type);
+                // Map analysis_status to status for display
+                const status = mapAnalysisStatus(db.analysis_status, db.schema_analyzed);
+                const statusClass = getStatusClass(status);
+                const dbIcon = getDbIcon(db.db_type);
+
+                return `
+                    <div class="database-card" data-id="${db.id}">
+                        <div class="database-card-header">
+                            <div class="database-info">
+                                <div class="database-icon ${iconClass}">${dbIcon}</div>
+                                <div>
+                                    <div class="database-name">${db.name}</div>
+                                    <div class="database-type">${formatDbType(db.db_type)}</div>
+                                </div>
+                            </div>
+                            <div class="database-status ${statusClass}">
+                                <span class="status-dot"></span>
+                                ${status}
+                            </div>
+                        </div>
+                        <div class="database-card-body">
+                            <div class="database-meta">
+                                <div class="meta-item">
+                                    <span class="meta-label">Host</span>
+                                    <span class="meta-value">${db.host}:${db.port}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Database</span>
+                                    <span class="meta-value">${db.database_name}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Tables</span>
+                                    <span class="meta-value">${db.table_count || 0}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Added</span>
+                                    <span class="meta-value">${formatDate(db.created_at)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="database-card-footer">
+                            <button class="btn btn-sm btn-secondary" onclick="testDbConnection('${db.id}')">
+                                Test Connection
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="onboardDatabase('${db.id}')" ${status === 'ready' ? 'disabled' : ''}>
+                                ${status === 'pending' ? 'Onboard Now' : 'Re-onboard'}
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteDatabase('${db.id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Helper functions
+        function mapAnalysisStatus(analysisStatus, schemaAnalyzed) {
+            // Map API analysis_status to display status
+            if (analysisStatus === 'completed' && schemaAnalyzed) {
+                return 'ready';
+            } else if (analysisStatus === 'analyzing') {
+                return 'indexing';
+            } else if (analysisStatus === 'failed') {
+                return 'error';
+            }
+            return 'pending';
+        }
+
+        function getDbIconClass(type) {
+            const classes = {
+                'mssql': 'sqlserver',
+                'postgresql': 'postgres',
+                'mysql': 'mysql',
+                'oracle': 'oracle'
+            };
+            return classes[type] || 'sqlserver';
+        }
+
+        function getDbIcon(type) {
+            const icons = {
+                'mssql': 'S',
+                'postgresql': 'P',
+                'mysql': 'M',
+                'oracle': 'O'
+            };
+            return icons[type] || 'D';
+        }
+
+        function formatDbType(type) {
+            const names = {
+                'mssql': 'SQL Server',
+                'postgresql': 'PostgreSQL',
+                'mysql': 'MySQL',
+                'oracle': 'Oracle'
+            };
+            return names[type] || type;
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'ready': 'ready',
+                'pending': 'pending',
+                'indexing': 'indexing',
+                'error': 'error'
+            };
+            return classes[status] || 'pending';
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString();
+        }
+
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+            document.getElementById('addDatabaseForm').reset();
+            document.getElementById('connStringPreview').textContent = 'Select a database type to preview connection string';
+            hideAlerts();
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+        }
+
+        function hideAlerts() {
+            document.getElementById('addError').classList.remove('show');
+            document.getElementById('addSuccess').classList.remove('show');
+        }
+
+        // Test connection
+        async function testConnection() {
+            const form = document.getElementById('addDatabaseForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const spinner = document.getElementById('testSpinner');
+            spinner.style.display = 'inline-block';
+            hideAlerts();
+
+            const formData = {
+                name: document.getElementById('dbName').value,
+                db_type: document.getElementById('dbType').value,
+                host: document.getElementById('dbHost').value,
+                port: parseInt(document.getElementById('dbPort').value),
+                database_name: document.getElementById('dbDatabase').value,
+                username: document.getElementById('dbUsername').value,
+                password: document.getElementById('dbPassword').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/tenant/databases/test`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    document.getElementById('addSuccess').textContent = 'Connection successful! Database is reachable.';
+                    document.getElementById('addSuccess').classList.add('show');
+                    showToast('Connection test successful', 'success');
+                } else {
+                    throw new Error(extractErrorMessage(data.detail || data.error, 'Connection failed'));
+                }
+            } catch (error) {
+                document.getElementById('addError').textContent = error.message;
+                document.getElementById('addError').classList.add('show');
+                showToast('Connection test failed', 'error');
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+
+        // Add database
+        async function addDatabase() {
+            const form = document.getElementById('addDatabaseForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const spinner = document.getElementById('addSpinner');
+            spinner.style.display = 'inline-block';
+            hideAlerts();
+
+            const formData = {
+                name: document.getElementById('dbName').value,
+                db_type: document.getElementById('dbType').value,
+                host: document.getElementById('dbHost').value,
+                port: parseInt(document.getElementById('dbPort').value),
+                database_name: document.getElementById('dbDatabase').value,
+                username: document.getElementById('dbUsername').value,
+                password: document.getElementById('dbPassword').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/tenant/databases`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Database added successfully! Schema indexing started.', 'success');
+                    closeAddModal();
+                    loadDatabases();
+                } else {
+                    throw new Error(extractErrorMessage(data.detail, 'Failed to add database'));
+                }
+            } catch (error) {
+                document.getElementById('addError').textContent = error.message;
+                document.getElementById('addError').classList.add('show');
+                showToast('Failed to add database', 'error');
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+
+        // Test existing database connection
+        async function testDbConnection(dbId) {
+            showToast('Testing connection...', 'info');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/tenant/databases/${dbId}/test`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showToast('Connection successful!', 'success');
+                } else {
+                    showToast(data.error || 'Connection failed', 'error');
+                }
+            } catch (error) {
+                showToast('Connection test failed', 'error');
+            }
+        }
+
+        // Onboard database (analyze schema and prepare for chat)
+        async function onboardDatabase(dbId) {
+            if (!confirm('This will analyze the database schema and prepare it for AI chat queries. This may take a few minutes. Continue?')) {
+                return;
+            }
+
+            // Find and disable the button, show loading state
+            const btn = document.querySelector(`[data-id="${dbId}"] .btn-success`);
+            const originalText = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading-spinner"></span> Onboarding...';
+            }
+
+            showToast('Starting database onboarding... This may take a few minutes.', 'info');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/tenant/databases/${dbId}/onboard`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                // Check if response is JSON before parsing
+                const contentType = response.headers.get('content-type');
+                let data;
+
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    // Server returned non-JSON (likely HTML error page)
+                    const text = await response.text();
+                    throw new Error(`Server error (${response.status}): ${text.substring(0, 100)}`);
+                }
+
+                if (response.ok && data.success) {
+                    showToast(`Onboarding complete! Found ${data.tables_analyzed || 0} tables.`, 'success');
+                    loadDatabases();
+                } else {
+                    showToast(extractErrorMessage(data.detail || data.errors, 'Onboarding failed'), 'error');
+                }
+            } catch (error) {
+                showToast('Onboarding failed: ' + error.message, 'error');
+            } finally {
+                // Restore button state
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            }
+        }
+
+        // Re-index database schema (alias for onboard)
+        async function reindexDatabase(dbId) {
+            return onboardDatabase(dbId);
+        }
+
+        // Delete database
+        async function deleteDatabase(dbId) {
+            if (!confirm('Are you sure you want to delete this database connection? This cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/tenant/databases/${dbId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    showToast('Database deleted successfully', 'success');
+                    loadDatabases();
+                } else {
+                    const data = await response.json();
+                    showToast(data.detail || 'Delete failed', 'error');
+                }
+            } catch (error) {
+                showToast('Delete failed', 'error');
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${type === 'success' ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' :
+                      type === 'error' ? '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' :
+                      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>'}
+                </svg>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        // Close modal on overlay click
+        document.getElementById('addModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddModal();
+            }
+        });
+
+        // Load databases on page load
+        loadDatabases();
+    </script>
+</body>
+
+</html>

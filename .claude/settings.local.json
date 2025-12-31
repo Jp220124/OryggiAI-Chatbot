@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(netstat:*)",
+      "Bash(curl:*)",
+      "Bash(start http://localhost:9000/)",
+      "Bash(taskkill:*)",
+      "Bash(taskkill /F /PID 153008)",
+      "Bash(start /B venvScriptspython.exe:*)",
+      "Bash(timeout /t 10 /nobreak)",
+      "Bash(nul)",
+      "Bash(powershell -Command \"Get-Process -Id 153008,162924,52728 -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "Bash(powershell -Command:*)",
+      "Bash(wmic process where \"ProcessId=162924\" delete)",
+      "Bash(timeout /t 3 /nobreak)",
+      "Bash(venvScriptspython.exe -m uvicorn app.main:app --host 0.0.0.0 --port 9000)",
+      "Bash(venv/Scripts/python.exe -m uvicorn:*)",
+      "Bash(timeout:*)",
+      "Bash(wmic process where \"ProcessId=45160\" delete)",
+      "Bash(docker exec:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker run:*)",
+      "SlashCommand(/obsidian create)",
+      "SlashCommand(/obsidian:*)",
+      "Bash(semgrep:*)",
+      "Bash(pip show:*)",
+      "Bash(where:*)",
+      "Bash(\"C:\\Users\\Lenovo\\AppData\\Roaming\\Python\\Python312\\Scripts\\semgrep.exe\" --version)",
+      "Bash(docker stop:*)",
+      "Bash(pip install:*)",
+      "Bash(\"C:\\Users\\Lenovo\\AppData\\Roaming\\Python\\Python312\\Scripts\\semgrep.exe\" scan --config=auto --json --output=semgrep-results.json .)",
+      "Bash(\"C:\\Users\\Lenovo\\AppData\\Roaming\\Python\\Python312\\Scripts\\bandit.exe\" -r . -f json -o bandit-report.json)",
+      "mcp__sequential-thinking__sequentialthinking"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

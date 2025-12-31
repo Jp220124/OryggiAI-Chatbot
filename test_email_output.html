@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        /* Reset styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f4f4f4;
+        }
+
+        /* Container */
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header */
+        .email-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .email-header p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Body */
+        .email-body {
+            padding: 30px 20px;
+        }
+
+        .email-body h2 {
+            color: #667eea;
+            font-size: 20px;
+            margin: 0 0 15px 0;
+        }
+
+        .email-body p {
+            margin: 0 0 15px 0;
+            color: #666666;
+        }
+
+        /* Info box */
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            font-size: 13px;
+        }
+
+        .info-box strong {
+            color: #333333;
+        }
+
+        /* Button */
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Attachment info */
+        .attachment-info {
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .attachment-icon {
+            font-size: 32px;
+            margin-right: 15px;
+        }
+
+        .attachment-details {
+            flex: 1;
+        }
+
+        .attachment-details h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: #1976d2;
+        }
+
+        .attachment-details p {
+            margin: 0;
+            font-size: 13px;
+            color: #666666;
+        }
+
+        /* Footer */
+        .email-footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999999;
+        }
+
+        .email-footer p {
+            margin: 5px 0;
+        }
+
+        .email-footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 20px 0;
+        }
+
+        /* Responsive */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .email-header {
+                padding: 20px 15px;
+            }
+
+            .email-body {
+                padding: 20px 15px;
+            }
+
+            .button {
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <h1>Advance Chatbot</h1>
+            <p>AI-Powered Business Intelligence</p>
+        </div>
+
+        <!-- Body -->
+        <div class="email-body">
+            
+<h2>📊 Your Report is Ready!</h2>
+
+<p>Hello,</p>
+
+<p>
+    Your requested report has been successfully generated and is attached to this email.
+</p>
+
+<!-- Report Details -->
+<div class="info-box">
+    <p><strong>📋 Report Query:</strong> Show me all employees in Engineering</p>
+    <p><strong>🔢 Records Found:</strong> 42</p>
+    <p><strong>📅 Generated On:</strong> 2025-11-17 12:52:29</p>
+    <p><strong>👤 Requested By:</strong> test_user</p>
+    
+</div>
+
+<!-- Attachment Info -->
+
+<div class="attachment-info">
+    <div class="attachment-icon">
+        
+        📄
+        
+    </div>
+    <div class="attachment-details">
+        <h3>report_test.pdf</h3>
+        <p>
+            Format: PDF
+            
+            | Size: 1.2 MB
+            
+        </p>
+    </div>
+</div>
+
+
+<!-- SQL Query (optional, for transparency) -->
+
+<div class="divider"></div>
+
+<h3 style="color: #666; font-size: 14px; margin: 15px 0 10px 0;">📝 SQL Query Executed:</h3>
+<div style="background-color: #f5f5f5; padding: 15px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 12px; overflow-x: auto; color: #333;">
+    <code>SELECT * FROM Employees WHERE Department = &#39;Engineering&#39;</code>
+</div>
+
+
+<div class="divider"></div>
+
+<!-- Call to Action -->
+<p style="margin-top: 20px;">
+    <strong>What's Next?</strong>
+</p>
+
+<ul style="color: #666; line-height: 1.8;">
+    <li>Download and review the attached report</li>
+    <li>Share insights with your team</li>
+    <li>Need a different format or date range? Just ask!</li>
+</ul>
+
+<!-- Action Button (optional) -->
+
+
+<!-- Additional Info -->
+<p style="font-size: 13px; color: #999; margin-top: 30px;">
+    💡 <strong>Tip:</strong> You can ask the chatbot to generate reports with natural language queries like:
+    <em>"Show me sales report for last quarter"</em> or
+    <em>"Generate attendance summary for March 2025"</em>
+</p>
+
+<p style="margin-top: 20px;">
+    Thank you for using Advance Chatbot!
+</p>
+
+<p style="font-weight: 600; color: #667eea;">
+    — Your AI Assistant 🤖
+</p>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="email-footer">
+            <p>© 2025 Advance Chatbot. All rights reserved.</p>
+            <p>
+                This is an automated message from your AI chatbot system.
+                
+                <br>
+                Questions? Contact <a href="mailto:no-reply@OryggiTech.com">no-reply@OryggiTech.com</a>
+                
+            </p>
+            <p style="font-size: 11px; margin-top: 10px;">
+                Powered by <strong>Advance Chatbot</strong> - Agentic AI with RAG
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "session_id": "debug_session",
+  "question": "Show me the top 5 departments with the most employees",
+  "sql_query": "SELECT TOP 5 D.Dname, COUNT(E.Ecode) AS NumberOfEmployees FROM dbo.EmployeeMaster E JOIN dbo.EmpDepartRole ED ON E.Ecode = ED.Ecode JOIN dbo.DeptMaster D ON ED.Dcode = D.Dcode GROUP BY D.Dname ORDER BY NumberOfEmployees DESC",
+  "answer": "No results found for your query.",
+  "result_count": 0,
+  "tables_used": [
+    "DeptCategoryRelation",
+    "DeptMaster",
+    "EmpDepartRole",
+    "EmployeeMaster",
+    "EmployeeMaster_Deleted",
+    "HolidayDepartmentRelation",
+    "EmpESIPFNo",
+    "CompanyMaster",
+    "BranchMaster",
+    "ESICChalan"
+  ],
+  "execution_time": 8.185887098312378,
+  "success": true,
+  "error": null,
+  "results": []
+}

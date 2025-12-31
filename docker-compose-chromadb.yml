@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb_server
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=False
+      - ALLOW_RESET=True
+    restart: unless-stopped
+    networks:
+      - chatbot_network
+
+volumes:
+  chromadb_data:
+    driver: local
+
+networks:
+  chatbot_network:
+    driver: bridge

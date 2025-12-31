@@ -1,0 +1,297 @@
+You are an expert SQL query generator for SQL Server databases.
+
+Given the user's question, relevant SQL query examples, and database schema information, generate a precise SQL query.
+
+DATABASE SCHEMA CONTEXT:
+
+1. TABLE: dbo.DeptCategoryRelation
+
+COLUMNS:
+  • DeptCode (int)
+  • CatCode (int)
+  • Created_Date (datetime)
+
+
+2. TABLE: dbo.DeptMaster
+
+COLUMNS:
+  • Dcode (int)
+  • Dname (varchar)
+  • BranchCode (int)
+
+
+3. TABLE: dbo.EmpDepartRole
+
+COLUMNS:
+  • Ecode (int)
+  • Dcode (int)
+
+
+4. TABLE: dbo.EmployeeMaster
+
+COLUMNS:
+  • Ecode (int)
+  • CorpEmpCode (varchar)
+  • Active (bit)
+  • Gcode (int)
+  • Catcode (int)
+  • DesCode (int)
+  • SecCode (int)
+  • EmpName (nvarchar)
+  • GuardianName (nvarchar)
+  • DateofBirth (datetime)
+  • DateofJoin (datetime)
+  • PresentCardNo (varchar)
+  • Sex (bit)
+  • IsMarried (bit)
+  • Qualification (varchar)
+  • Experience (varchar)
+  • Address1 (varchar)
+  • Telephone1 (varchar)
+  • E_mail (varchar)
+  • Address2 (nvarchar)
+  • Telephone2 (varchar)
+  • BloodGroup (varchar)
+  • LeavingDate (datetime)
+  • LeavingReason (varchar)
+  • Password (varchar)
+  • Role (varchar)
+  • DefaultPolicy (bit)
+  • PermissableLateArrival (datetime)
+  • PermissbleeEarlyDeparture (datetime)
+  • MinWorkHourForPresent (datetime)
+  • IsHalfDayAllowed (bit)
+  • MinWorkHourForHalfDay (datetime)
+  • IsShortDayAllowed (bit)
+  • MinWorkHourForShortDay (datetime)
+  • OvertimeAllowed (bit)
+  • MinDurationReqForOvertime (datetime)
+  • OnePunchPresentMarking (bit)
+  • FWOAssigned (bit)
+  • FirstWO (tinyint)
+  • SWOAssigned (bit)
+  • SWO (tinyint)
+  • SWOFirst (bit)
+  • SWOSecond (bit)
+  • SWOThird (bit)
+  • SWOFourth (bit)
+  • SWOFifth (bit)
+  • SWOType (tinyint)
+  • Image (image)
+  • WorkMinuteFomula (tinyint)
+  • ESINo (varchar)
+  • IsBlackListed (bit)
+  • ReportingHeadEcode (int)
+  • FP1_ID (int)
+  • FP2_ID (int)
+  • DFP_ID (int)
+  • FName (nvarchar)
+  • LName (nvarchar)
+  • IsEnrolled (bit)
+  • WiegandValue (varchar)
+  • LoginAuthenticationID (int)
+  • LastUpdate (datetime)
+  • UserID (varchar)
+  • Password2 (varchar)
+  • queryString (varchar)
+  • guid (varchar)
+  • userDefined1 (varchar)
+  • IN_Out_Status (varchar)
+  • ContractorID (int)
+  • Latitude (nvarchar)
+  • Longitude (nvarchar)
+  • formatID (nvarchar)
+  • facilityCode (int)
+  • ContarctManualEndDate (varchar)
+  • PO_Number (nvarchar)
+  • ServerSync (bit)
+  • emptype (varchar)
+  • Created_Date (datetime)
+  • VehicleDetail (nvarchar)
+  • 2DStatus (nvarchar)
+  • StatusID (int)
+  • Name_hindi (nvarchar)
+  • Card_Status (bit)
+  • Card_Template (nvarchar)
+  • RoleRights (nvarchar)
+  • Rights (nvarchar)
+  • RightsEnable (bit)
+
+
+5. TABLE: dbo.EmployeeMaster_Deleted
+
+COLUMNS:
+  • Ecode (int)
+  • CorpEmpCode (varchar)
+  • Active (bit)
+  • Gcode (int)
+  • Catcode (int)
+  • DesCode (int)
+  • SecCode (int)
+  • EmpName (nvarchar)
+  • GuardianName (nvarchar)
+  • DateofBirth (datetime)
+  • DateofJoin (datetime)
+  • PresentCardNo (varchar)
+  • Sex (bit)
+  • IsMarried (bit)
+  • Qualification (varchar)
+  • Experience (varchar)
+  • Address1 (varchar)
+  • Telephone1 (varchar)
+  • E_mail (varchar)
+  • Address2 (nvarchar)
+  • Telephone2 (varchar)
+  • BloodGroup (varchar)
+  • LeavingDate (datetime)
+  • LeavingReason (varchar)
+  • Password (varchar)
+  • Role (varchar)
+  • DefaultPolicy (bit)
+  • PermissableLateArrival (datetime)
+  • PermissbleeEarlyDeparture (datetime)
+  • MinWorkHourForPresent (datetime)
+  • IsHalfDayAllowed (bit)
+  • MinWorkHourForHalfDay (datetime)
+  • IsShortDayAllowed (bit)
+  • MinWorkHourForShortDay (datetime)
+  • OvertimeAllowed (bit)
+  • MinDurationReqForOvertime (datetime)
+  • OnePunchPresentMarking (bit)
+  • FWOAssigned (bit)
+  • FirstWO (tinyint)
+  • SWOAssigned (bit)
+  • SWO (tinyint)
+  • SWOFirst (bit)
+  • SWOSecond (bit)
+  • SWOThird (bit)
+  • SWOFourth (bit)
+  • SWOFifth (bit)
+  • SWOType (tinyint)
+  • Image (image)
+  • WorkMinuteFomula (tinyint)
+  • ESINo (varchar)
+  • IsBlackListed (bit)
+  • ReportingHeadEcode (int)
+  • FP1_ID (int)
+  • FP2_ID (int)
+  • DFP_ID (int)
+  • FName (nvarchar)
+  • LName (nvarchar)
+  • IsEnrolled (bit)
+  • WiegandValue (varchar)
+  • LoginAuthenticationID (int)
+  • LastUpdate (datetime)
+  • UserID (varchar)
+  • Password2 (varchar)
+  • queryString (varchar)
+  • guid (varchar)
+  • userDefined1 (varchar)
+  • IN_Out_Status (varchar)
+  • ContractorID (int)
+  • Latitude (nvarchar)
+  • Longitude (nvarchar)
+  • formatID (nvarchar)
+  • facilityCode (int)
+  • ContarctManualEndDate (varchar)
+  • PO_Number (nvarchar)
+  • ServerSync (bit)
+  • emptype (varchar)
+  • Created_Date (datetime)
+  • Deleted_Date (datetime)
+  • VehicleDetail (nvarchar)
+  • 2DStatus (nvarchar)
+  • StatusID (int)
+  • Name_hindi (nvarchar)
+  • Card_Status (bit)
+  • Card_Template (nvarchar)
+  • RoleRights (nvarchar)
+  • Rights (nvarchar)
+  • RightsEnable (bit)
+
+
+6. TABLE: dbo.HolidayDepartmentRelation
+
+COLUMNS:
+  • HDCode (bigint)
+  • HCode (int)
+  • DCode (int)
+
+
+7. TABLE: dbo.EmpESIPFNo
+
+COLUMNS:
+  • EmpESIPFNo (int)
+  • ECode (int)
+  • PFNo (varchar)
+  • ESINo (varchar)
+
+
+8. TABLE: dbo.CompanyMaster
+
+COLUMNS:
+  • Ccode (int)
+  • CName (varchar)
+  • Address (varchar)
+  • PinCode (varchar)
+  • TelephoneNo (varchar)
+  • Email (varchar)
+  • Logo (image)
+
+
+9. TABLE: dbo.BranchMaster
+
+COLUMNS:
+  • BranchCode (int)
+  • BranchName (varchar)
+  • Location (varchar)
+  • Ccode (int)
+
+
+10. TABLE: dbo.ESICChalan
+
+COLUMNS:
+  • ESICChalanId (bigint)
+  • EmployeeShare (decimal)
+  • EmployeerShare (decimal)
+  • EmpPercent (decimal)
+  • EmployeerPercent (decimal)
+  • Year (varchar)
+  • Month (varchar)
+  • TotalAmt (decimal)
+
+
+
+USER QUESTION:
+Show me the top 5 departments with the most employees
+
+INSTRUCTIONS:
+1. Study the example queries above to understand patterns and best practices
+2. Analyze the user's question carefully
+3. Use ONLY the tables and columns provided in the schema context above
+4. Generate a valid SQL Server query (T-SQL syntax) similar to the examples
+5. Use appropriate JOINs if multiple tables are needed
+6. Include TOP clause for large result sets (e.g., TOP 100)
+7. Use clear aliases for readability
+8. Format dates appropriately for SQL Server (GETDATE(), DATEADD, etc.)
+9. Ensure the query is safe and optimized
+
+CRITICAL COLUMN NAME RULES:
+⚠️ DO NOT hallucinate or invent column names that "sound right" but aren't in the schema!
+⚠️ Use EXACT column names from the schema above, even if they are abbreviated
+⚠️ Common mistakes to AVOID:
+   - DO NOT use "DeptCode" - the actual column is "SecCode" (Section/Department Code)
+   - DO NOT use "DeptName" - use the actual column names listed in the schema
+   - DO NOT use "EmployeeCode" - the actual column is "Ecode"
+   - DO NOT assume standard names - VERIFY each column exists in the schema
+⚠️ If the schema says "SecCode", use "SecCode" - do NOT rename it to "DepartmentCode"
+⚠️ Before writing SELECT/WHERE/GROUP BY, cross-check every column name against the schema
+
+IMPORTANT RULES:
+- Only return the SQL query, nothing else
+- Do NOT include markdown code blocks or explanations
+- Use SQL Server syntax (not MySQL or PostgreSQL)
+- Always validate column names against the schema provided
+- Follow the patterns shown in the examples above
+
+SQL QUERY:

@@ -1,0 +1,209 @@
+{
+  "metadata": {
+    "description": "Few-shot examples for SQL query generation",
+    "version": "1.0",
+    "created": "2025-01-14",
+    "total_examples": 25
+  },
+  "examples": [
+    {
+      "id": "ex_001",
+      "category": "simple_count",
+      "question": "How many total employees are in the database?",
+      "sql": "SELECT COUNT(*) AS TotalEmployees FROM dbo.EmployeeMaster",
+      "explanation": "Simple count query on EmployeeMaster table",
+      "tables_used": [
+        "EmployeeMaster"
+      ],
+      "concepts": [
+        "COUNT",
+        "aggregate"
+      ]
+    },
+    {
+      "id": "ex_002",
+      "category": "simple_count_with_filter",
+      "question": "How many active employees are there?",
+      "sql": "SELECT COUNT(*) AS ActiveEmployees FROM dbo.EmployeeMaster WHERE Active = 1",
+      "explanation": "Count with WHERE clause to filter active employees",
+      "tables_used": [
+        "EmployeeMaster"
+      ],
+      "concepts": [
+        "COUNT",
+        "WHERE",
+        "filter"
+      ]
+    },
+    {
+      "id": "ex_003",
+      "category": "simple_join",
+      "question": "Show me employee names with their department names",
+      "sql": "SELECT e.Ecode, e.EmpName, d.Dname AS DepartmentName FROM dbo.EmployeeMaster e JOIN dbo.SectionMaster s ON e.SecCode = s.SecCode JOIN dbo.DeptMaster d ON s.Dcode = d.Dcode",
+      "explanation": "JOIN EmployeeMaster -> SectionMaster -> DeptMaster to get department names (indirect relationship)",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "JOIN",
+        "indirect_relationship"
+      ]
+    },
+    {
+      "id": "ex_004",
+      "category": "groupby_aggregation",
+      "question": "Show me the top 5 departments with the most employees",
+      "sql": "SELECT TOP 5 d.Dname, COUNT(e.Ecode) AS NumberOfEmployees FROM dbo.EmployeeMaster e JOIN dbo.SectionMaster s ON e.SecCode = s.SecCode JOIN dbo.DeptMaster d ON s.Dcode = d.Dcode WHERE e.Active = 1 GROUP BY d.Dname ORDER BY NumberOfEmployees DESC",
+      "explanation": "GROUP BY department name with correct join path through SectionMaster",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "GROUP BY",
+        "COUNT",
+        "ORDER BY",
+        "TOP",
+        "JOIN"
+      ]
+    },
+    {
+      "id": "ex_009",
+      "category": "in_clause",
+      "question": "Show employees in IT, HR, and Finance departments",
+      "sql": "SELECT e.Ecode, e.EmpName, d.Dname FROM dbo.EmployeeMaster e JOIN dbo.SectionMaster s ON e.SecCode = s.SecCode JOIN dbo.DeptMaster d ON s.Dcode = d.Dcode WHERE d.Dname IN ('IT', 'HR', 'Finance')",
+      "explanation": "Use IN clause with correct 3-table join",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "IN",
+        "JOIN",
+        "multiple_values"
+      ]
+    },
+    {
+      "id": "ex_013",
+      "category": "sum_aggregation",
+      "question": "How many total employees are in the HR department?",
+      "sql": "SELECT COUNT(*) AS TotalHREmployees FROM dbo.EmployeeMaster e JOIN dbo.SectionMaster s ON e.SecCode = s.SecCode JOIN dbo.DeptMaster d ON s.Dcode = d.Dcode WHERE d.Dname = 'HR'",
+      "explanation": "COUNT with 3-table JOIN to filter by department name",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "COUNT",
+        "JOIN",
+        "WHERE"
+      ]
+    },
+    {
+      "id": "ex_014",
+      "category": "having_clause",
+      "question": "Which departments have more than 100 employees?",
+      "sql": "SELECT d.Dname, COUNT(e.Ecode) AS EmployeeCount FROM dbo.EmployeeMaster e JOIN dbo.SectionMaster s ON e.SecCode = s.SecCode JOIN dbo.DeptMaster d ON s.Dcode = d.Dcode GROUP BY d.Dname HAVING COUNT(e.Ecode) > 100",
+      "explanation": "GROUP BY with HAVING clause using correct join path",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "GROUP BY",
+        "HAVING",
+        "JOIN",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "ex_018",
+      "category": "left_join",
+      "question": "List all departments including those with no employees",
+      "sql": "SELECT d.Dcode, d.Dname, COUNT(e.Ecode) AS EmployeeCount FROM dbo.DeptMaster d LEFT JOIN dbo.SectionMaster s ON d.Dcode = s.Dcode LEFT JOIN dbo.EmployeeMaster e ON s.SecCode = e.SecCode GROUP BY d.Dcode, d.Dname",
+      "explanation": "LEFT JOIN chain from Dept -> Section -> Employee to include empty depts",
+      "tables_used": [
+        "DeptMaster",
+        "SectionMaster",
+        "EmployeeMaster"
+      ],
+      "concepts": [
+        "LEFT JOIN",
+        "GROUP BY",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "ex_019",
+      "category": "not_in",
+      "question": "Find employees who are not in the IT department",
+      "sql": "SELECT e.Ecode, e.EmpName FROM dbo.EmployeeMaster e JOIN dbo.SectionMaster s ON e.SecCode = s.SecCode JOIN dbo.DeptMaster d ON s.Dcode = d.Dcode WHERE d.Dname != 'IT'",
+      "explanation": "Exclude specific department using join and WHERE clause",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "NOT EQUAL",
+        "JOIN",
+        "exclusion"
+      ]
+    },
+    {
+      "id": "ex_020",
+      "category": "exists_subquery",
+      "question": "Find departments that have at least one active employee",
+      "sql": "SELECT DISTINCT d.Dcode, d.Dname FROM dbo.DeptMaster d JOIN dbo.SectionMaster s ON d.Dcode = s.Dcode JOIN dbo.EmployeeMaster e ON s.SecCode = e.SecCode WHERE e.Active = 1",
+      "explanation": "Use JOINs to find departments with active employees",
+      "tables_used": [
+        "DeptMaster",
+        "SectionMaster",
+        "EmployeeMaster"
+      ],
+      "concepts": [
+        "DISTINCT",
+        "JOIN"
+      ]
+    },
+    {
+      "id": "ex_021",
+      "category": "multiple_conditions",
+      "question": "Find active employees in IT department who joined after 2023",
+      "sql": "SELECT e.Ecode, e.EmpName, e.DateofJoin FROM dbo.EmployeeMaster e JOIN dbo.SectionMaster s ON e.SecCode = s.SecCode JOIN dbo.DeptMaster d ON s.Dcode = d.Dcode WHERE e.Active = 1 AND d.Dname = 'IT' AND e.DateofJoin > '2023-12-31'",
+      "explanation": "Multiple AND conditions with correct join path",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "JOIN",
+        "multiple_where",
+        "AND"
+      ]
+    },
+    {
+      "id": "ex_026",
+      "category": "complex_join_schema",
+      "question": "List employees and their department names",
+      "sql": "SELECT E.EmpName, D.Dname FROM EmployeeMaster E JOIN SectionMaster S ON E.SecCode = S.SecCode JOIN DeptMaster D ON S.Dcode = D.Dcode",
+      "explanation": "CRITICAL: EmployeeMaster links to DeptMaster ONLY via SectionMaster (Employee -> Section -> Dept)",
+      "tables_used": [
+        "EmployeeMaster",
+        "SectionMaster",
+        "DeptMaster"
+      ],
+      "concepts": [
+        "JOIN",
+        "schema_knowledge"
+      ]
+    }
+  ]
+}

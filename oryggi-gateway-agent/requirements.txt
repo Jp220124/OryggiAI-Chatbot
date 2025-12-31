@@ -1,0 +1,16 @@
+# OryggiAI Gateway Agent Dependencies
+
+# WebSocket client for gateway connection
+websockets>=12.0
+
+# SQL Server ODBC driver wrapper
+pyodbc>=5.0.0
+
+# Configuration file parsing
+PyYAML>=6.0
+
+# Windows Service support (required for service mode)
+pywin32>=306
+
+# Build tools (for creating standalone executable)
+pyinstaller>=6.0

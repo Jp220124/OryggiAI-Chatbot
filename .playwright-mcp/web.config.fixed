@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <webSocket enabled="true" pingInterval="00:00:30" receiveBufferLimit="4194304" />
+        <rewrite>
+            <rules>
+                <rule name="WebSocketProxy" stopProcessing="true">
+                    <match url="^api/gateway/ws$" />
+                    <conditions>
+                        <add input="{HTTP_UPGRADE}" pattern="websocket" ignoreCase="true" />
+                    </conditions>
+                    <action type="Rewrite" url="http://localhost:3000/api/gateway/ws" />
+                </rule>
+                <rule name="ReverseProxyInboundRule1" stopProcessing="true">
+                    <match url="(.*)" />
+                    <conditions>
+                        <add input="{REQUEST_URI}" pattern="^/dashboard" negate="true" />
+                    </conditions>
+                    <action type="Rewrite" url="http://localhost:3000/{R:1}" />
+                </rule>
+            </rules>
+        </rewrite>
+        <httpProtocol>
+            <customHeaders>
+                <remove name="X-Powered-By" />
+            </customHeaders>
+        </httpProtocol>
+    </system.webServer>
+</configuration>

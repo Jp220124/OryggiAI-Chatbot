@@ -1,0 +1,32 @@
+Question: Show me the top 5 departments with the most employees
+================================================================================
+
+Success: True
+Result Count: 0
+
+Tables Used:
+  - DeptCategoryRelation
+  - DeptMaster
+  - EmpDepartRole
+  - EmployeeMaster
+  - EmployeeMaster_Deleted
+  - HolidayDepartmentRelation
+  - EmpESIPFNo
+  - CompanyMaster
+  - BranchMaster
+  - ESICChalan
+
+Generated SQL:
+--------------------------------------------------------------------------------
+SELECT TOP 5 D.Dname, COUNT(E.Ecode) AS NumberOfEmployees FROM dbo.EmployeeMaster E JOIN dbo.EmpDepartRole ED ON E.Ecode = ED.Ecode JOIN dbo.DeptMaster D ON ED.Dcode = D.Dcode GROUP BY D.Dname ORDER BY NumberOfEmployees DESC
+--------------------------------------------------------------------------------
+
+
+ANALYSIS:
+================================================================================
+[ERROR] Using empty/wrong tables: DeptCategoryRelation, EmpDepartRole, HolidayDepartmentRelation
+[ERROR] Missing SectionMaster - incorrect join pattern!
+CORRECT PATTERN: EmployeeMaster -> SectionMaster -> DeptMaster
+
+[PROBLEM] Query returned 0 results!
+Likely cause: Using empty table(s): DeptCategoryRelation, EmpDepartRole, HolidayDepartmentRelation

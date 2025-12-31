@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "question": "Who was late today?",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND LateArrival > 0 ORDER BY LateArrival DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 15.921761989593506,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 2,
+    "question": "How many students are absent today?",
+    "success": true,
+    "sql_query": "SELECT COUNT(*) FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Role = 'Student' AND Status = 'Absent'",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.272765398025513,
+    "answer_preview": "The answer is: 0"
+  },
+  {
+    "id": 3,
+    "question": "Which students arrived late this week?",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, ATDate, InTime, LateArrival FROM dbo.vw_CompleteAttendanceReport WHERE ATDate >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE)) AND LateArrival > 0 ORDER BY ATDate DESC, LateArrival DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 6.121890306472778,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 4,
+    "question": "Show me the attendance of Computer Science department today",
+    "success": true,
+    "sql_query": "SELECT Dname, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent, COUNT(CASE WHEN Status LIKE '%Leave%' THEN 1 END) as OnLeave FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Dname = 'Computer Science' GROUP BY Dname",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.532919406890869,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 5,
+    "question": "Who has the most late arrivals this month?",
+    "success": true,
+    "sql_query": "SELECT TOP 10 CorpEmpCode, EmpName, Dname, COUNT(*) AS LateDays, SUM(LateArrival) AS TotalLateMins\nFROM dbo.vw_CompleteAttendanceReport\nWHERE MONTH(ATDate) = MONTH(GETDATE())\n  AND YEAR(ATDate) = YEAR(GETDATE())\n  AND LateArrival > 0\nGROUP BY CorpEmpCode, EmpName, Dname\nORDER BY LateDays DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 6.532414197921753,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 6,
+    "question": "List students who left early yesterday",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, OutTime, EarlyDeparture, Dname FROM dbo.vw_CompleteAttendanceReport WHERE ATDate = DATEADD(day, -1, CAST(GETDATE() AS DATE)) AND EarlyDeparture > 0 AND Role = 'Student'",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.641329526901245,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 7,
+    "question": "What is the attendance percentage of Engineering department?",
+    "success": true,
+    "sql_query": "SELECT\n    COUNT(CASE WHEN Status = 'Present' THEN 1 END) * 100.0 / COUNT(*) AS AttendancePercent\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)\n    AND Dname = 'Engineering'",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.60048508644104,
+    "answer_preview": "I encountered an error: (pyodbc.DataError) ('22012', '[22012] [Microsoft][ODBC Driver 17 for SQL Ser"
+  },
+  {
+    "id": 8,
+    "question": "Show absent students from MBA program today",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, DesName\nFROM dbo.vw_CompleteAttendanceReport\nWHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)\n  AND Status = 'Absent'\n  AND Dname = 'MBA'",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.415521144866943,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 9,
+    "question": "Which students have perfect attendance this semester?",
+    "success": true,
+    "sql_query": "SELECT TOP 100 CorpEmpCode, EmpName, Dname, COUNT(*) AS PresentDays\nFROM dbo.vw_CompleteAttendanceReport\nWHERE YEAR(ATDate) = YEAR(GETDATE())\n  AND MONTH(ATDate) BETWEEN 1 AND 6\n  AND Status = 'Present'\nGROUP BY CorpEmpCode, EmpName, Dname\nHAVING COUNT(*) >= (\n    SELECT COUNT(DISTINCT ATDate)\n    FROM dbo.vw_CompleteAttendanceReport\n    WHERE YEAR(ATDate) = YEAR(GETDATE())\n      AND MONTH(ATDate) BETWEEN 1 AND 6\n)\nORDER BY PresentDays DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 10.680957794189453,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 10,
+    "question": "How many students checked in before 9 AM today?",
+    "success": true,
+    "sql_query": "SELECT COUNT(DISTINCT Ecode)\nFROM dbo.AttendanceRegister\nWHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)\nAND InTime < '09:00:00'\nAND Status = 'Present'",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.166706085205078,
+    "answer_preview": "The answer is: 0"
+  },
+  {
+    "id": 11,
+    "question": "Who hasn't arrived yet today?",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND InTime IS NULL",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.523995637893677,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 12,
+    "question": "Show attendance summary for student ID 12345",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, COUNT(CASE WHEN Status = 'Present' THEN 1 END) AS PresentDays, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) AS AbsentDays, SUM(WorkDuration) / 60 AS TotalWorkHours FROM dbo.vw_CompleteAttendanceReport WHERE CorpEmpCode = '12345' GROUP BY CorpEmpCode, EmpName",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.662705421447754,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 13,
+    "question": "List all students who were late more than 3 times this week",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 3.268925428390503,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 14,
+    "question": "What time did John Smith arrive today?",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.9675328731536865,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 15,
+    "question": "Show daily attendance trend for the past 7 days",
+    "success": true,
+    "sql_query": "SELECT \n    ATDate, \n    COUNT(CASE WHEN Status = 'Present' THEN 1 END) AS Present, \n    COUNT(CASE WHEN Status = 'Absent' THEN 1 END) AS Absent \nFROM dbo.vw_CompleteAttendanceReport \nWHERE ATDate >= DATEADD(day, -7, GETDATE()) \nGROUP BY ATDate \nORDER BY ATDate",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 4.854708194732666,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 16,
+    "question": "How many staff members are present today?",
+    "success": true,
+    "sql_query": "SELECT COUNT(*) AS StaffPresentToday\nFROM dbo.vw_CompleteAttendanceReport\nWHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE)\nAND Status = 'Present'",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.268605947494507,
+    "answer_preview": "The answer is: 0"
+  },
+  {
+    "id": 17,
+    "question": "Which faculty members are absent today?",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, DesName FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Status = 'Absent' AND Role = 'Faculty'",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.47101092338562,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 18,
+    "question": "Show late arrivals for administrative staff this week",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, ATDate, InTime, LateArrival\nFROM dbo.vw_CompleteAttendanceReport\nWHERE ATDate >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))\n  AND ATDate <= CAST(GETDATE() AS DATE)\n  AND LateArrival > 0\n  AND Dname LIKE '%Administrative%'\nORDER BY ATDate DESC, LateArrival DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.7494611740112305,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 19,
+    "question": "What are the working hours of Professor Johnson today?",
+    "success": true,
+    "sql_query": "SELECT CorpEmpCode, EmpName, Dname, InTime, OutTime, WorkDuration/60 as WorkHours FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND EmpName = 'Professor Johnson' AND WorkDuration IS NOT NULL ORDER BY WorkDuration DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.25403094291687,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 20,
+    "question": "List all security staff currently on duty",
+    "success": true,
+    "sql_query": "SELECT\n    e.CorpEmpCode,\n    e.EmpName,\n    d.ATDate,\n    s.ShiftRemarks\nFROM\n    dbo.EmployeeMaster AS e\nINNER JOIN\n    dbo.DutyRoster AS d ON e.Ecode = d.ECode\nLEFT JOIN\n    dbo.DutyRoster AS s ON e.Ecode = s.ECode\nWHERE\n    e.Role = 'Security'\n    AND d.ATDate = CAST(GETDATE() AS DATE)",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 7.060029745101929,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 21,
+    "question": "How many hours did maintenance staff work this month?",
+    "success": true,
+    "sql_query": "SELECT SUM(WorkDuration)/60 AS TotalWorkHours\nFROM dbo.vw_CompleteAttendanceReport\nWHERE MONTH(ATDate) = MONTH(GETDATE())\nAND YEAR(ATDate) = YEAR(GETDATE())\nAND Dname LIKE '%Maintenance%'",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.596016883850098,
+    "answer_preview": "The answer is: None"
+  },
+  {
+    "id": 22,
+    "question": "Show attendance report for HR department",
+    "success": true,
+    "sql_query": "SELECT Dname, COUNT(CASE WHEN Status = 'Present' THEN 1 END) as Present, COUNT(CASE WHEN Status = 'Absent' THEN 1 END) as Absent, COUNT(CASE WHEN Status LIKE '%Leave%' THEN 1 END) as OnLeave FROM dbo.vw_CompleteAttendanceReport WHERE CAST(ATDate AS DATE) = CAST(GETDATE() AS DATE) AND Dname = 'HR' GROUP BY Dname",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.717892408370972,
+    "answer_preview": "No results found for your query.\n\nReport generation failed: 'NoneType' object has no attribute 'get'"
+  },
+  {
+    "id": 23,
+    "question": "Which employees have overtime this week?",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 3.90930438041687,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 24,
+    "question": "List staff who haven't punched out yesterday",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.9450833797454834,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 25,
+    "question": "Show early departures from Library staff today",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 3.0570807456970215,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 26,
+    "question": "Which department has the highest attendance rate?",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 3.1186158657073975,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 27,
+    "question": "Compare attendance between Science and Arts departments",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.997325897216797,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 28,
+    "question": "Show department-wise late arrival statistics",
+    "success": true,
+    "sql_query": "SELECT Dname, COUNT(*) as LateDays, SUM(LateArrival) as TotalLateMinutes, AVG(LateArrival) as AvgLateMinutes FROM dbo.vw_CompleteAttendanceReport WHERE MONTH(ATDate) = MONTH(GETDATE()) AND YEAR(ATDate) = YEAR(GETDATE()) AND LateArrival > 0 GROUP BY Dname ORDER BY LateDays DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 6.372793674468994,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 29,
+    "question": "List all departments with their employee count",
+    "success": true,
+    "sql_query": "SELECT Dname, COUNT(*) AS EmployeeCount FROM dbo.vw_EmployeeMaster_Vms WHERE Active = 1 GROUP BY Dname ORDER BY EmployeeCount DESC",
+    "error": null,
+    "result_count": 15,
+    "execution_time": 5.052030563354492,
+    "answer_preview": "Found 15 result(s):\n\n1. Dname: SCIT, EmployeeCount: 9626\n2. Dname: SBC, EmployeeCount: 1630\n3. Dname"
+  },
+  {
+    "id": 30,
+    "question": "Which department has the most absences this week?",
+    "success": true,
+    "sql_query": "SELECT TOP 1 Dname\nFROM dbo.vw_CompleteAttendanceReport\nWHERE ATDate >= DATEADD(day, -7, GETDATE())\n  AND ATDate <= GETDATE()\nGROUP BY Dname\nORDER BY COUNT(CASE WHEN Status = 'Absent' THEN 1 END) DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.472341299057007,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 31,
+    "question": "Show average working hours by department",
+    "success": true,
+    "sql_query": "SELECT Dname, AVG(WorkDuration)/60 as AvgWorkHours FROM dbo.vw_CompleteAttendanceReport WHERE WorkDuration IS NOT NULL GROUP BY Dname ORDER BY AvgWorkHours DESC",
+    "error": null,
+    "result_count": 14,
+    "execution_time": 9.044569253921509,
+    "answer_preview": "Found 14 result(s):\n\n1. Dname: Department Name, AvgWorkHours: 0\n2. Dname: SAD, AvgWorkHours: 0\n3. Dn"
+  },
+  {
+    "id": 32,
+    "question": "Rank departments by punctuality score",
+    "success": true,
+    "sql_query": "SELECT TOP 10 Dname,\n       AVG(CASE\n             WHEN LateArrival = 0\n                  OR LateArrival IS NULL THEN 1\n             ELSE 0\n           END) AS PunctualityScore,\n       RANK() OVER (ORDER BY AVG(CASE\n                                     WHEN LateArrival = 0\n                                          OR LateArrival IS NULL THEN 1\n                                     ELSE 0\n                                   END) DESC) AS Rank\nFROM dbo.vw_CompleteAttendanceReport\nWHERE MONTH(ATDate) = MONTH(GETDATE())\n  AND YEAR(ATDate) = YEAR(GETDATE())\nGROUP BY Dname\nORDER BY PunctualityScore DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 7.644181251525879,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 33,
+    "question": "How many visitors came today?",
+    "success": true,
+    "sql_query": "SELECT COUNT(*) as VisitorCount FROM dbo.View_Visitor_EnrollmentDetail WHERE CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE)",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.353184223175049,
+    "answer_preview": "The answer is: 0"
+  },
+  {
+    "id": 34,
+    "question": "List all visitors currently in campus",
+    "success": true,
+    "sql_query": "SELECT FName, LName, IN_Time, Whom_To_Visit, MobileNumner FROM dbo.View_Visitor_EnrollmentDetail WHERE IN_Time IS NOT NULL AND OUT_Time IS NULL AND CAST(IN_Time AS DATE) = CAST(GETDATE() AS DATE)",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.26087760925293,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 35,
+    "question": "Who visited the Dean's office this week?",
+    "success": true,
+    "sql_query": "SELECT TOP 100 *\nFROM dbo.View_Visitor_EnrollmentDetail\nWHERE Whom_To_Visit_Name LIKE '%Dean%'\n  AND EnrollmentDate >= DATEADD(day, -7, GETDATE())",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.02129602432251,
+    "answer_preview": "I encountered an error: (pyodbc.ProgrammingError) ('42S22', \"[42S22] [Microsoft][ODBC Driver 17 for "
+  },
+  {
+    "id": 36,
+    "question": "Show visitor log for yesterday",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.9457614421844482,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 37,
+    "question": "Which department receives the most visitors?",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.8923182487487793,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 38,
+    "question": "How many vendors visited this month?",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.8398804664611816,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 39,
+    "question": "List parent visits for this semester",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.893245220184326,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 40,
+    "question": "Show guest speakers who visited last month",
+    "success": true,
+    "sql_query": "SELECT TOP 100 *\nFROM dbo.View_Visitor_EnrollmentDetail\nWHERE Purpose = 10 AND IN_Time >= DATEADD(month, -1, GETDATE()) AND IN_Time < GETDATE()\nORDER BY IN_Time DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.133053779602051,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 41,
+    "question": "Which doors were accessed after 10 PM yesterday?",
+    "success": true,
+    "sql_query": "SELECT TOP 100 d.Name AS DoorName\nFROM dbo.Door AS d\nINNER JOIN dbo.GroupAccession AS ga ON d.DoorID = ga.DoorID\nWHERE CAST(GETDATE() AS DATE) = DATEADD(day, -1, CAST(GETDATE() AS DATE))\n  AND CAST(GETDATE() AS TIME) > '22:00:00'",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.547947645187378,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 42,
+    "question": "Show access log for Library building today",
+    "success": true,
+    "sql_query": "SELECT TOP 100 LogDateTime, CorpEmpCode, LogDetail, DetailType, IPAddress, Status FROM dbo.AuditLog WHERE CAST(LogDateTime AS DATE) = CAST(GETDATE() AS DATE) AND LogDetail LIKE '%Library building%' ORDER BY LogDateTime DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 6.28634786605835,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 43,
+    "question": "List restricted area access attempts this week",
+    "success": true,
+    "sql_query": "SELECT TOP 100 al.PunchTime, al.EmpName, al.CorpEmpCode, al.IPAddress, al.Remarks, al.NotificationName\nFROM dbo.View_All_Alert_Log AS al\nWHERE al.NotificationName LIKE '%Restricted Area%'\n  AND al.PunchTime >= DATEADD(day, -7, GETDATE())\nORDER BY al.PunchTime DESC",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.90572452545166,
+    "answer_preview": "No results found for your query."
+  },
+  {
+    "id": 44,
+    "question": "Which machines/devices are offline?",
+    "success": true,
+    "sql_query": "SELECT TerminalID, DomainName as DeviceName, IPAddress, Location, DeviceType, Connection_Status FROM dbo.Vw_TerminalDetail_VMS WHERE Connection_Status = 'Offline'",
+    "error": null,
+    "result_count": 1,
+    "execution_time": 5.202507257461548,
+    "answer_preview": "Found 1 result(s):\n\n1. TerminalID: 10, DeviceName: SUBWAY OUT-5, IPAddress: 172.17.135.50, Location:"
+  },
+  {
+    "id": 45,
+    "question": "Show all access points with their status",
+    "success": true,
+    "sql_query": "SELECT * FROM dbo.Vw_TerminalDetail_VMS",
+    "error": null,
+    "result_count": 60,
+    "execution_time": 5.162617921829224,
+    "answer_preview": "Found 60 result(s):\n\n1. MachineID: 5, DeviceType: Suprema, TerminalID: 1, IPAddress: 172.17.135.41, "
+  },
+  {
+    "id": 46,
+    "question": "Generate monthly attendance summary",
+    "success": true,
+    "sql_query": "SELECT\n    CorpEmpCode,\n    EmpName,\n    Dname,\n    SUM(CASE WHEN Status = 'Present' THEN 1 ELSE 0 END) AS PresentDays,\n    SUM(CASE WHEN Status = 'Absent' THEN 1 ELSE 0 END) AS AbsentDays,\n    SUM(CASE WHEN Status LIKE '%Leave%' THEN 1 ELSE 0 END) AS LeaveDays,\n    SUM(WorkDuration) / 60 AS TotalWorkHours,\n    SUM(LateArrival) AS TotalLateMins,\n    SUM(OT) AS TotalOTMins\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    MONTH(ATDate) = MONTH(GETDATE())\n    AND YEAR(ATDate) = YEAR(GETDATE())\nGROUP BY\n    CorpEmpCode,\n    EmpName,\n    Dname\nORDER BY\n    Dname,\n    EmpName",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 8.893752336502075,
+    "answer_preview": "No results found for your query.\n\nReport generation failed: 'NoneType' object has no attribute 'get'"
+  },
+  {
+    "id": 47,
+    "question": "Show weekly punctuality report",
+    "success": true,
+    "sql_query": "SELECT\n    ATDate,\n    COUNT(CASE WHEN LateArrival > 0 THEN 1 END) AS LateArrivalCount,\n    COUNT(CASE WHEN EarlyDeparture > 0 THEN 1 END) AS EarlyDepartureCount\nFROM\n    dbo.vw_CompleteAttendanceReport\nWHERE\n    ATDate >= DATEADD(day, -7, GETDATE())\nGROUP BY\n    ATDate\nORDER BY\n    ATDate",
+    "error": null,
+    "result_count": 0,
+    "execution_time": 5.602871656417847,
+    "answer_preview": "No results found for your query.\n\nReport generation failed: 'NoneType' object has no attribute 'get'"
+  },
+  {
+    "id": 48,
+    "question": "What is the overall attendance rate this semester?",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.9292209148406982,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 49,
+    "question": "Compare this month's attendance with last month",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.8618664741516113,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  },
+  {
+    "id": 50,
+    "question": "Show top 10 most punctual students this month",
+    "success": true,
+    "sql_query": null,
+    "error": null,
+    "result_count": 0,
+    "execution_time": 2.7904932498931885,
+    "answer_preview": "I encountered an error: 429 You exceeded your current quota, please check your plan and billing deta"
+  }
+]

@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OryggiAI - Gateway Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors - Gold Theme (matching dashboard.html) */
+            --primary-gradient-start: #FFD700;
+            --primary-gradient-end: #E6C200;
+            --primary-color: #FFD700;
+            --primary-hover: #E6C200;
+            --primary-dark: #CCAD00;
+            --primary: #FFD700;
+            --secondary: #E6C200;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #FFD700;
+            --info: #3b82f6;
+            --gradient: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+
+            /* Backgrounds - Light Theme */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafc;
+            --bg-dark: #f8fafc;
+            --bg-sidebar: #ffffff;
+
+            /* Text Colors */
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+
+            /* Borders */
+            --border-color: #e2e8f0;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text h1 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .logo-text span {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .nav-link.active {
+            background: var(--gradient);
+            color: #000;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(252, 129, 129, 0.1);
+            color: var(--error);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        /* Step Cards */
+        .step-card {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Download Box */
+        .download-box {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px dashed var(--primary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .download-box-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .download-box-icon svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        .download-box h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .download-box p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Token Section */
+        .token-section {
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .token-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .token-display code {
+            flex: 1;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            color: var(--success);
+        }
+
+        .token-warning {
+            background: rgba(236, 201, 75, 0.1);
+            border: 1px solid rgba(236, 201, 75, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--warning);
+        }
+
+        .token-warning svg {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+        }
+
+        /* Instructions */
+        .instructions-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .instructions-list li {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .instructions-list li:last-child {
+            border-bottom: none;
+        }
+
+        .instruction-number {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .code-inline {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--info);
+        }
+
+        /* Agents Table */
+        .agents-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .agents-table th,
+        .agents-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .agents-table th {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .agents-table td {
+            font-size: 0.875rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.online {
+            background: rgba(72, 187, 120, 0.15);
+            color: var(--success);
+        }
+
+        .status-badge.offline {
+            background: rgba(252, 129, 129, 0.15);
+            color: var(--error);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .empty-state-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state-icon svg {
+            width: 30px;
+            height: 30px;
+            color: var(--primary);
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Loading */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 3px solid var(--error);
+        }
+
+        .toast.info {
+            border-left: 3px solid var(--info);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Method Toggle */
+        .method-toggle {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .method-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: var(--primary);
+        }
+
+        .method-btn.active {
+            background: rgba(102, 126, 234, 0.15);
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+
+        .method-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--success);
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .method-content {
+            display: none;
+        }
+
+        .method-content.active {
+            display: block;
+        }
+
+        .method-instructions {
+            display: none;
+        }
+
+        .method-instructions.active {
+            display: block;
+        }
+
+        /* Docker Info Box */
+        .docker-info-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(35, 150, 237, 0.1);
+            border: 1px solid rgba(35, 150, 237, 0.3);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .docker-icon {
+            flex-shrink: 0;
+        }
+
+        .docker-info-text h4 {
+            margin-bottom: 0.5rem;
+            color: #2396ED;
+        }
+
+        .docker-info-text p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .docker-benefits {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .docker-benefits li {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding: 0.25rem 0;
+        }
+
+        .prereq-check {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .prereq-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .prereq-link {
+            color: var(--info);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .prereq-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Docker Command Section */
+        .docker-command-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .docker-command-section h4 {
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .docker-command-box {
+            position: relative;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .docker-command-box pre {
+            padding: 1.25rem;
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: var(--info);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .docker-command-box .token-placeholder,
+        .docker-command-box .db-placeholder {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .copy-cmd-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+        }
+
+        /* Docker Config Form */
+        .docker-config-form {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .docker-config-form h4 {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .config-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .config-field label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .config-field input {
+            padding: 0.65rem 0.85rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .config-field input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .config-field input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .config-field small {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        /* Docker Helpful Commands */
+        .docker-helpful-commands {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+        }
+
+        .docker-helpful-commands h5 {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .command-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .cmd-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+        }
+
+        .cmd-item code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.7rem;
+            color: var(--info);
+        }
+
+        .cmd-item span {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        /* Alt Method Note */
+        .alt-method-note {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .alt-method-note code {
+            display: block;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.75rem;
+            color: var(--info);
+        }
+
+        /* One-Click Download Section */
+        .one-click-download {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            border-radius: 12px;
+        }
+
+        .download-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-section-header svg {
+            width: 24px;
+            height: 24px;
+            color: var(--success);
+        }
+
+        .download-section-header h4 {
+            color: var(--success);
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .download-section-desc {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .download-btn {
+            flex: 1;
+            min-width: 150px;
+            position: relative;
+            padding: 0.875rem 1rem;
+        }
+
+        .download-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--warning);
+            color: #1a1a2e;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .download-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .download-info svg {
+            width: 16px;
+            height: 16px;
+            color: var(--info);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .method-toggle {
+                flex-direction: column;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .command-list {
+                grid-template-columns: 1fr;
+            }
+
+            .docker-info-box {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .download-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
+                    <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
+                    <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
+                </svg>
+                <div class="logo-text">
+                    <h1>OryggiAI</h1>
+                    <span>Tenant Portal</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <a href="dashboard.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="chat.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    Chat Assistant
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Management</div>
+                <a href="databases.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                    </svg>
+                    Databases
+                </a>
+                <a href="gateway.html" class="nav-link active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                    Gateway Agent
+                </a>
+                <a href="users.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Users
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Analytics</div>
+                <a href="usage.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Usage Stats
+                </a>
+                <a href="audit.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Audit Logs
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Settings</div>
+                <a href="settings.html" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Settings
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Loading...</div>
+                    <div class="user-role" id="userRole">User</div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Sign out">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Gateway Agent</h1>
+                <p class="page-subtitle">Connect databases behind firewalls or NAT</p>
+            </div>
+        </div>
+
+        <!-- Step 1: Choose Method -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">Step 1: Choose Installation Method</h3>
+                    <p class="card-subtitle">Select how you want to run the Gateway Agent</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Method Toggle -->
+                <div class="method-toggle">
+                    <button class="method-btn active" onclick="selectMethod('native')" id="nativeMethodBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        Native Windows
+                        <span class="recommended-badge" style="background: var(--success);">Zero Config</span>
+                    </button>
+                    <button class="method-btn" onclick="selectMethod('docker')" id="dockerMethodBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12s-3-3-10-3-10 3-10 3 3 3 10 3 10-3 10-3z"/>
+                            <path d="M12 9v6"/>
+                            <path d="M9 12h6"/>
+                        </svg>
+                        Docker
+                    </button>
+                    <button class="method-btn" onclick="selectMethod('download')" id="downloadMethodBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download ZIP
+                    </button>
+                </div>
+
+                <!-- Native Windows Method Content (NEW - Zero Config!) -->
+                <div id="nativeMethod" class="method-content active">
+                    <div class="docker-info-box" style="background: rgba(72, 187, 120, 0.1); border-color: rgba(72, 187, 120, 0.3);">
+                        <div class="docker-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                        </div>
+                        <div class="docker-info-text">
+                            <h4 style="color: var(--success);">Native Windows - Zero Configuration!</h4>
+                            <p>The easiest way to connect. No Docker, no SQL configuration needed!</p>
+                            <ul class="docker-benefits">
+                                <li style="color: var(--success);">&#10003; No Docker required</li>
+                                <li style="color: var(--success);">&#10003; Uses Windows Authentication (no SQL password!)</li>
+                                <li style="color: var(--success);">&#10003; Works with default SQL Server settings</li>
+                                <li style="color: var(--success);">&#10003; Auto-discovers your databases</li>
+                                <li style="color: var(--success);">&#10003; Runs as Windows Service (auto-start)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="prereq-check" style="background: rgba(72, 187, 120, 0.1); border: 1px solid rgba(72, 187, 120, 0.3);">
+                        <span class="prereq-label" style="color: var(--success);">Requirements:</span>
+                        <span style="color: var(--text-secondary);">Windows 10/11 + SQL Server (any edition)</span>
+                    </div>
+                </div>
+
+                <!-- Docker Method Content -->
+                <div id="dockerMethod" class="method-content">
+                    <div class="docker-info-box">
+                        <div class="docker-icon">
+                            <svg width="48" height="48" viewBox="0 0 256 256" fill="none">
+                                <path d="M144 96h32v32h-32V96zm-48 0h32v32H96V96zm-48 0h32v32H48V96zm96-48h32v32h-32V48zm-48 0h32v32H96V48zm-48 48h32v32H48V96zm96 48h32v32h-32v-32zm112-16c-5.3-3.1-11.4-3.8-17-2.1-2.4-16.5-13.1-24-24.5-28.4 0 0-48.1-3-48.1-3V48c0 0 16 0 16 0v32h16V48h16v32h16V48h16v48h-16v-16h-16v16H176c0 0 0 32 0 32s48 0 48 0c25.6 0 32 24 32 24s24-16.9-8-40z" fill="#2396ED"/>
+                            </svg>
+                        </div>
+                        <div class="docker-info-text">
+                            <h4>Docker - One Command Setup</h4>
+                            <p>No software installation required. Just Docker and one command.</p>
+                            <ul class="docker-benefits">
+                                <li>✓ Works on any OS (Windows, Mac, Linux)</li>
+                                <li>✓ No Python or dependencies needed</li>
+                                <li>✓ Auto-restarts on failures</li>
+                                <li>✓ Easy configuration via environment variables</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="prereq-check">
+                        <span class="prereq-label">Prerequisite:</span>
+                        <a href="https://www.docker.com/products/docker-desktop/" target="_blank" class="prereq-link">
+                            Download Docker Desktop (free)
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Download Method Content -->
+                <div id="downloadMethod" class="method-content">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="download-box">
+                                <div class="download-box-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="7 10 12 15 17 10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                </div>
+                                <h4>OryggiAI Gateway Agent</h4>
+                                <p>Download and run with Python or Docker</p>
+                                <button class="btn btn-primary" onclick="downloadAgent()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="7 10 12 15 17 10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                    Download Agent
+                                </button>
+                                <div class="version-badge">Version 1.0.0 | All Platforms</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Generate Token -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">Step 2: Generate Gateway Token</h3>
+                    <p class="card-subtitle">Create a secure token for your database</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="token-section">
+                            <div class="form-group">
+                                <label class="form-label" for="databaseSelect">Select Database</label>
+                                <select id="databaseSelect" class="form-select" onchange="onDatabaseSelect()">
+                                    <option value="">Choose a database...</option>
+                                </select>
+                            </div>
+
+                            <button class="btn btn-primary" id="generateTokenBtn" onclick="generateToken()" disabled>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                                Generate Token
+                            </button>
+
+                            <div class="token-display" id="tokenDisplay" style="display: none;">
+                                <code id="tokenValue">gw_xxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>
+                                <button class="btn btn-sm btn-secondary" onclick="copyToken()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                    </svg>
+                                    Copy
+                                </button>
+                            </div>
+
+                            <div class="token-warning" id="tokenWarning" style="display: none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                    <line x1="12" y1="9" x2="12" y2="13" />
+                                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                                </svg>
+                                <span>Save this token! It will only be shown once. You'll need it when setting up the Gateway Agent.</span>
+                            </div>
+
+                            <!-- One-Click Download Section - Shows after token is generated -->
+                            <div class="one-click-download" id="oneClickDownload" style="display: none;">
+                                <div class="download-section-header">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="7 10 12 15 17 10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                    <h4>One-Click Setup (Recommended)</h4>
+                                </div>
+                                <p class="download-section-desc">Download a pre-configured installer script. Just run it and enter your SQL Server password!</p>
+
+                                <div class="download-buttons">
+                                    <button class="btn btn-success download-btn" onclick="downloadNativeInstaller()" style="background: linear-gradient(135deg, #48bb78, #38a169);">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                            <line x1="8" y1="21" x2="16" y2="21"/>
+                                            <line x1="12" y1="17" x2="12" y2="21"/>
+                                        </svg>
+                                        Native Windows (Zero Config!)
+                                        <span class="btn-badge" style="background: #ffd700; color: #1a1a2e;">NEW</span>
+                                    </button>
+                                    <button class="btn btn-secondary download-btn" onclick="downloadInstaller('powershell')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="4 17 10 11 4 5"/>
+                                            <line x1="12" y1="19" x2="20" y2="19"/>
+                                        </svg>
+                                        Docker PowerShell
+                                    </button>
+                                    <button class="btn btn-secondary download-btn" onclick="downloadInstaller('compose')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14 2 14 8 20 8"/>
+                                            <line x1="16" y1="13" x2="8" y2="13"/>
+                                            <line x1="16" y1="17" x2="8" y2="17"/>
+                                            <polyline points="10 9 9 9 8 9"/>
+                                        </svg>
+                                        Docker Compose
+                                    </button>
+                                </div>
+
+                                <div class="download-info">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="16" x2="12" y2="12"/>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                    </svg>
+                                    <span>Your gateway token is pre-filled in the script. Just run it!</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Instructions -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">Step 3: Setup & Run</h3>
+                    <p class="card-subtitle">Follow these simple steps to connect</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Native Windows Instructions (NEW - Zero Config!) -->
+                <div id="nativeInstructions" class="method-instructions active">
+                    <div class="native-setup-section" style="text-align: center; padding: 2rem;">
+                        <div style="margin-bottom: 1.5rem;">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="1.5" style="margin-bottom: 1rem;">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                                <polyline points="7 10 10 13 17 6" stroke="var(--success)" stroke-width="2"/>
+                            </svg>
+                            <h4 style="color: var(--success); margin-bottom: 0.5rem;">Zero Configuration Setup!</h4>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                                Just click the download button above in Step 2 after generating your token.<br>
+                                The installer handles everything automatically!
+                            </p>
+                        </div>
+
+                        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); border-radius: 12px; padding: 1.5rem; text-align: left; max-width: 500px; margin: 0 auto;">
+                            <h5 style="color: var(--success); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                </svg>
+                                What happens when you run the installer:
+                            </h5>
+                            <ol style="margin: 0; padding-left: 1.25rem; color: var(--text-secondary);">
+                                <li style="margin-bottom: 0.5rem;">Downloads and extracts the gateway agent</li>
+                                <li style="margin-bottom: 0.5rem;">Auto-detects your SQL Server using Windows Auth</li>
+                                <li style="margin-bottom: 0.5rem;">Discovers all available databases</li>
+                                <li style="margin-bottom: 0.5rem;">Connects securely to OryggiAI cloud</li>
+                                <li style="margin-bottom: 0;">Your databases appear online below!</li>
+                            </ol>
+                        </div>
+
+                        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                            <p style="margin: 0; color: var(--text-secondary); font-size: 0.875rem;">
+                                <strong style="color: var(--primary);">No SQL password needed!</strong><br>
+                                Uses Windows Authentication (Trusted Connection) - the same way SQL Server Management Studio connects.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Docker Instructions -->
+                <div id="dockerInstructions" class="method-instructions">
+                    <div class="docker-command-section">
+                        <h4>Run this single command:</h4>
+                        <div class="docker-command-box">
+                            <pre id="dockerCommand">docker run -d --name oryggi-gateway \
+  --restart unless-stopped \
+  -e GATEWAY_TOKEN=<span class="token-placeholder">YOUR_TOKEN_HERE</span> \
+  -e DB_HOST=host.docker.internal \
+  -e DB_PORT=1433 \
+  -e DB_DATABASE=<span class="db-placeholder">YourDatabaseName</span> \
+  -e DB_USERNAME=<span class="db-placeholder">sa</span> \
+  -e DB_PASSWORD=<span class="db-placeholder">YourPassword</span> \
+  oryggiai/gateway-agent:latest</pre>
+                            <button class="btn btn-sm btn-secondary copy-cmd-btn" onclick="copyDockerCommand()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="docker-config-form">
+                        <h4>Configure your connection:</h4>
+                        <div class="config-grid">
+                            <div class="config-field">
+                                <label>Gateway Token</label>
+                                <input type="text" id="configToken" placeholder="Paste from Step 2" readonly onclick="this.select()">
+                            </div>
+                            <div class="config-field">
+                                <label>SQL Server Host</label>
+                                <input type="text" id="configHost" placeholder="localhost or host.docker.internal" value="host.docker.internal">
+                                <small>Use host.docker.internal for localhost SQL Server</small>
+                            </div>
+                            <div class="config-field">
+                                <label>Database Name</label>
+                                <input type="text" id="configDatabase" placeholder="e.g., MyDatabase">
+                            </div>
+                            <div class="config-field">
+                                <label>Username</label>
+                                <input type="text" id="configUsername" placeholder="e.g., sa">
+                            </div>
+                            <div class="config-field">
+                                <label>Password</label>
+                                <input type="password" id="configPassword" placeholder="Your SQL password">
+                            </div>
+                            <div class="config-field">
+                                <label>Port</label>
+                                <input type="text" id="configPort" placeholder="1433" value="1433">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateDockerCommand()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                            Generate Command
+                        </button>
+                    </div>
+
+                    <div class="docker-helpful-commands">
+                        <h5>Helpful Docker Commands:</h5>
+                        <div class="command-list">
+                            <div class="cmd-item">
+                                <code>docker logs oryggi-gateway -f</code>
+                                <span>View logs</span>
+                            </div>
+                            <div class="cmd-item">
+                                <code>docker stop oryggi-gateway</code>
+                                <span>Stop agent</span>
+                            </div>
+                            <div class="cmd-item">
+                                <code>docker start oryggi-gateway</code>
+                                <span>Start agent</span>
+                            </div>
+                            <div class="cmd-item">
+                                <code>docker rm oryggi-gateway</code>
+                                <span>Remove container</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download/Manual Instructions -->
+                <div id="downloadInstructions" class="method-instructions">
+                    <div class="step-card">
+                        <div class="step-content">
+                            <ol class="instructions-list">
+                                <li>
+                                    <span class="instruction-number">1</span>
+                                    <span>Extract the downloaded ZIP to a folder</span>
+                                </li>
+                                <li>
+                                    <span class="instruction-number">2</span>
+                                    <span>Open <span class="code-inline">docker-compose.yml</span> in a text editor</span>
+                                </li>
+                                <li>
+                                    <span class="instruction-number">3</span>
+                                    <span>Replace <span class="code-inline">gw_YOUR_TOKEN_HERE</span> with your token from Step 2</span>
+                                </li>
+                                <li>
+                                    <span class="instruction-number">4</span>
+                                    <span>Update <span class="code-inline">DB_DATABASE</span>, <span class="code-inline">DB_USERNAME</span>, <span class="code-inline">DB_PASSWORD</span> with your SQL Server details</span>
+                                </li>
+                                <li>
+                                    <span class="instruction-number">5</span>
+                                    <span>Open terminal in the folder and run: <span class="code-inline">docker-compose up -d</span></span>
+                                </li>
+                                <li>
+                                    <span class="instruction-number">6</span>
+                                    <span>Your database will appear as "Online" below!</span>
+                                </li>
+                            </ol>
+                            <div class="alt-method-note">
+                                <strong>Alternative (without Docker):</strong> If you have Python 3.9+ installed, you can run:<br>
+                                <code>pip install -r requirements.txt && python -m gateway_agent</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connected Agents -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">Connected Agents</h3>
+                    <p class="card-subtitle">Active gateway connections</p>
+                </div>
+                <button class="btn btn-sm btn-secondary" onclick="refreshAgents()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10" />
+                        <polyline points="1 20 1 14 7 14" />
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="agentsTable">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
+                        </div>
+                        <p>No gateway agents connected yet.<br>Follow the steps above to connect your first database!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let databases = [];
+        let currentToken = null;
+
+        // Check authentication
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Load user info
+        document.getElementById('userName').textContent = localStorage.getItem('full_name') || 'User';
+        document.getElementById('userRole').textContent = localStorage.getItem('role') || 'User';
+        const initials = (localStorage.getItem('full_name') || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById('userAvatar').textContent = initials.substring(0, 2);
+
+        // Download agent
+        function downloadAgent() {
+            // For now, show a message - the actual ZIP will be served from the server
+            showToast('Downloading Gateway Agent...', 'info');
+            window.location.href = `${API_BASE}/api/gateway/download-agent`;
+        }
+
+        // Load databases for dropdown
+        async function loadDatabases() {
+            try {
+                const response = await fetch(`${API_BASE}/api/tenant/databases`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const data = await response.json();
+                databases = Array.isArray(data) ? data : [];
+
+                const select = document.getElementById('databaseSelect');
+                select.innerHTML = '<option value="">Choose a database...</option>';
+
+                databases.forEach(db => {
+                    const option = document.createElement('option');
+                    option.value = db.id;
+                    option.textContent = `${db.name} (${db.host}:${db.port})`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load databases:', error);
+                showToast('Failed to load databases', 'error');
+            }
+        }
+
+        // Handle database selection
+        function onDatabaseSelect() {
+            const select = document.getElementById('databaseSelect');
+            const btn = document.getElementById('generateTokenBtn');
+            btn.disabled = !select.value;
+
+            // Hide previous token
+            document.getElementById('tokenDisplay').style.display = 'none';
+            document.getElementById('tokenWarning').style.display = 'none';
+            currentToken = null;
+
+            // Auto-populate database configuration fields
+            if (select.value) {
+                const selectedDb = databases.find(db => db.id == select.value);
+                if (selectedDb) {
+                    // Pre-fill the configuration fields with actual database info
+                    document.getElementById('configHost').value = 'host.docker.internal';  // Docker default
+                    document.getElementById('configPort').value = selectedDb.port || '1433';
+                    document.getElementById('configDatabase').value = selectedDb.database_name || selectedDb.name || '';
+                    document.getElementById('configUsername').value = 'sa';  // Common default, user can change
+
+                    // Show a helpful message
+                    console.log('Auto-populated config for:', selectedDb.name, selectedDb.database_name);
+                }
+            }
+        }
+
+        // Generate token
+        async function generateToken(forceRegenerate = false) {
+            const dbId = document.getElementById('databaseSelect').value;
+            if (!dbId) {
+                showToast('Please select a database first', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('generateTokenBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+
+            try {
+                // Add force parameter if user confirmed regeneration
+                const url = forceRegenerate
+                    ? `${API_BASE}/api/gateway/databases/${dbId}/generate-token?force=true`
+                    : `${API_BASE}/api/gateway/databases/${dbId}/generate-token`;
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    currentToken = data.token;
+                    document.getElementById('tokenValue').textContent = data.token;
+                    document.getElementById('tokenDisplay').style.display = 'flex';
+                    document.getElementById('tokenWarning').style.display = 'flex';
+
+                    if (data.was_replaced) {
+                        showToast('New token generated! Old token has been revoked.', 'success');
+                    } else {
+                        showToast('Token generated successfully!', 'success');
+                    }
+                } else if (data.warning) {
+                    // Active token exists - show confirmation dialog
+                    btn.disabled = false;
+                    btn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        Generate Token
+                    `;
+
+                    // Show warning modal
+                    const confirmMessage = `
+WARNING: An active gateway token already exists!
+
+Token: ${data.details.token_prefix}...
+Created: ${data.details.created_at ? new Date(data.details.created_at).toLocaleString() : 'Unknown'}
+Last Used: ${data.details.last_used_at ? new Date(data.details.last_used_at).toLocaleString() : 'Never'}
+Gateway Status: ${data.details.gateway_connected ? 'CONNECTED' : 'Disconnected'}
+
+If you generate a new token:
+- The existing token will be REVOKED immediately
+- Any Gateway Agent using the old token will be DISCONNECTED
+- You will need to update the token in your Gateway Agent
+
+Are you sure you want to generate a new token?`;
+
+                    if (confirm(confirmMessage)) {
+                        // User confirmed - regenerate with force=true
+                        generateToken(true);
+                    } else {
+                        showToast('Token generation cancelled', 'info');
+                    }
+                    return;
+                } else {
+                    throw new Error(data.detail || data.message || 'Failed to generate token');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                    Generate Token
+                `;
+            }
+        }
+
+        // Copy token to clipboard
+        async function copyToken() {
+            if (!currentToken) return;
+
+            try {
+                await navigator.clipboard.writeText(currentToken);
+                showToast('Token copied to clipboard!', 'success');
+            } catch (err) {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = currentToken;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('Token copied to clipboard!', 'success');
+            }
+        }
+
+        // Load connected agents
+        async function loadAgents() {
+            try {
+                const response = await fetch(`${API_BASE}/api/gateway/status`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const data = await response.json();
+                renderAgents(data.sessions || []);
+            } catch (error) {
+                console.error('Failed to load agents:', error);
+            }
+        }
+
+        // Render agents table
+        function renderAgents(sessions) {
+            const container = document.getElementById('agentsTable');
+
+            if (!sessions || sessions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
+                        </div>
+                        <p>No gateway agents connected yet.<br>Follow the steps above to connect your first database!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="agents-table">
+                    <thead>
+                        <tr>
+                            <th>Database</th>
+                            <th>Status</th>
+                            <th>Agent Info</th>
+                            <th>Last Heartbeat</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sessions.map(session => `
+                            <tr>
+                                <td>${session.database_name || session.database_id}</td>
+                                <td>
+                                    <span class="status-badge online">
+                                        <span class="status-dot"></span>
+                                        Online
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                                        ${session.agent_hostname || 'Unknown'}<br>
+                                        <small>${session.agent_os || ''} - v${session.agent_version || '?'}</small>
+                                    </div>
+                                </td>
+                                <td>${formatTimeAgo(session.last_heartbeat)}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" onclick="revokeToken('${session.database_id}')">
+                                        Revoke Token
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Format time ago
+        function formatTimeAgo(timestamp) {
+            if (!timestamp) return '--';
+            const date = new Date(timestamp);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+            return date.toLocaleDateString();
+        }
+
+        // Refresh agents
+        function refreshAgents() {
+            showToast('Refreshing...', 'info');
+            loadAgents();
+        }
+
+        // Revoke token
+        async function revokeToken(dbId) {
+            if (!confirm('Are you sure you want to revoke this gateway token? The agent will be disconnected.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/gateway/databases/${dbId}/revoke-token`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    showToast('Token revoked successfully', 'success');
+                    loadAgents();
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.detail || 'Failed to revoke token');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${type === 'success' ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' :
+                      type === 'error' ? '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' :
+                      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>'}
+                </svg>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        // Method selection (Native vs Docker vs Download)
+        let currentMethod = 'native';
+
+        function selectMethod(method) {
+            currentMethod = method;
+
+            // Update buttons
+            document.getElementById('nativeMethodBtn').classList.toggle('active', method === 'native');
+            document.getElementById('dockerMethodBtn').classList.toggle('active', method === 'docker');
+            document.getElementById('downloadMethodBtn').classList.toggle('active', method === 'download');
+
+            // Update Step 1 content
+            document.getElementById('nativeMethod').classList.toggle('active', method === 'native');
+            document.getElementById('dockerMethod').classList.toggle('active', method === 'docker');
+            document.getElementById('downloadMethod').classList.toggle('active', method === 'download');
+
+            // Update Step 3 instructions
+            const nativeInstructions = document.getElementById('nativeInstructions');
+            if (nativeInstructions) {
+                nativeInstructions.classList.toggle('active', method === 'native');
+            }
+            document.getElementById('dockerInstructions').classList.toggle('active', method === 'docker');
+            document.getElementById('downloadInstructions').classList.toggle('active', method === 'download');
+        }
+
+        // Download Native Windows installer
+        function downloadNativeInstaller() {
+            if (!currentToken) {
+                showToast('Please generate a token first', 'error');
+                return;
+            }
+
+            const dbDatabase = document.getElementById('configDatabase').value || '';
+
+            const params = new URLSearchParams({
+                gateway_token: currentToken,
+                db_database: dbDatabase
+            });
+
+            const downloadUrl = `${API_BASE}/api/gateway/download-zero-config-installer?${params.toString()}`;
+
+            showToast('Downloading Zero-Config Installer (ZIP)...', 'info');
+            window.location.href = downloadUrl;
+        }
+
+        // Generate Docker command from form
+        function generateDockerCommand() {
+            const token = document.getElementById('configToken').value || 'YOUR_TOKEN_HERE';
+            const host = document.getElementById('configHost').value || 'host.docker.internal';
+            const database = document.getElementById('configDatabase').value || 'YourDatabaseName';
+            const username = document.getElementById('configUsername').value || 'sa';
+            const password = document.getElementById('configPassword').value || 'YourPassword';
+            const port = document.getElementById('configPort').value || '1433';
+
+            const command = `docker run -d --name oryggi-gateway \\
+  --restart unless-stopped \\
+  -e GATEWAY_TOKEN=${token} \\
+  -e DB_HOST=${host} \\
+  -e DB_PORT=${port} \\
+  -e DB_DATABASE=${database} \\
+  -e DB_USERNAME=${username} \\
+  -e DB_PASSWORD=${password} \\
+  oryggiai/gateway-agent:latest`;
+
+            // Update the command display
+            const cmdPre = document.getElementById('dockerCommand');
+            cmdPre.innerHTML = command.replace(
+                token,
+                `<span class="${token === 'YOUR_TOKEN_HERE' ? 'token-placeholder' : ''}">${token}</span>`
+            );
+
+            showToast('Command generated! Copy it and run in terminal.', 'success');
+        }
+
+        // Copy Docker command to clipboard
+        async function copyDockerCommand() {
+            const token = document.getElementById('configToken').value || 'YOUR_TOKEN_HERE';
+            const host = document.getElementById('configHost').value || 'host.docker.internal';
+            const database = document.getElementById('configDatabase').value || 'YourDatabaseName';
+            const username = document.getElementById('configUsername').value || 'sa';
+            const password = document.getElementById('configPassword').value || 'YourPassword';
+            const port = document.getElementById('configPort').value || '1433';
+
+            const command = `docker run -d --name oryggi-gateway --restart unless-stopped -e GATEWAY_TOKEN=${token} -e DB_HOST=${host} -e DB_PORT=${port} -e DB_DATABASE=${database} -e DB_USERNAME=${username} -e DB_PASSWORD=${password} oryggiai/gateway-agent:latest`;
+
+            try {
+                await navigator.clipboard.writeText(command);
+                showToast('Docker command copied!', 'success');
+            } catch (err) {
+                const textarea = document.createElement('textarea');
+                textarea.value = command;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('Docker command copied!', 'success');
+            }
+        }
+
+        // Auto-fill token when generated
+        const originalGenerateToken = generateToken;
+        generateToken = async function(forceRegenerate = false) {
+            await originalGenerateToken(forceRegenerate);
+            // Auto-fill the config token field
+            if (currentToken) {
+                document.getElementById('configToken').value = currentToken;
+                // Show the one-click download section
+                document.getElementById('oneClickDownload').style.display = 'block';
+            }
+        };
+
+        // Download installer script with pre-filled token
+        function downloadInstaller(format) {
+            if (!currentToken) {
+                showToast('Please generate a token first', 'error');
+                return;
+            }
+
+            // Get database info from config fields
+            const dbHost = document.getElementById('configHost').value || 'host.docker.internal';
+            const dbPort = document.getElementById('configPort').value || '1433';
+            const dbDatabase = document.getElementById('configDatabase').value || 'YourDatabaseName';
+            const dbUsername = document.getElementById('configUsername').value || 'sa';
+
+            // Build download URL with parameters
+            const params = new URLSearchParams({
+                gateway_token: currentToken,
+                db_host: dbHost,
+                db_port: dbPort,
+                db_database: dbDatabase,
+                db_username: dbUsername,
+                format: format
+            });
+
+            const downloadUrl = `${API_BASE}/api/gateway/download-installer?${params.toString()}`;
+
+            // Trigger download
+            showToast(`Downloading ${format === 'powershell' ? 'PowerShell' : format === 'batch' ? 'CMD' : 'Docker Compose'} installer...`, 'info');
+            window.location.href = downloadUrl;
+        }
+
+        // Initial load
+        loadDatabases();
+        loadAgents();
+
+        // Refresh agents periodically
+        setInterval(loadAgents, 30000);
+    </script>
+</body>
+
+</html>

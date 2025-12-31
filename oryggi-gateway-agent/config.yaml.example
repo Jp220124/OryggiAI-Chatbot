@@ -1,0 +1,56 @@
+# ============================================================
+# OryggiAI Gateway Agent Configuration
+# ============================================================
+# Copy this file to config.yaml and update with your settings
+# Environment variables override these settings
+# ============================================================
+
+# Local SQL Server Connection
+# ---------------------------
+# Configure your local database connection here
+database:
+  host: "localhost"                          # SQL Server hostname or IP
+  port: 1433                                  # SQL Server port (default: 1433)
+  database: "YourDatabaseName"                # Database name to connect to
+  username: "sa"                              # SQL Server username
+  password: "YourPassword"                    # SQL Server password
+  driver: "ODBC Driver 17 for SQL Server"    # ODBC driver name
+  use_windows_auth: false                     # Use Windows Authentication instead
+  connection_timeout: 30                      # Connection timeout in seconds
+  query_timeout: 60                           # Default query timeout in seconds
+
+# Gateway Connection to OryggiAI SaaS
+# ------------------------------------
+# Settings for connecting to the OryggiAI cloud platform
+gateway:
+  saas_url: "wss://api.oryggi.ai/api/gateway/ws"  # Gateway WebSocket URL
+  gateway_token: "gw_YOUR_TOKEN_HERE"              # Your gateway token (from OryggiAI dashboard)
+  heartbeat_interval: 30                           # Heartbeat interval in seconds
+  reconnect_delay: 5                               # Delay between reconnection attempts
+  max_reconnect_attempts: 0                        # 0 = infinite retries
+  ssl_verify: true                                 # Verify SSL certificates
+
+# Logging Configuration
+# ---------------------
+logging:
+  level: "INFO"                    # DEBUG, INFO, WARNING, ERROR
+  file: "gateway_agent.log"        # Log file path
+  max_size_mb: 10                  # Max log file size before rotation
+  backup_count: 5                  # Number of backup log files to keep
+
+# ============================================================
+# Environment Variable Overrides
+# ============================================================
+# You can override any setting with environment variables:
+#
+# Database:
+#   DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+#   DB_DRIVER, DB_USE_WINDOWS_AUTH, DB_CONNECTION_TIMEOUT, DB_QUERY_TIMEOUT
+#
+# Gateway:
+#   GATEWAY_SAAS_URL, GATEWAY_TOKEN, GATEWAY_HEARTBEAT_INTERVAL
+#   GATEWAY_RECONNECT_DELAY, GATEWAY_MAX_RECONNECT_ATTEMPTS, GATEWAY_SSL_VERIFY
+#
+# Logging:
+#   LOG_LEVEL, LOG_FILE
+# ============================================================

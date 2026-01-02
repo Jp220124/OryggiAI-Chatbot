@@ -30,8 +30,10 @@ venv.bak/
 
 # Environment Variables
 .env
+.env.*
 .env.local
 .env.*.local
+.env.production
 
 # IDE
 .vscode/

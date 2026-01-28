@@ -41,6 +41,14 @@ class MessageType(str, Enum):
     # Database status
     DB_STATUS_UPDATE = "DB_STATUS_UPDATE"
 
+    # REST API execution (Cloud → Agent → Local Oryggi API)
+    API_REQUEST = "API_REQUEST"
+    API_RESPONSE = "API_RESPONSE"
+
+    # Employee lookup (Cloud → Agent → Local DB)
+    EMPLOYEE_LOOKUP_REQUEST = "EMPLOYEE_LOOKUP_REQUEST"
+    EMPLOYEE_LOOKUP_RESPONSE = "EMPLOYEE_LOOKUP_RESPONSE"
+
 
 class AuthStatus(str, Enum):
     """Authentication response status"""
@@ -63,6 +71,34 @@ class DatabaseStatus(str, Enum):
     CONNECTED = "connected"
     DISCONNECTED = "disconnected"
     ERROR = "error"
+
+
+class ApiRequestMethod(str, Enum):
+    """HTTP methods for REST API requests"""
+    GET = "GET"
+    POST = "POST"
+    PUT = "PUT"
+    DELETE = "DELETE"
+    PATCH = "PATCH"
+
+
+class ApiStatus(str, Enum):
+    """REST API execution status"""
+    SUCCESS = "success"
+    ERROR = "error"
+    TIMEOUT = "timeout"
+    CONNECTION_ERROR = "connection_error"
+    NOT_CONFIGURED = "not_configured"
+
+
+class EmployeeLookupStatus(str, Enum):
+    """Employee lookup execution status"""
+    SUCCESS = "success"
+    NOT_FOUND = "not_found"
+    MULTIPLE_FOUND = "multiple_found"
+    ERROR = "error"
+    TIMEOUT = "timeout"
+    CONNECTION_ERROR = "connection_error"
 
 
 # ===================== Base Message =====================
@@ -125,6 +161,95 @@ class QueryResponse(GatewayMessage):
     error_code: Optional[str] = None
 
 
+# ===================== REST API Messages =====================
+
+class ApiRequest(GatewayMessage):
+    """
+    REST API request from server to agent.
+
+    Used to execute actions on the local Oryggi REST API through the gateway agent.
+    The agent receives this request via WebSocket, calls the local API, and returns ApiResponse.
+
+    Example:
+        POST /api/Employee/Deactivate/12345
+        → Deactivates employee with ECode 12345
+    """
+    type: MessageType = MessageType.API_REQUEST
+    request_id: str = Field(..., description="Unique request identifier for response matching")
+    method: ApiRequestMethod = Field(..., description="HTTP method (GET, POST, PUT, DELETE, PATCH)")
+    endpoint: str = Field(..., description="API endpoint path (e.g., /api/Employee/Deactivate/12345)")
+    headers: Dict[str, str] = Field(default_factory=dict, description="HTTP headers to include")
+    body: Optional[Dict[str, Any]] = Field(None, description="Request body for POST/PUT/PATCH")
+    query_params: Optional[Dict[str, str]] = Field(None, description="URL query parameters")
+    timeout: int = Field(default=30, description="Request timeout in seconds")
+    user_id: Optional[str] = Field(None, description="User who initiated the request")
+    conversation_id: Optional[str] = Field(None, description="Associated conversation")
+
+
+class ApiResponse(GatewayMessage):
+    """
+    REST API response from agent to server.
+
+    Contains the result of calling the local Oryggi REST API.
+    Sent by the agent after executing an ApiRequest.
+    """
+    type: MessageType = MessageType.API_RESPONSE
+    request_id: str = Field(..., description="Matching request ID")
+    status: ApiStatus = Field(..., description="Execution status")
+    status_code: int = Field(..., description="HTTP status code from local API")
+    headers: Dict[str, str] = Field(default_factory=dict, description="Response headers")
+    body: Optional[Union[Dict[str, Any], str]] = Field(None, description="Response body (JSON or string)")
+    execution_time_ms: int = Field(default=0, description="Request execution time in milliseconds")
+    error_message: Optional[str] = Field(None, description="Error description if failed")
+    error_code: Optional[str] = Field(None, description="Error code if failed")
+
+
+# ===================== Employee Lookup Messages =====================
+
+class EmployeeLookupRequest(GatewayMessage):
+    """
+    Employee lookup request from server to agent.
+
+    Used to look up employee details from the local Oryggi database through the gateway agent.
+    Supports lookup by CorpEmpCode, name, or card number.
+    """
+    type: MessageType = MessageType.EMPLOYEE_LOOKUP_REQUEST
+    request_id: str = Field(..., description="Unique request identifier for response matching")
+    identifier: str = Field(..., description="Employee identifier (code, name, or card number)")
+    lookup_type: str = Field(default="auto", description="Lookup type: auto, code, name, card")
+    timeout: int = Field(default=10, description="Lookup timeout in seconds")
+    user_id: Optional[str] = Field(None, description="User who initiated the request")
+    conversation_id: Optional[str] = Field(None, description="Associated conversation")
+
+
+class EmployeeData(BaseModel):
+    """Employee data returned by lookup"""
+    ecode: int = Field(..., description="Internal employee code")
+    corp_emp_code: str = Field(..., description="Corporate employee code")
+    name: str = Field(..., description="Employee name")
+    department: Optional[str] = Field(None, description="Department name")
+    designation: Optional[str] = Field(None, description="Job designation")
+    card_no: Optional[str] = Field(None, description="Access card number")
+    email: Optional[str] = Field(None, description="Email address")
+    phone: Optional[str] = Field(None, description="Phone number")
+    active: bool = Field(default=True, description="Whether employee is active")
+
+
+class EmployeeLookupResponse(GatewayMessage):
+    """
+    Employee lookup response from agent to server.
+
+    Contains the employee details found in the local database.
+    """
+    type: MessageType = MessageType.EMPLOYEE_LOOKUP_RESPONSE
+    request_id: str = Field(..., description="Matching request ID")
+    status: EmployeeLookupStatus = Field(..., description="Lookup status")
+    employee: Optional[EmployeeData] = Field(None, description="Employee data if found")
+    employees: Optional[List[EmployeeData]] = Field(None, description="Multiple employees if multiple found")
+    execution_time_ms: int = Field(default=0, description="Lookup execution time in milliseconds")
+    error_message: Optional[str] = Field(None, description="Error description if failed")
+
+
 # ===================== Heartbeat Messages =====================
 
 class Heartbeat(GatewayMessage):
@@ -132,7 +257,9 @@ class Heartbeat(GatewayMessage):
     type: MessageType = MessageType.HEARTBEAT
     session_id: str
     db_status: DatabaseStatus = DatabaseStatus.CONNECTED
+    api_status: str = Field(default="not_configured", description="REST API status: connected, error, not_configured")
     queries_executed: int = Field(default=0, description="Queries since last heartbeat")
+    api_requests_executed: int = Field(default=0, description="API requests since last heartbeat")
     uptime_seconds: int = Field(default=0, description="Agent uptime")
     memory_mb: Optional[float] = Field(None, description="Memory usage")
     cpu_percent: Optional[float] = Field(None, description="CPU usage")
@@ -196,6 +323,10 @@ def parse_gateway_message(data: dict) -> GatewayMessage:
         MessageType.AUTH_RESPONSE: AuthResponse,
         MessageType.QUERY_REQUEST: QueryRequest,
         MessageType.QUERY_RESPONSE: QueryResponse,
+        MessageType.API_REQUEST: ApiRequest,
+        MessageType.API_RESPONSE: ApiResponse,
+        MessageType.EMPLOYEE_LOOKUP_REQUEST: EmployeeLookupRequest,
+        MessageType.EMPLOYEE_LOOKUP_RESPONSE: EmployeeLookupResponse,
         MessageType.HEARTBEAT: Heartbeat,
         MessageType.HEARTBEAT_ACK: HeartbeatAck,
         MessageType.DB_STATUS_UPDATE: DatabaseStatusUpdate,
@@ -229,5 +360,7 @@ class GatewaySessionInfo(BaseModel):
     agent_version: str
     agent_hostname: Optional[str]
     db_status: DatabaseStatus = DatabaseStatus.CONNECTED
+    api_status: str = "not_configured"  # REST API status: connected, error, not_configured
     queries_executed: int = 0
+    api_requests_executed: int = 0
     is_active: bool = True

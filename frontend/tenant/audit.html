@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OryggiAI - Audit Logs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors - Gold Theme */
+            --primary-gradient-start: #FFD700;
+            --primary-gradient-end: #E6C200;
+            --primary-color: #FFD700;
+            --primary-hover: #E6C200;
+            --primary-dark: #CCAD00;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --gradient: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+
+            /* Backgrounds */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --bg-card: #ffffff;
+
+            /* Text Colors */
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+
+            /* Borders */
+            --border-color: #e2e8f0;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-text span {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            padding: 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .nav-link.active {
+            background: var(--gradient);
+            color: #000;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: #000;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .logout-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+            background: var(--bg-primary);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon.gold {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--primary-dark);
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--info);
+        }
+
+        .stat-icon.red {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+        }
+
+        .stat-icon.green {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .stat-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .filter-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-toggle {
+            color: var(--text-secondary);
+            transition: transform 0.2s;
+        }
+
+        .filter-toggle.expanded {
+            transform: rotate(180deg);
+        }
+
+        .filter-content {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .filter-content.show {
+            display: block;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: #000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gradient);
+            color: #000;
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .table-info {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-tertiary);
+        }
+
+        th {
+            padding: 0.875rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* Event Type Badges */
+        .event-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .event-badge.login {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--info);
+        }
+
+        .event-badge.query {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--primary-dark);
+        }
+
+        .event-badge.action {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .event-badge.security {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+        }
+
+        .event-badge.system {
+            background: rgba(100, 116, 139, 0.15);
+            color: var(--text-secondary);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .status-badge.failure {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+        }
+
+        .status-badge.error {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        /* Device Info */
+        .device-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .device-icon {
+            font-size: 1rem;
+        }
+
+        .device-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .device-browser {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .device-os {
+            font-size: 0.75rem;
+        }
+
+        /* IP Address */
+        .ip-address {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            color: var(--text-secondary);
+        }
+
+        /* Timestamp */
+        .timestamp {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .timestamp-date {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Description */
+        .description {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .description:hover {
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pagination-info {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn.active {
+            background: var(--gradient);
+            color: #000;
+            border-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+        }
+
+        /* Clickable rows */
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        /* Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalSlideIn 0.2s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(90vh - 140px);
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .detail-value.question {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            padding: 1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .detail-value.sql {
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.8rem;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .detail-value.error {
+            color: var(--error);
+            padding: 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--error);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+
+        .detail-item .detail-label {
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-item .detail-value {
+            font-weight: 500;
+        }
+
+        .no-data {
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-overlay {
+                padding: 1rem;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#E6C200;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
+                        <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
+                        <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
+                    </svg>
+                    <div class="logo-text">
+                        <h1>OryggiAI</h1>
+                        <span>Tenant Portal</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="dashboard.html" class="nav-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="chat.html" class="nav-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        Chat Assistant
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="databases.html" class="nav-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                        </svg>
+                        Databases
+                    </a>
+                    <a href="gateway.html" class="nav-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                        </svg>
+                        Gateway Agent
+                    </a>
+                    <a href="users.html" class="nav-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        Users
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Analytics</div>
+                    <a href="usage.html" class="nav-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Usage Stats
+                    </a>
+                    <a href="audit.html" class="nav-link active">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Audit Logs
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <a href="settings.html" class="nav-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Settings
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-role" id="userRole">User</div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn" title="Sign out">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <div>
+                    <h1 class="page-title">Audit Logs</h1>
+                    <p class="page-subtitle">Track all actions with WHO, WHEN, WHAT, and IP/Device information</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="exportCsvBtn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export CSV
+                    </button>
+                    <button class="btn btn-primary" id="exportExcelBtn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export Excel
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon gold">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statTotal">--</div>
+                    <div class="stat-label">Total Events (7 days)</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statSecurity">--</div>
+                    <div class="stat-label">Security Events</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon red">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statFailed">--</div>
+                    <div class="stat-label">Failed Events</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statIPs">--</div>
+                    <div class="stat-label">Unique IPs</div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-header" id="filterToggle">
+                    <h3>
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                        </svg>
+                        Filters
+                    </h3>
+                    <svg class="filter-toggle" id="filterArrow" width="20" height="20" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                <div class="filter-content" id="filterContent">
+                    <div class="filter-grid">
+                        <div class="filter-group">
+                            <label>Event Type</label>
+                            <select id="filterEventType">
+                                <option value="">All Types</option>
+                                <option value="login">Login</option>
+                                <option value="query">Query</option>
+                                <option value="action">Action</option>
+                                <option value="security">Security</option>
+                                <option value="system">System</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select id="filterStatus">
+                                <option value="">All Statuses</option>
+                                <option value="success">Success</option>
+                                <option value="failure">Failure</option>
+                                <option value="error">Error</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Start Date</label>
+                            <input type="date" id="filterStartDate">
+                        </div>
+                        <div class="filter-group">
+                            <label>End Date</label>
+                            <input type="date" id="filterEndDate">
+                        </div>
+                        <div class="filter-group">
+                            <label>IP Address</label>
+                            <input type="text" id="filterIP" placeholder="e.g. 192.168">
+                        </div>
+                        <div class="filter-group">
+                            <label>Search</label>
+                            <input type="text" id="filterSearch" placeholder="Search description...">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" id="applyFilters">Apply Filters</button>
+                        <button class="btn btn-outline" id="clearFilters">Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Logs Table -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h3 class="table-title">Audit Trail</h3>
+                    <span class="table-info" id="tableInfo">Loading...</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Event</th>
+                                <th>User</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>IP Address</th>
+                                <th>Device</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditTableBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="loading">
+                                        <div class="loading-spinner"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <div class="pagination-info" id="paginationInfo">Showing 0-0 of 0</div>
+                    <div class="pagination-controls" id="paginationControls">
+                        <button class="page-btn" id="prevPage" disabled>Previous</button>
+                        <button class="page-btn" id="nextPage" disabled>Next</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>
+                    <span id="modalEventBadge" class="event-badge query">QUERY</span>
+                    Event Details
+                </h2>
+                <button class="modal-close" id="closeModal">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Question/Description Section -->
+                <div class="detail-section" id="questionSection">
+                    <div class="detail-label">Question / Description</div>
+                    <div class="detail-value question" id="modalQuestion">-</div>
+                </div>
+
+                <!-- SQL Query Section -->
+                <div class="detail-section" id="sqlSection" style="display: none;">
+                    <div class="detail-label">SQL Query Executed</div>
+                    <div class="detail-value sql" id="modalSql">-</div>
+                </div>
+
+                <!-- Error Section -->
+                <div class="detail-section" id="errorSection" style="display: none;">
+                    <div class="detail-label">Error Message</div>
+                    <div class="detail-value error" id="modalError">-</div>
+                </div>
+
+                <!-- Metadata Grid -->
+                <div class="detail-section">
+                    <div class="detail-label">Event Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Event Type</div>
+                            <div class="detail-value" id="modalEventType">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Action</div>
+                            <div class="detail-value" id="modalAction">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value" id="modalStatus">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Timestamp</div>
+                            <div class="detail-value" id="modalTimestamp">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Duration</div>
+                            <div class="detail-value" id="modalDuration">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Rows Affected</div>
+                            <div class="detail-value" id="modalRows">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User & Device Info -->
+                <div class="detail-section">
+                    <div class="detail-label">User & Device</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">User ID</div>
+                            <div class="detail-value" id="modalUserId">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">IP Address</div>
+                            <div class="detail-value" id="modalIP">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Device</div>
+                            <div class="detail-value" id="modalDevice">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Browser</div>
+                            <div class="detail-value" id="modalBrowser">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request ID -->
+                <div class="detail-section" id="requestIdSection" style="display: none;">
+                    <div class="detail-label">Request ID</div>
+                    <div class="detail-value" id="modalRequestId" style="font-family: monospace; font-size: 0.8rem;">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let currentOffset = 0;
+        const limit = 50;
+        let totalRecords = 0;
+        let auditLogsData = []; // Store logs for modal access
+
+        // Check authentication
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // API helper with auth
+        async function apiCall(endpoint, options = {}) {
+            const defaultOptions = {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const response = await fetch(`${API_BASE}${endpoint}`, {
+                ...defaultOptions,
+                ...options,
+                headers: { ...defaultOptions.headers, ...options.headers }
+            });
+
+            if (response.status === 401) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return;
+            }
+
+            return response;
+        }
+
+        // Load user info
+        function loadUserInfo() {
+            const fullName = localStorage.getItem('full_name') || localStorage.getItem('email') || 'User';
+            const role = localStorage.getItem('role') || 'user';
+
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            document.getElementById('userAvatar').textContent = fullName.charAt(0).toUpperCase();
+        }
+
+        // Toggle filter section
+        document.getElementById('filterToggle').addEventListener('click', () => {
+            const content = document.getElementById('filterContent');
+            const arrow = document.getElementById('filterArrow');
+            content.classList.toggle('show');
+            arrow.classList.toggle('expanded');
+        });
+
+        // Format timestamp
+        function formatTimestamp(isoString) {
+            if (!isoString) return '-';
+            const date = new Date(isoString);
+            return `<span class="timestamp-date">${date.toLocaleDateString()}</span><br>${date.toLocaleTimeString()}`;
+        }
+
+        // Get event badge class
+        function getEventBadgeClass(eventType) {
+            if (!eventType) return 'system';
+            const type = eventType.toLowerCase();
+            if (type.includes('login') || type.includes('auth')) return 'login';
+            if (type.includes('query') || type.includes('chat')) return 'query';
+            if (type.includes('action') || type.includes('tool')) return 'action';
+            if (type.includes('security') || type.includes('permission')) return 'security';
+            return 'system';
+        }
+
+        // Get status badge class
+        function getStatusBadgeClass(status) {
+            if (!status) return 'success';
+            const s = status.toLowerCase();
+            if (s === 'success' || s === 'true') return 'success';
+            if (s === 'failure' || s === 'false') return 'failure';
+            return 'error';
+        }
+
+        // Get device icon
+        function getDeviceIcon(deviceType) {
+            switch (deviceType?.toLowerCase()) {
+                case 'mobile': return '&#128241;';
+                case 'tablet': return '&#128218;';
+                case 'bot': return '&#129302;';
+                case 'desktop':
+                default: return '&#128187;';
+            }
+        }
+
+        // Build query params for filters
+        function buildQueryParams() {
+            const params = new URLSearchParams();
+            params.append('limit', limit);
+            params.append('offset', currentOffset);
+
+            const eventType = document.getElementById('filterEventType').value;
+            const status = document.getElementById('filterStatus').value;
+            const startDate = document.getElementById('filterStartDate').value;
+            const endDate = document.getElementById('filterEndDate').value;
+            const ip = document.getElementById('filterIP').value;
+            const search = document.getElementById('filterSearch').value;
+
+            if (eventType) params.append('event_type', eventType);
+            if (status) params.append('status', status);
+            if (startDate) params.append('start_date', startDate);
+            if (endDate) params.append('end_date', endDate);
+            if (ip) params.append('ip_address', ip);
+            if (search) params.append('search', search);
+
+            return params.toString();
+        }
+
+        // Load audit stats
+        async function loadAuditStats() {
+            try {
+                const response = await apiCall('/api/usage/audit/stats?days=7');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('statTotal').textContent = data.total_events?.toLocaleString() || '0';
+                    document.getElementById('statSecurity').textContent = data.security_events?.toLocaleString() || '0';
+                    document.getElementById('statFailed').textContent = data.failed_events?.toLocaleString() || '0';
+                    document.getElementById('statIPs').textContent = data.unique_ips?.toLocaleString() || '0';
+                }
+            } catch (error) {
+                console.error('Failed to load audit stats:', error);
+            }
+        }
+
+        // Load audit logs
+        async function loadAuditLogs() {
+            const tbody = document.getElementById('auditTableBody');
+            tbody.innerHTML = `<tr><td colspan="7"><div class="loading"><div class="loading-spinner"></div></div></td></tr>`;
+
+            try {
+                const queryParams = buildQueryParams();
+                const response = await apiCall(`/api/usage/audit?${queryParams}`);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const logs = data.logs || [];
+                    totalRecords = data.total || 0;
+
+                    // Update table info
+                    const start = currentOffset + 1;
+                    const end = Math.min(currentOffset + logs.length, totalRecords);
+                    document.getElementById('tableInfo').textContent = `${totalRecords.toLocaleString()} total records`;
+                    document.getElementById('paginationInfo').textContent = `Showing ${start}-${end} of ${totalRecords.toLocaleString()}`;
+
+                    // Update pagination buttons
+                    document.getElementById('prevPage').disabled = currentOffset === 0;
+                    document.getElementById('nextPage').disabled = !data.has_more;
+
+                    if (logs.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        <h3>No audit logs found</h3>
+                                        <p>Try adjusting your filters or check back later.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    // Store logs for modal access
+                    auditLogsData = logs;
+
+                    tbody.innerHTML = logs.map((log, index) => {
+                        const device = log.device_info || log.device || {};
+                        return `
+                            <tr data-index="${index}" onclick="openDetailModal(${index})">
+                                <td>
+                                    <div class="timestamp">${formatTimestamp(log.created_at)}</div>
+                                </td>
+                                <td>
+                                    <span class="event-badge ${getEventBadgeClass(log.event_type)}">
+                                        ${log.event_type || 'System'}
+                                    </span>
+                                    ${log.event_action ? `<br><small style="color: var(--text-secondary)">${log.event_action}</small>` : ''}
+                                </td>
+                                <td>${log.user_id ? log.user_id.substring(0, 8) + '...' : '-'}</td>
+                                <td>
+                                    <div class="description" title="${(log.description || '').replace(/"/g, '&quot;')}">
+                                        ${log.description || log.resource_type || '-'}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge ${getStatusBadgeClass(log.status)}">
+                                        ${log.status || 'success'}
+                                    </span>
+                                </td>
+                                <td>
+                                    ${log.ip_address ? `<span class="ip-address">${log.ip_address}</span>` : '-'}
+                                </td>
+                                <td>
+                                    <div class="device-info">
+                                        <span class="device-icon">${getDeviceIcon(device.device_type)}</span>
+                                        <div class="device-details">
+                                            <span class="device-browser">${device.browser || 'Unknown'}</span>
+                                            <span class="device-os">${device.os || 'Unknown'}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            } catch (error) {
+                console.error('Failed to load audit logs:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <h3>Failed to load audit logs</h3>
+                                <p>Please try again or contact support.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Export to CSV
+        async function exportCSV() {
+            try {
+                const params = new URLSearchParams();
+                const eventType = document.getElementById('filterEventType').value;
+                const startDate = document.getElementById('filterStartDate').value;
+                const endDate = document.getElementById('filterEndDate').value;
+
+                if (eventType) params.append('event_type', eventType);
+                if (startDate) params.append('start_date', startDate);
+                if (endDate) params.append('end_date', endDate);
+
+                const response = await fetch(`${API_BASE}/api/usage/audit/export/csv?${params.toString()}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `audit_logs_${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                } else {
+                    alert('Failed to export CSV. Please try again.');
+                }
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('Failed to export CSV. Please try again.');
+            }
+        }
+
+        // Export to Excel
+        async function exportExcel() {
+            try {
+                const params = new URLSearchParams();
+                const eventType = document.getElementById('filterEventType').value;
+                const startDate = document.getElementById('filterStartDate').value;
+                const endDate = document.getElementById('filterEndDate').value;
+
+                if (eventType) params.append('event_type', eventType);
+                if (startDate) params.append('start_date', startDate);
+                if (endDate) params.append('end_date', endDate);
+
+                const response = await fetch(`${API_BASE}/api/usage/audit/export/excel?${params.toString()}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `audit_logs_${new Date().toISOString().split('T')[0]}.xlsx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                } else {
+                    alert('Failed to export Excel. Please try again.');
+                }
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('Failed to export Excel. Please try again.');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            currentOffset = 0;
+            loadAuditLogs();
+        });
+
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            document.getElementById('filterEventType').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterStartDate').value = '';
+            document.getElementById('filterEndDate').value = '';
+            document.getElementById('filterIP').value = '';
+            document.getElementById('filterSearch').value = '';
+            currentOffset = 0;
+            loadAuditLogs();
+        });
+
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentOffset >= limit) {
+                currentOffset -= limit;
+                loadAuditLogs();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentOffset + limit < totalRecords) {
+                currentOffset += limit;
+                loadAuditLogs();
+            }
+        });
+
+        document.getElementById('exportCsvBtn').addEventListener('click', exportCSV);
+        document.getElementById('exportExcelBtn').addEventListener('click', exportExcel);
+
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await apiCall('/api/auth/logout', { method: 'POST' });
+            } catch (e) {
+                // Ignore logout API errors
+            }
+            localStorage.clear();
+            window.location.href = 'login.html';
+        });
+
+        // ==================== Modal Functions ====================
+
+        // Open detail modal
+        function openDetailModal(index) {
+            const log = auditLogsData[index];
+            if (!log) return;
+
+            const modal = document.getElementById('detailModal');
+            const device = log.device_info || log.device || {};
+
+            // Set event badge
+            const modalBadge = document.getElementById('modalEventBadge');
+            modalBadge.className = `event-badge ${getEventBadgeClass(log.event_type)}`;
+            modalBadge.textContent = (log.event_type || 'System').toUpperCase();
+
+            // Question/Description
+            const questionSection = document.getElementById('questionSection');
+            const modalQuestion = document.getElementById('modalQuestion');
+            if (log.description) {
+                questionSection.style.display = 'block';
+                modalQuestion.textContent = log.description;
+            } else {
+                questionSection.style.display = 'none';
+            }
+
+            // SQL Query
+            const sqlSection = document.getElementById('sqlSection');
+            const modalSql = document.getElementById('modalSql');
+            if (log.sql_query) {
+                sqlSection.style.display = 'block';
+                modalSql.textContent = formatSql(log.sql_query);
+            } else {
+                sqlSection.style.display = 'none';
+            }
+
+            // Error
+            const errorSection = document.getElementById('errorSection');
+            const modalError = document.getElementById('modalError');
+            if (log.error_message) {
+                errorSection.style.display = 'block';
+                modalError.textContent = log.error_message;
+            } else {
+                errorSection.style.display = 'none';
+            }
+
+            // Event Information
+            document.getElementById('modalEventType').textContent = log.event_type || '-';
+            document.getElementById('modalAction').textContent = log.event_action || '-';
+
+            const statusEl = document.getElementById('modalStatus');
+            statusEl.innerHTML = `<span class="status-badge ${getStatusBadgeClass(log.status)}">${log.status || 'success'}</span>`;
+
+            document.getElementById('modalTimestamp').textContent = log.created_at
+                ? new Date(log.created_at).toLocaleString()
+                : '-';
+
+            document.getElementById('modalDuration').textContent = log.query_duration_ms
+                ? `${log.query_duration_ms}ms`
+                : '-';
+
+            document.getElementById('modalRows').textContent = log.rows_affected !== null && log.rows_affected !== undefined
+                ? log.rows_affected.toLocaleString()
+                : '-';
+
+            // User & Device
+            document.getElementById('modalUserId').textContent = log.user_id || '-';
+            document.getElementById('modalIP').textContent = log.ip_address || '-';
+            document.getElementById('modalDevice').textContent = device.device_type
+                ? `${getDeviceIcon(device.device_type)} ${device.device_type}`
+                : '-';
+            document.getElementById('modalBrowser').textContent = device.browser && device.os
+                ? `${device.browser} on ${device.os}`
+                : device.browser || '-';
+
+            // Request ID
+            const requestIdSection = document.getElementById('requestIdSection');
+            const modalRequestId = document.getElementById('modalRequestId');
+            if (log.request_id) {
+                requestIdSection.style.display = 'block';
+                modalRequestId.textContent = log.request_id;
+            } else {
+                requestIdSection.style.display = 'none';
+            }
+
+            // Show modal
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeDetailModal() {
+            const modal = document.getElementById('detailModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Format SQL for display
+        function formatSql(sql) {
+            if (!sql) return '';
+            // Add line breaks after keywords for readability
+            return sql
+                .replace(/\bSELECT\b/gi, '\nSELECT')
+                .replace(/\bFROM\b/gi, '\nFROM')
+                .replace(/\bWHERE\b/gi, '\nWHERE')
+                .replace(/\bAND\b/gi, '\n  AND')
+                .replace(/\bOR\b/gi, '\n  OR')
+                .replace(/\bJOIN\b/gi, '\nJOIN')
+                .replace(/\bLEFT\s+JOIN\b/gi, '\nLEFT JOIN')
+                .replace(/\bRIGHT\s+JOIN\b/gi, '\nRIGHT JOIN')
+                .replace(/\bINNER\s+JOIN\b/gi, '\nINNER JOIN')
+                .replace(/\bON\b/gi, '\n  ON')
+                .replace(/\bORDER\s+BY\b/gi, '\nORDER BY')
+                .replace(/\bGROUP\s+BY\b/gi, '\nGROUP BY')
+                .replace(/\bHAVING\b/gi, '\nHAVING')
+                .replace(/\bLIMIT\b/gi, '\nLIMIT')
+                .trim();
+        }
+
+        // Modal event listeners
+        document.getElementById('closeModal').addEventListener('click', closeDetailModal);
+
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') {
+                closeDetailModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDetailModal();
+            }
+        });
+
+        // Initialize
+        loadUserInfo();
+        loadAuditStats();
+        loadAuditLogs();
+    </script>
+</body>
+
+</html>

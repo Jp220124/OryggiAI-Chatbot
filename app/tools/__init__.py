@@ -212,6 +212,44 @@ def _register_default_tools():
     except Exception as e:
         logger.warning(f"Could not auto-register Extended Access Control Tools: {e}")
 
+    # Employee Onboarding Tools (QR-based biometric enrollment)
+    try:
+        from app.tools.employee_onboarding_tool import (
+            EmployeeOnboardingTool,
+            GetDepartmentsListTool,
+            GetDesignationsListTool
+        )
+        tool_registry.register(EmployeeOnboardingTool())
+        tool_registry.register(GetDepartmentsListTool())
+        tool_registry.register(GetDesignationsListTool())
+        logger.info("Auto-registered Employee Onboarding Tools (onboard_new_employee, get_departments_list, get_designations_list)")
+    except Exception as e:
+        logger.warning(f"Could not auto-register Employee Onboarding Tools: {e}")
+
+    # Employee Action Tool (Activate/Deactivate via Gateway Agent)
+    try:
+        from app.tools.employee_action_tool import employee_action_tool
+        tool_registry.register(employee_action_tool)
+        logger.info("Auto-registered Employee Action Tool (activate/deactivate via gateway)")
+    except Exception as e:
+        logger.warning(f"Could not auto-register Employee Action Tool: {e}")
+
+    # Employee Blacklist Tool (Blacklist/Remove from Blacklist via Gateway Agent)
+    try:
+        from app.tools.employee_blacklist_tool import employee_blacklist_tool
+        tool_registry.register(employee_blacklist_tool)
+        logger.info("Auto-registered Employee Blacklist Tool (blacklist/remove_blacklist via gateway)")
+    except Exception as e:
+        logger.warning(f"Could not auto-register Employee Blacklist Tool: {e}")
+
+    # Employee Terminate Tool (Terminate/Un-terminate via Gateway Agent)
+    try:
+        from app.tools.employee_terminate_tool import employee_terminate_tool
+        tool_registry.register(employee_terminate_tool)
+        logger.info("Auto-registered Employee Terminate Tool (terminate/un-terminate via gateway)")
+    except Exception as e:
+        logger.warning(f"Could not auto-register Employee Terminate Tool: {e}")
+
 
 # Auto-register tools when module is imported
 _register_default_tools()

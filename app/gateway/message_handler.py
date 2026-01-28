@@ -136,8 +136,9 @@ class GatewayMessageHandler:
         from app.models.platform import ApiKey, TenantDatabase
         import hashlib
 
+        db: Session = None
         try:
-            db: Session = next(get_db())
+            db = next(get_db())
 
             # Gateway tokens start with "gw_" prefix
             token = auth_request.gateway_token
@@ -208,6 +209,10 @@ class GatewayMessageHandler:
         except Exception as e:
             logger.error(f"Gateway authentication error: {e}")
             return False, None, None, None, f"Authentication error: {str(e)}"
+        finally:
+            # Always close the session to prevent connection leak
+            if db is not None:
+                db.close()
 
     async def _receive_with_timeout(
         self,

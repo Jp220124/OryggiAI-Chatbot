@@ -30,13 +30,21 @@ from app.tools.access_control_tools_extended import (
     authentication_management_tool,
     biometric_enrollment_tool
 )
+# Phase 7 - Employee Action Tool (Activate/Deactivate via Gateway Agent)
+from app.tools.employee_action_tool import employee_action_tool
+# Phase 8 - Employee Blacklist Tool (Blacklist/Remove from Blacklist via Gateway Agent)
+from app.tools.employee_blacklist_tool import employee_blacklist_tool
+# Phase 9 - Employee Terminate Tool (Terminate/Un-terminate via Gateway Agent)
+from app.tools.employee_terminate_tool import employee_terminate_tool
 from app.services.pending_actions_store import (
     pending_actions_store,
     PendingAction,
     ActionStatus
 )
 from app.middleware.audit_logger import audit_logger
-from app.services.employee_lookup import employee_lookup_service
+# Use Gateway-based employee lookup (routes through WebSocket to local DB)
+# This replaces direct pyodbc connection that times out from VM
+from app.services.gateway_employee_lookup import gateway_employee_lookup_service as employee_lookup_service
 
 
 class ActionState(TypedDict):
@@ -110,7 +118,13 @@ class ActionOrchestrator:
         "enroll_employee": employee_enrollment_tool,
         "manage_door_access": door_access_tool,
         "manage_authentication": authentication_management_tool,
-        "trigger_biometric_enrollment": biometric_enrollment_tool
+        "trigger_biometric_enrollment": biometric_enrollment_tool,
+        # Phase 7 - Employee Action Tool (Activate/Deactivate via Gateway Agent)
+        "employee_action": employee_action_tool,
+        # Phase 8 - Employee Blacklist Tool (Blacklist/Remove from Blacklist via Gateway Agent)
+        "employee_blacklist": employee_blacklist_tool,
+        # Phase 9 - Employee Terminate Tool (Terminate/Un-terminate via Gateway Agent)
+        "employee_terminate": employee_terminate_tool
     }
 
     # Actions that require confirmation (destructive)
@@ -120,7 +134,13 @@ class ActionOrchestrator:
         # Phase 6
         "register_visitor", "assign_temporary_card", "database_backup",
         "enroll_card", "enroll_employee", "manage_door_access", "manage_authentication",
-        "trigger_biometric_enrollment"
+        "trigger_biometric_enrollment",
+        # Phase 7 - Employee Action (Activate/Deactivate)
+        "employee_action",
+        # Phase 8 - Employee Blacklist (Blacklist/Remove from Blacklist)
+        "employee_blacklist",
+        # Phase 9 - Employee Terminate (Terminate/Un-terminate)
+        "employee_terminate"
     }
 
     def __init__(self):
@@ -210,7 +230,7 @@ USER REQUEST:
 
 ACTION TYPES:
 1. "grant_access" - User wants to give someone access to a location/system
-2. "block_access" - User wants to immediately block someone's access
+2. "block_access" - User wants to block someone's access to a SPECIFIC area/door (NOT blacklist - use employee_blacklist for complete system ban)
 3. "revoke_access" - User wants to remove a specific permission
 4. "list_access" - User wants to view someone's current access permissions
 5. "register_visitor" - User wants to register a visitor (requires: first_name, last_name, mobile, whom_to_visit, purpose, id_proof_type, id_proof_detail)
@@ -221,7 +241,10 @@ ACTION TYPES:
 10. "manage_door_access" - User wants to grant or block access to specific doors
 11. "manage_authentication" - User wants to add or remove authentication methods (card, fingerprint, face) for an employee
 12. "trigger_biometric_enrollment" - User wants to trigger biometric enrollment mode on a device for an employee (face, palm, finger)
-13. "none" - Request is not related to access control
+13. "employee_action" - User wants to ACTIVATE or DEACTIVATE an employee (enable/disable their biometric access completely)
+14. "employee_blacklist" - User wants to BLACKLIST or REMOVE FROM BLACKLIST an employee. Keywords: "blacklist", "add to blacklist", "remove from blacklist", "unblacklist". NOTE: This is DIFFERENT from block_access - blacklist completely bans an employee from ALL Oryggi systems, while block_access only blocks specific areas/doors.
+15. "employee_terminate" - User wants to TERMINATE or UN-TERMINATE (reinstate) an employee (termination permanently disables access, marks employee as resigned/left)
+16. "none" - Request is not related to access control
 
 CRITICAL: target_user_id EXTRACTION RULES:
 - target_user_id is the PERSON being affected (granted/blocked/revoked)
@@ -308,9 +331,28 @@ For trigger_biometric_enrollment:
 - terminal_name: Name of the terminal/device to use - optional
 - timeout_seconds: Enrollment timeout in seconds - optional (default: 60)
 
+For employee_action:
+- action: "activate" or "deactivate" - REQUIRED
+- ecode: Employee ECode (ID number in Oryggi system) - REQUIRED
+- employee_name: Employee name (optional, for display)
+- reason: Reason for the action (optional)
+
+For employee_blacklist:
+- action: "blacklist" or "remove_blacklist" (also accept "unblacklist") - REQUIRED
+- ecode: Employee ECode (ID number in Oryggi system) - REQUIRED
+- employee_name: Employee name (optional, for display)
+- reason: Reason for blacklisting (required for blacklist, optional for remove)
+
+For employee_terminate:
+- action: "terminate" or "un_terminate" (also accept "reinstate", "unterminate") - REQUIRED
+- ecode: Employee ECode (ID number in Oryggi system) - REQUIRED
+- employee_name: Employee name (optional, for display)
+- reason: Reason for termination (required for terminate, optional for un_terminate)
+- leaving_date: Date of leaving (optional, defaults to today for terminate)
+
 Return ONLY a JSON object with this exact structure:
 {{
-  "action_type": "grant_access|block_access|revoke_access|list_access|register_visitor|assign_temporary_card|database_backup|enroll_card|enroll_employee|manage_door_access|manage_authentication|trigger_biometric_enrollment|none",
+  "action_type": "grant_access|block_access|revoke_access|list_access|register_visitor|assign_temporary_card|database_backup|enroll_card|enroll_employee|manage_door_access|manage_authentication|trigger_biometric_enrollment|employee_action|employee_blacklist|employee_terminate|none",
   "action_params": {{...parameters...}},
   "confidence": 0.0-1.0
 }}
@@ -366,6 +408,45 @@ Response: {{"action_type": "trigger_biometric_enrollment", "action_params": {{"e
 
 Request: "Trigger fingerprint enrollment for 28734"
 Response: {{"action_type": "trigger_biometric_enrollment", "action_params": {{"employee_id": "28734", "biometric_type": "finger"}}, "confidence": 0.95}}
+
+Request: "Deactivate employee with ECode 1001"
+Response: {{"action_type": "employee_action", "action_params": {{"action": "deactivate", "ecode": 1001}}, "confidence": 0.95}}
+
+Request: "Activate employee 28734"
+Response: {{"action_type": "employee_action", "action_params": {{"action": "activate", "ecode": 28734}}, "confidence": 0.95}}
+
+Request: "Disable employee John Smith"
+Response: {{"action_type": "employee_action", "action_params": {{"action": "deactivate", "employee_name": "John Smith"}}, "confidence": 0.9}}
+
+Request: "Enable employee access for ECode 5555"
+Response: {{"action_type": "employee_action", "action_params": {{"action": "activate", "ecode": 5555}}, "confidence": 0.95}}
+
+Request: "Blacklist employee 2374 for policy violation"
+Response: {{"action_type": "employee_blacklist", "action_params": {{"action": "blacklist", "ecode": 2374, "reason": "policy violation"}}, "confidence": 0.95}}
+
+Request: "blacklist employee 10001"
+Response: {{"action_type": "employee_blacklist", "action_params": {{"action": "blacklist", "ecode": 10001}}, "confidence": 0.95}}
+
+Request: "Add employee 1001 to blacklist"
+Response: {{"action_type": "employee_blacklist", "action_params": {{"action": "blacklist", "ecode": 1001}}, "confidence": 0.95}}
+
+Request: "Remove employee 2374 from blacklist"
+Response: {{"action_type": "employee_blacklist", "action_params": {{"action": "remove_blacklist", "ecode": 2374}}, "confidence": 0.95}}
+
+Request: "Unblacklist employee John Smith"
+Response: {{"action_type": "employee_blacklist", "action_params": {{"action": "remove_blacklist", "employee_name": "John Smith"}}, "confidence": 0.9}}
+
+Request: "Terminate employee 2374 due to resignation"
+Response: {{"action_type": "employee_terminate", "action_params": {{"action": "terminate", "ecode": 2374, "reason": "resignation"}}, "confidence": 0.95}}
+
+Request: "Employee 1001 has resigned, please terminate"
+Response: {{"action_type": "employee_terminate", "action_params": {{"action": "terminate", "ecode": 1001, "reason": "resigned"}}, "confidence": 0.95}}
+
+Request: "Un-terminate employee 2374"
+Response: {{"action_type": "employee_terminate", "action_params": {{"action": "un_terminate", "ecode": 2374}}, "confidence": 0.95}}
+
+Request: "Reinstate employee John Smith"
+Response: {{"action_type": "employee_terminate", "action_params": {{"action": "un_terminate", "employee_name": "John Smith"}}, "confidence": 0.9}}
 
 Now classify this request:
 {state['question']}
@@ -670,6 +751,130 @@ JSON Response:"""
                 "action_params": params
             }
 
+        # Phase 7 - Employee Action (Activate/Deactivate)
+        elif any(kw in question_lower for kw in ['activate employee', 'deactivate employee', 'enable employee', 'disable employee',
+                                                   'activate user', 'deactivate user', 'activate ecode', 'deactivate ecode']):
+            # Determine action
+            action = "activate" if any(kw in question_lower for kw in ['activate', 'enable']) else "deactivate"
+
+            # Try to extract ecode (numeric employee ID)
+            ecode = None
+            ecode_match = re.search(r'(?:ecode|employee|user)\s*[:=]?\s*(\d+)', question, re.IGNORECASE)
+            if ecode_match:
+                ecode = int(ecode_match.group(1))
+            else:
+                # Try to find any number that looks like an ecode
+                number_match = re.search(r'\b(\d{3,})\b', question)
+                if number_match:
+                    ecode = int(number_match.group(1))
+
+            # Try to extract employee name if no ecode
+            employee_name = None
+            if not ecode:
+                name_match = re.search(r'(?:employee|user)\s+([A-Za-z]+(?:\s+[A-Za-z]+)?)', question, re.IGNORECASE)
+                if name_match:
+                    employee_name = name_match.group(1).strip()
+
+            logger.info(f"[ACTION_ORCHESTRATOR] Fallback employee_action: action={action}, ecode={ecode}, name={employee_name}")
+            return {
+                "action_type": "employee_action",
+                "action_params": {
+                    "action": action,
+                    "ecode": ecode,
+                    "employee_name": employee_name
+                }
+            }
+
+        # Phase 8 - Employee Blacklist (Blacklist/Remove from Blacklist)
+        elif any(kw in question_lower for kw in ['blacklist employee', 'blacklist user', 'add to blacklist', 'remove from blacklist',
+                                                   'unblacklist employee', 'unblacklist user', 'remove blacklist']):
+            # Determine action
+            if any(kw in question_lower for kw in ['remove from blacklist', 'unblacklist', 'remove blacklist']):
+                action = "remove_blacklist"
+            else:
+                action = "blacklist"
+
+            # Try to extract ecode (numeric employee ID)
+            ecode = None
+            ecode_match = re.search(r'(?:ecode|employee|user)\s*[:=]?\s*(\d+)', question, re.IGNORECASE)
+            if ecode_match:
+                ecode = int(ecode_match.group(1))
+            else:
+                # Try to find any number that looks like an ecode
+                number_match = re.search(r'\b(\d{3,})\b', question)
+                if number_match:
+                    ecode = int(number_match.group(1))
+
+            # Try to extract employee name if no ecode
+            employee_name = None
+            if not ecode:
+                name_match = re.search(r'(?:employee|user)\s+([A-Za-z]+(?:\s+[A-Za-z]+)?)', question, re.IGNORECASE)
+                if name_match:
+                    employee_name = name_match.group(1).strip()
+
+            # Try to extract reason for blacklisting
+            reason = None
+            reason_match = re.search(r'(?:for|reason|because)\s+(.+?)(?:\.|$)', question, re.IGNORECASE)
+            if reason_match:
+                reason = reason_match.group(1).strip()
+
+            logger.info(f"[ACTION_ORCHESTRATOR] Fallback employee_blacklist: action={action}, ecode={ecode}, name={employee_name}, reason={reason}")
+            return {
+                "action_type": "employee_blacklist",
+                "action_params": {
+                    "action": action,
+                    "ecode": ecode,
+                    "employee_name": employee_name,
+                    "reason": reason
+                }
+            }
+
+        # Phase 9 - Employee Terminate (Terminate/Un-terminate)
+        elif any(kw in question_lower for kw in ['terminate employee', 'terminate user', 'un-terminate employee', 'unterminate employee',
+                                                   'reinstate employee', 'un terminate', 'has resigned', 'has left']):
+            # Determine action
+            if any(kw in question_lower for kw in ['un-terminate', 'unterminate', 'un terminate', 'reinstate']):
+                action = "un_terminate"
+            else:
+                action = "terminate"
+
+            # Try to extract ecode (numeric employee ID)
+            ecode = None
+            ecode_match = re.search(r'(?:ecode|employee|user)\s*[:=]?\s*(\d+)', question, re.IGNORECASE)
+            if ecode_match:
+                ecode = int(ecode_match.group(1))
+            else:
+                # Try to find any number that looks like an ecode
+                number_match = re.search(r'\b(\d{3,})\b', question)
+                if number_match:
+                    ecode = int(number_match.group(1))
+
+            # Try to extract employee name if no ecode
+            employee_name = None
+            if not ecode:
+                name_match = re.search(r'(?:employee|user)\s+([A-Za-z]+(?:\s+[A-Za-z]+)?)', question, re.IGNORECASE)
+                if name_match:
+                    employee_name = name_match.group(1).strip()
+
+            # Try to extract reason for termination
+            reason = None
+            reason_match = re.search(r'(?:for|reason|because|due to)\s+(.+?)(?:\.|$)', question, re.IGNORECASE)
+            if reason_match:
+                reason = reason_match.group(1).strip()
+            elif 'resign' in question_lower:
+                reason = "Resignation"
+
+            logger.info(f"[ACTION_ORCHESTRATOR] Fallback employee_terminate: action={action}, ecode={ecode}, name={employee_name}, reason={reason}")
+            return {
+                "action_type": "employee_terminate",
+                "action_params": {
+                    "action": action,
+                    "ecode": ecode,
+                    "employee_name": employee_name,
+                    "reason": reason
+                }
+            }
+
         return {"action_type": "none", "action_params": {}}
 
     def _check_requires_confirmation(self, state: ActionState) -> ActionState:
@@ -913,7 +1118,8 @@ JSON Response:"""
         session_id: str,
         thread_id: Optional[str] = None,
         pending_action_id: Optional[str] = None,
-        is_confirmation: bool = False
+        is_confirmation: bool = False,
+        database_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Process an action request (simplified approach - no LangGraph interrupt)
@@ -926,11 +1132,12 @@ JSON Response:"""
             thread_id: LangGraph thread ID for resumption
             pending_action_id: ID of pending action if this is a confirmation
             is_confirmation: True if user is confirming/rejecting a pending action
+            database_id: User's database_id for correct gateway routing
 
         Returns:
             Dict with answer, success status, and any pending confirmation
         """
-        logger.info(f"[ACTION_ORCHESTRATOR] Processing: {question}")
+        logger.info(f"[ACTION_ORCHESTRATOR] Processing: {question} (database_id={database_id})")
 
         # Handle confirmation of pending action
         if pending_action_id:
@@ -939,7 +1146,8 @@ JSON Response:"""
                 is_confirmation=is_confirmation,
                 user_id=user_id,
                 user_role=user_role,
-                session_id=session_id
+                session_id=session_id,
+                database_id=database_id
             )
 
         try:
@@ -993,6 +1201,56 @@ JSON Response:"""
                             "awaiting_confirmation": False,
                             "error": f"Employee not found: {target_user_id}"
                         }
+
+            # Step 2b: Special handling for employee_action - look up employee to get ecode
+            if action_type == "employee_action":
+                # Get the identifier from action_params (could be ecode or employee_name)
+                ecode = action_params.get("ecode")
+                employee_name = action_params.get("employee_name")
+
+                # If we have employee_name but no ecode, look up the employee
+                if employee_name and not ecode:
+                    logger.info(f"[ACTION_ORCHESTRATOR] Looking up employee by name: {employee_name}")
+                    employee = await employee_lookup_service.get_employee_by_identifier(employee_name)
+                    if employee:
+                        action_params["ecode"] = employee.ecode
+                        action_params["employee_name"] = employee.name
+                        action_params["employee_code"] = employee.corp_emp_code
+                        action_params["employee_department"] = employee.department
+                        action_params["employee_designation"] = employee.designation
+                        action_params["employee_card_no"] = employee.card_no
+                        logger.info(f"[ACTION_ORCHESTRATOR] Employee found: {employee.name} (ECode: {employee.ecode})")
+                    else:
+                        logger.warning(f"[ACTION_ORCHESTRATOR] Employee not found: {employee_name}")
+                        return {
+                            "answer": f"Could not find employee '{employee_name}'. Please verify the employee name or provide the ECode number.",
+                            "success": False,
+                            "action_type": action_type,
+                            "awaiting_confirmation": False,
+                            "error": f"Employee not found: {employee_name}"
+                        }
+
+                # If we have ecode, optionally look up employee details for display
+                elif ecode and not employee_name:
+                    logger.info(f"[ACTION_ORCHESTRATOR] Looking up employee by ecode: {ecode}")
+                    employee = await employee_lookup_service.get_employee_by_identifier(str(ecode))
+                    if employee:
+                        action_params["employee_name"] = employee.name
+                        action_params["employee_code"] = employee.corp_emp_code
+                        action_params["employee_department"] = employee.department
+                        action_params["employee_designation"] = employee.designation
+                        action_params["employee_card_no"] = employee.card_no
+                        logger.info(f"[ACTION_ORCHESTRATOR] Employee found: {employee.name} (ECode: {employee.ecode})")
+
+                # Validate ecode is present
+                if not action_params.get("ecode"):
+                    return {
+                        "answer": "I need the employee's ECode (ID number) to activate or deactivate them. Please provide the ECode.\n\nExample: 'deactivate employee 1001' or 'activate employee with ECode 28734'",
+                        "success": False,
+                        "action_type": action_type,
+                        "awaiting_confirmation": False,
+                        "error": "Missing employee ECode"
+                    }
 
             # Step 3: Check if this is a valid action
             if action_type == "none" or action_type is None:
@@ -1095,7 +1353,7 @@ USER REQUEST:
 
 ACTION TYPES:
 1. "grant_access" - User wants to give someone access to a location/system
-2. "block_access" - User wants to immediately block someone's access
+2. "block_access" - User wants to block someone's access to a SPECIFIC area/door (NOT blacklist - use employee_blacklist for complete system ban)
 3. "revoke_access" - User wants to remove a specific permission
 4. "list_access" - User wants to view someone's current access permissions
 5. "register_visitor" - User wants to register a visitor (requires: first_name, last_name, mobile_number, whom_to_visit, purpose, id_proof_type, id_proof_detail)
@@ -1106,7 +1364,10 @@ ACTION TYPES:
 10. "manage_door_access" - User wants to grant or block access to specific doors (requires: employee_id, action, door_ids or door_names)
 11. "manage_authentication" - User wants to add or remove authentication methods (card, fingerprint, face) for an employee (requires: employee_id, action, authentication_type)
 12. "trigger_biometric_enrollment" - User wants to trigger biometric enrollment mode on a device for an employee (face, palm, finger)
-13. "none" - Request is not related to access control
+13. "employee_action" - User wants to ACTIVATE or DEACTIVATE an employee (enable/disable their biometric access completely). Parameters: action (activate/deactivate), ecode (employee ID number), employee_name (optional)
+14. "employee_blacklist" - User wants to BLACKLIST or REMOVE FROM BLACKLIST an employee. Keywords: "blacklist", "add to blacklist", "remove from blacklist", "unblacklist". This completely bans employee from ALL systems. Parameters: action (blacklist/remove_blacklist), ecode, employee_name, reason
+15. "employee_terminate" - User wants to TERMINATE or UN-TERMINATE (reinstate) an employee. Keywords: "terminate", "un-terminate", "reinstate", "resigned". Parameters: action (terminate/un_terminate), ecode, employee_name, reason, leaving_date
+16. "none" - Request is not related to access control
 
 CRITICAL: target_user_id EXTRACTION RULES:
 - target_user_id is the PERSON being affected (granted/blocked/revoked)
@@ -1151,6 +1412,17 @@ EXAMPLES:
 "enroll face for EMP001" -> {{"action_type": "trigger_biometric_enrollment", "action_params": {{"employee_id": "EMP001", "biometric_type": "face"}}}}
 "start palm enrollment for John" -> {{"action_type": "trigger_biometric_enrollment", "action_params": {{"employee_id": "John", "biometric_type": "palm"}}}}
 "trigger fingerprint enrollment for 28734" -> {{"action_type": "trigger_biometric_enrollment", "action_params": {{"employee_id": "28734", "biometric_type": "finger"}}}}
+"deactivate employee 1001" -> {{"action_type": "employee_action", "action_params": {{"action": "deactivate", "ecode": 1001}}}}
+"activate employee with ECode 28734" -> {{"action_type": "employee_action", "action_params": {{"action": "activate", "ecode": 28734}}}}
+"disable employee John Smith" -> {{"action_type": "employee_action", "action_params": {{"action": "deactivate", "employee_name": "John Smith"}}}}
+"blacklist employee 10001" -> {{"action_type": "employee_blacklist", "action_params": {{"action": "blacklist", "ecode": 10001}}}}
+"blacklist employee 2374 for policy violation" -> {{"action_type": "employee_blacklist", "action_params": {{"action": "blacklist", "ecode": 2374, "reason": "policy violation"}}}}
+"add employee 1001 to blacklist" -> {{"action_type": "employee_blacklist", "action_params": {{"action": "blacklist", "ecode": 1001}}}}
+"remove employee 2374 from blacklist" -> {{"action_type": "employee_blacklist", "action_params": {{"action": "remove_blacklist", "ecode": 2374}}}}
+"unblacklist employee John" -> {{"action_type": "employee_blacklist", "action_params": {{"action": "remove_blacklist", "employee_name": "John"}}}}
+"terminate employee 2374" -> {{"action_type": "employee_terminate", "action_params": {{"action": "terminate", "ecode": 2374}}}}
+"employee 1001 has resigned" -> {{"action_type": "employee_terminate", "action_params": {{"action": "terminate", "ecode": 1001, "reason": "resigned"}}}}
+"reinstate employee John" -> {{"action_type": "employee_terminate", "action_params": {{"action": "un_terminate", "employee_name": "John"}}}}
 
 Return ONLY a JSON object:
 {{"action_type": "...", "action_params": {{...}}}}
@@ -1182,7 +1454,8 @@ JSON Response:"""
         is_confirmation: bool,
         user_id: str,
         user_role: str,
-        session_id: str
+        session_id: str,
+        database_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Handle user confirmation or rejection of a pending action.
@@ -1193,6 +1466,7 @@ JSON Response:"""
             user_id: User ID
             user_role: User role
             session_id: Session ID
+            database_id: User's database_id for correct gateway routing
 
         Returns:
             Dict with execution result or rejection message
@@ -1249,7 +1523,8 @@ JSON Response:"""
                     action_type=pending_action.action_type,
                     action_params=pending_action.action_params,
                     user_id=user_id,
-                    user_role=user_role
+                    user_role=user_role,
+                    database_id=database_id
                 )
 
                 # Mark as executed
@@ -1330,7 +1605,8 @@ JSON Response:"""
         action_type: str,
         action_params: Dict[str, Any],
         user_id: str,
-        user_role: str
+        user_role: str,
+        database_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """Execute an action directly (for non-destructive or confirmed actions)"""
         tool = self.ACTION_TOOLS.get(action_type)
@@ -1344,21 +1620,32 @@ JSON Response:"""
                 "user_id": user_id,  # The invoking user (required by tools)
                 "granted_by": user_id,
                 "blocked_by": user_id,
-                "revoked_by": user_id
+                "revoked_by": user_id,
+                "database_id": database_id  # Pass database_id for gateway routing
             }
             # Remove user_role from params if it exists (avoid duplicate)
             params.pop("user_role", None)
 
+            logger.info(f"[ACTION_ORCHESTRATOR] Executing {action_type} with database_id={database_id}")
             result = await tool.run(user_role=user_role, **params)
 
             # Format answer based on result
             answer = self._format_action_result(action_type, result)
 
+            # IMPORTANT: base_tool.run() wraps the result as {"success": True, "result": {...}, "error": None}
+            # The actual tool success is in result["result"]["success"], not result["success"]
+            # We need to check the inner result for the actual success status
+            inner_result = result.get("result", {})
+            actual_success = inner_result.get("success", result.get("success", False))
+            actual_error = inner_result.get("error") or result.get("error")
+
+            logger.info(f"[ACTION_ORCHESTRATOR] Tool result - wrapper_success={result.get('success')}, actual_success={actual_success}")
+
             return {
-                "success": result.get("success", False),
+                "success": actual_success,
                 "answer": answer,
                 "action_result": result,
-                "error": result.get("error")
+                "error": actual_error
             }
 
         except Exception as e:
@@ -1367,10 +1654,16 @@ JSON Response:"""
 
     def _format_action_result(self, action_type: str, result: Dict[str, Any]) -> str:
         """Format action result into human-readable answer"""
-        if not result.get("success"):
-            return f"Action failed: {result.get('error', 'Unknown error')}"
+        # Note: result is wrapped by base_tool.run() as {"success": True, "result": {...}, "error": None}
+        # The actual success/error is in result["result"]
+        inner_result = result.get("result", {})
+        actual_success = inner_result.get("success", result.get("success", False))
+        actual_error = inner_result.get("error") or result.get("error")
 
-        result_data = result.get("result", {})
+        if not actual_success:
+            return f"Action failed: {actual_error or 'Unknown error'}"
+
+        result_data = inner_result
 
         if action_type == "list_access":
             permissions = result_data.get("permissions", [])
@@ -1486,6 +1779,98 @@ JSON Response:"""
                         f"- Terminal: {terminal_name}\n"
                         f"- Error: {error_msg}\n\n"
                         f"**Please try again.** Make sure the employee places their palm/finger on the device within the {timeout}-second timeout period.")
+
+        elif action_type == "employee_action":
+            # employee_action tool returns data at top level, not nested in "result"
+            action = result.get("action") or result_data.get("action", "unknown")
+            ecode = result.get("ecode") or result_data.get("ecode", "N/A")
+            employee_name = result.get("employee_name") or result_data.get("employee_name", "")
+            message = result.get("message") or result_data.get("message", "")
+
+            if result.get("success"):
+                # Fix grammar: "activated" not "activateed"
+                action_past = "activated" if action == "activate" else "deactivated"
+                action_result_text = "can now clock in/out at biometric devices" if action == "activate" else "can no longer clock in/out at biometric devices"
+
+                return (f"**Employee {action_past.capitalize()} Successfully!**\n\n"
+                        f"- Employee: {employee_name or ecode}\n"
+                        f"- ECode: {ecode}\n"
+                        f"- Action: {action.upper()}\n"
+                        f"- Status: Completed\n\n"
+                        f"The employee {action_result_text}.")
+            else:
+                error_msg = result.get("error", "Unknown error")
+                return (f"**Employee Action FAILED**\n\n"
+                        f"- Action: {action}\n"
+                        f"- ECode: {ecode}\n"
+                        f"- Error: {error_msg}")
+
+        elif action_type == "employee_blacklist":
+            # employee_blacklist tool returns data at top level
+            action = result.get("action") or result_data.get("action", "unknown")
+            ecode = result.get("ecode") or result_data.get("ecode", "N/A")
+            employee_name = result.get("employee_name") or result_data.get("employee_name", "")
+            message = result.get("message") or result_data.get("message", "")
+            reason = result.get("reason") or result_data.get("reason", "")
+
+            if result.get("success"):
+                if action in ["remove_blacklist", "unblacklist"]:
+                    action_past = "Removed from Blacklist"
+                    action_result_text = "has been removed from the blacklist and can now access Oryggi systems"
+                else:
+                    action_past = "Blacklisted"
+                    action_result_text = "has been blacklisted and can no longer access any Oryggi systems"
+
+                result_text = (f"**Employee {action_past} Successfully!**\n\n"
+                        f"- Employee: {employee_name or ecode}\n"
+                        f"- ECode: {ecode}\n"
+                        f"- Action: {action.upper().replace('_', ' ')}\n"
+                        f"- Status: Completed\n")
+                if reason:
+                    result_text += f"- Reason: {reason}\n"
+                result_text += f"\nThe employee {action_result_text}."
+                return result_text
+            else:
+                error_msg = result.get("error", "Unknown error")
+                return (f"**Employee Blacklist Action FAILED**\n\n"
+                        f"- Action: {action}\n"
+                        f"- ECode: {ecode}\n"
+                        f"- Error: {error_msg}")
+
+        elif action_type == "employee_terminate":
+            # employee_terminate tool returns data at top level
+            action = result.get("action") or result_data.get("action", "unknown")
+            ecode = result.get("ecode") or result_data.get("ecode", "N/A")
+            employee_name = result.get("employee_name") or result_data.get("employee_name", "")
+            message = result.get("message") or result_data.get("message", "")
+            reason = result.get("reason") or result_data.get("reason", "")
+            leaving_date = result.get("leaving_date") or result_data.get("leaving_date", "")
+
+            if result.get("success"):
+                if action in ["un_terminate", "unterminate", "reinstate"]:
+                    action_past = "Un-terminated (Reinstated)"
+                    action_result_text = "has been reinstated and can now access Oryggi systems again"
+                else:
+                    action_past = "Terminated"
+                    action_result_text = "has been terminated and can no longer access any Oryggi systems"
+
+                result_text = (f"**Employee {action_past} Successfully!**\n\n"
+                        f"- Employee: {employee_name or ecode}\n"
+                        f"- ECode: {ecode}\n"
+                        f"- Action: {action.upper().replace('_', ' ')}\n"
+                        f"- Status: Completed\n")
+                if reason:
+                    result_text += f"- Reason: {reason}\n"
+                if leaving_date and action == "terminate":
+                    result_text += f"- Leaving Date: {leaving_date}\n"
+                result_text += f"\nThe employee {action_result_text}."
+                return result_text
+            else:
+                error_msg = result.get("error", "Unknown error")
+                return (f"**Employee Terminate Action FAILED**\n\n"
+                        f"- Action: {action}\n"
+                        f"- ECode: {ecode}\n"
+                        f"- Error: {error_msg}")
 
         return "Action completed successfully."
 
@@ -1616,7 +2001,18 @@ JSON Response:"""
             'enroll face', 'enroll palm', 'enroll finger', 'enroll fingerprint',
             'start enrollment', 'begin enrollment', 'capture biometric',
             'face enrollment', 'palm enrollment', 'finger enrollment',
-            'fingerprint enrollment', 'biometric capture'
+            'fingerprint enrollment', 'biometric capture',
+            # Phase 7 - Employee action keywords (Activate/Deactivate)
+            'activate employee', 'deactivate employee', 'activate user',
+            'deactivate user', 'enable employee', 'disable employee',
+            'activate ecode', 'deactivate ecode',
+            # Phase 8 - Employee blacklist keywords
+            'blacklist employee', 'blacklist user', 'blacklist ecode',
+            'add to blacklist', 'remove from blacklist', 'unblacklist',
+            'remove blacklist', 'blacklist',
+            # Phase 9 - Employee terminate keywords
+            'terminate employee', 'terminate user', 'terminate ecode',
+            'un-terminate', 'unterminate', 'reinstate employee'
         ]
         question_lower = question.lower()
         return any(kw in question_lower for kw in action_keywords)

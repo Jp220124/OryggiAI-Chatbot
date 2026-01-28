@@ -29,6 +29,15 @@ from app.gateway.schemas import (
     GatewaySessionInfo,
     ErrorMessage,
     parse_gateway_message,
+    # REST API message types
+    ApiRequest,
+    ApiResponse,
+    ApiStatus,
+    ApiRequestMethod,
+    # Employee lookup message types
+    EmployeeLookupRequest,
+    EmployeeLookupResponse,
+    EmployeeLookupStatus,
 )
 from app.gateway.exceptions import (
     GatewayAuthenticationError,
@@ -59,9 +68,13 @@ class GatewayConnection:
         self.connected_at = datetime.utcnow()
         self.last_heartbeat = datetime.utcnow()
         self.db_status = DatabaseStatus.CONNECTED
+        self.api_status = "not_configured"  # REST API status: connected, error, not_configured
         self.queries_executed = 0
+        self.api_requests_executed = 0
         self.is_active = True
         self._pending_queries: Dict[str, asyncio.Future] = {}
+        self._pending_api_requests: Dict[str, asyncio.Future] = {}
+        self._pending_employee_lookups: Dict[str, asyncio.Future] = {}
 
     async def send_message(self, message: GatewayMessage):
         """Send a message to the gateway agent"""
@@ -143,11 +156,169 @@ class GatewayConnection:
         else:
             logger.warning(f"Received response for unknown/completed request: {request_id}")
 
+    async def execute_api_request(
+        self,
+        method: str,
+        endpoint: str,
+        headers: Optional[Dict[str, str]] = None,
+        body: Optional[Dict[str, Any]] = None,
+        query_params: Optional[Dict[str, str]] = None,
+        timeout: int = 30,
+        user_id: Optional[str] = None,
+        conversation_id: Optional[str] = None,
+    ) -> ApiResponse:
+        """
+        Execute a REST API request through the gateway agent
+
+        The agent will forward this request to the local Oryggi REST API.
+
+        Args:
+            method: HTTP method (GET, POST, PUT, DELETE, PATCH)
+            endpoint: API endpoint path (e.g., /api/Employee/Deactivate/12345)
+            headers: HTTP headers to include
+            body: Request body for POST/PUT/PATCH
+            query_params: URL query parameters
+            timeout: Request timeout in seconds
+            user_id: User who initiated the request
+            conversation_id: Associated conversation ID
+
+        Returns:
+            ApiResponse with results or error
+
+        Raises:
+            GatewayTimeoutError: If request times out
+            GatewayConnectionError: If connection fails
+        """
+        request_id = str(uuid4())
+
+        # Create API request
+        api_request = ApiRequest(
+            request_id=request_id,
+            method=ApiRequestMethod(method.upper()),
+            endpoint=endpoint,
+            headers=headers or {},
+            body=body,
+            query_params=query_params,
+            timeout=timeout,
+            user_id=user_id,
+            conversation_id=conversation_id,
+        )
+
+        # Create future for response
+        response_future: asyncio.Future = asyncio.Future()
+        self._pending_api_requests[request_id] = response_future
+
+        try:
+            # Send API request
+            await self.send_message(api_request)
+            logger.info(f"Sent API request {request_id}: {method} {endpoint} to gateway {self.session_id}")
+
+            # Wait for response with timeout
+            response = await asyncio.wait_for(response_future, timeout=timeout + 5)
+            self.api_requests_executed += 1
+            return response
+
+        except asyncio.TimeoutError:
+            logger.warning(f"API request {request_id} timed out on gateway {self.session_id}")
+            raise GatewayTimeoutError(
+                f"API request timed out after {timeout} seconds",
+                details={"request_id": request_id, "session_id": self.session_id, "endpoint": endpoint},
+            )
+        finally:
+            self._pending_api_requests.pop(request_id, None)
+
+    def handle_api_response(self, response: ApiResponse):
+        """Handle incoming API response from agent"""
+        request_id = response.request_id
+        future = self._pending_api_requests.get(request_id)
+
+        if future and not future.done():
+            future.set_result(response)
+            logger.debug(f"Received API response for {request_id}: status={response.status_code}")
+        else:
+            logger.warning(f"Received API response for unknown/completed request: {request_id}")
+
+    async def execute_employee_lookup(
+        self,
+        identifier: str,
+        lookup_type: str = "auto",
+        timeout: int = 10,
+        user_id: Optional[str] = None,
+        conversation_id: Optional[str] = None,
+    ) -> EmployeeLookupResponse:
+        """
+        Execute an employee lookup through the gateway agent
+
+        The agent will query the local database for employee details.
+
+        Args:
+            identifier: Employee identifier (code, name, or card number)
+            lookup_type: Lookup type: auto, code, name, card
+            timeout: Lookup timeout in seconds
+            user_id: User who initiated the request
+            conversation_id: Associated conversation ID
+
+        Returns:
+            EmployeeLookupResponse with employee data or error
+
+        Raises:
+            GatewayTimeoutError: If lookup times out
+            GatewayConnectionError: If connection fails
+        """
+        request_id = str(uuid4())
+
+        # Create lookup request
+        lookup_request = EmployeeLookupRequest(
+            request_id=request_id,
+            identifier=identifier,
+            lookup_type=lookup_type,
+            timeout=timeout,
+            user_id=user_id,
+            conversation_id=conversation_id,
+        )
+
+        # Create future for response
+        response_future: asyncio.Future = asyncio.Future()
+        self._pending_employee_lookups[request_id] = response_future
+
+        try:
+            # Send lookup request
+            await self.send_message(lookup_request)
+            logger.info(f"Sent employee lookup request {request_id}: identifier={identifier} to gateway {self.session_id}")
+
+            # Wait for response with timeout
+            response = await asyncio.wait_for(response_future, timeout=timeout + 5)
+            return response
+
+        except asyncio.TimeoutError:
+            logger.warning(f"Employee lookup {request_id} timed out on gateway {self.session_id}")
+            raise GatewayTimeoutError(
+                f"Employee lookup timed out after {timeout} seconds",
+                details={"request_id": request_id, "session_id": self.session_id, "identifier": identifier},
+            )
+        finally:
+            self._pending_employee_lookups.pop(request_id, None)
+
+    def handle_employee_lookup_response(self, response: EmployeeLookupResponse):
+        """Handle incoming employee lookup response from agent"""
+        request_id = response.request_id
+        future = self._pending_employee_lookups.get(request_id)
+
+        if future and not future.done():
+            future.set_result(response)
+            logger.debug(f"Received employee lookup response for {request_id}: status={response.status}")
+        else:
+            logger.warning(f"Received employee lookup response for unknown/completed request: {request_id}")
+
     def update_heartbeat(self, heartbeat: Heartbeat):
         """Update connection state from heartbeat"""
         self.last_heartbeat = datetime.utcnow()
         self.db_status = heartbeat.db_status
+        self.api_status = getattr(heartbeat, 'api_status', 'not_configured')  # REST API status
         self.queries_executed = heartbeat.queries_executed
+        self.api_requests_executed = getattr(heartbeat, 'api_requests_executed', 0)
+        # Debug: Log api_status from heartbeat
+        logger.info(f"[HB] database={self.database_id}, api_status={self.api_status}")
 
     def get_session_info(self) -> GatewaySessionInfo:
         """Get session information"""
@@ -160,7 +331,9 @@ class GatewayConnection:
             agent_version=self.agent_version,
             agent_hostname=self.agent_hostname,
             db_status=self.db_status,
+            api_status=self.api_status,
             queries_executed=self.queries_executed,
+            api_requests_executed=self.api_requests_executed,
             is_active=self.is_active,
         )
 
@@ -358,6 +531,104 @@ class GatewayConnectionManager:
             conversation_id=conversation_id,
         )
 
+    async def execute_api_request(
+        self,
+        database_id: str,
+        method: str,
+        endpoint: str,
+        headers: Optional[Dict[str, str]] = None,
+        body: Optional[Dict[str, Any]] = None,
+        query_params: Optional[Dict[str, str]] = None,
+        timeout: int = 30,
+        user_id: Optional[str] = None,
+        conversation_id: Optional[str] = None,
+    ) -> ApiResponse:
+        """
+        Execute a REST API request through the gateway for a specific database
+
+        Routes the request to the gateway agent which forwards it to the
+        local Oryggi REST API service.
+
+        Args:
+            database_id: Target database ID (determines which agent to use)
+            method: HTTP method (GET, POST, PUT, DELETE, PATCH)
+            endpoint: API endpoint path (e.g., /api/Employee/Deactivate/12345)
+            headers: HTTP headers to include
+            body: Request body for POST/PUT/PATCH
+            query_params: URL query parameters
+            timeout: Request timeout in seconds
+            user_id: User who initiated request
+            conversation_id: Associated conversation
+
+        Returns:
+            ApiResponse with results
+
+        Raises:
+            GatewayNotConnectedError: If no gateway connected for database
+            GatewayTimeoutError: If request times out
+        """
+        connection = self.get_connection(database_id)
+        if not connection:
+            raise GatewayNotConnectedError(
+                database_name=database_id,
+                details={"database_id": database_id},
+            )
+
+        return await connection.execute_api_request(
+            method=method,
+            endpoint=endpoint,
+            headers=headers,
+            body=body,
+            query_params=query_params,
+            timeout=timeout,
+            user_id=user_id,
+            conversation_id=conversation_id,
+        )
+
+    async def execute_employee_lookup(
+        self,
+        database_id: str,
+        identifier: str,
+        lookup_type: str = "auto",
+        timeout: int = 10,
+        user_id: Optional[str] = None,
+        conversation_id: Optional[str] = None,
+    ) -> EmployeeLookupResponse:
+        """
+        Execute an employee lookup through the gateway for a specific database
+
+        Routes the request to the gateway agent which queries the local database.
+
+        Args:
+            database_id: Target database ID (determines which agent to use)
+            identifier: Employee identifier (code, name, or card number)
+            lookup_type: Lookup type: auto, code, name, card
+            timeout: Lookup timeout in seconds
+            user_id: User who initiated request
+            conversation_id: Associated conversation
+
+        Returns:
+            EmployeeLookupResponse with employee data
+
+        Raises:
+            GatewayNotConnectedError: If no gateway connected for database
+            GatewayTimeoutError: If lookup times out
+        """
+        connection = self.get_connection(database_id)
+        if not connection:
+            raise GatewayNotConnectedError(
+                database_name=database_id,
+                details={"database_id": database_id},
+            )
+
+        return await connection.execute_employee_lookup(
+            identifier=identifier,
+            lookup_type=lookup_type,
+            timeout=timeout,
+            user_id=user_id,
+            conversation_id=conversation_id,
+        )
+
     async def handle_message(
         self, session_id: str, message_data: dict
     ) -> Optional[GatewayMessage]:
@@ -404,6 +675,14 @@ class GatewayConnectionManager:
             connection.handle_query_response(message)
             return None  # No response needed
 
+        elif isinstance(message, ApiResponse):
+            connection.handle_api_response(message)
+            return None  # No response needed
+
+        elif isinstance(message, EmployeeLookupResponse):
+            connection.handle_employee_lookup_response(message)
+            return None  # No response needed
+
         else:
             logger.warning(f"Unexpected message type from agent: {message.type}")
             return None
@@ -439,6 +718,39 @@ class GatewayConnectionManager:
                 if conn:
                     self._session_to_db.pop(conn.session_id, None)
                     logger.info(f"Removed stale gateway connection: {db_id}")
+
+    def get_first_active_database_id(self, require_api: bool = False) -> Optional[str]:
+        """
+        Get the first active database ID with a connected gateway agent.
+
+        Useful when database_id is not explicitly provided and we need
+        to find any available gateway connection.
+
+        Args:
+            require_api: If True, only return gateways with api_status=connected
+
+        Returns:
+            First active database_id or None if no connections
+        """
+        # First, try to find a gateway with API support (api_status=connected)
+        for db_id, conn in self._connections.items():
+            if conn.is_active and conn.api_status == "connected":
+                logger.debug(f"Found active gateway with API support for database: {db_id}")
+                return db_id
+
+        # If require_api is True and no API-capable gateway found, return None
+        if require_api:
+            logger.warning("No active gateway with API support found")
+            return None
+
+        # Fallback: return any active gateway (for query-only operations)
+        for db_id, conn in self._connections.items():
+            if conn.is_active:
+                logger.debug(f"Found active gateway (no API) for database: {db_id}")
+                return db_id
+
+        logger.warning("No active gateway connections found")
+        return None
 
     async def _send_auth_response(
         self,

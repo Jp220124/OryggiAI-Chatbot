@@ -26,17 +26,23 @@ try:
     from .config import AgentConfig, DatabaseConfig, GatewayConfig, LoggingConfig
     from .database import LocalDatabaseManager
     from .connection import GatewayConnection
+    from .api_client import LocalApiClient
+    from .api_discovery import discover_oryggi_api
 except ImportError:
     try:
         # When running as frozen exe (PyInstaller) - modules are under gateway_agent
         from gateway_agent.config import AgentConfig, DatabaseConfig, GatewayConfig, LoggingConfig
         from gateway_agent.database import LocalDatabaseManager
         from gateway_agent.connection import GatewayConnection
+        from gateway_agent.api_client import LocalApiClient
+        from gateway_agent.api_discovery import discover_oryggi_api
     except ImportError:
         # When running as standalone script in same directory
         from config import AgentConfig, DatabaseConfig, GatewayConfig, LoggingConfig
         from database import LocalDatabaseManager
         from connection import GatewayConnection
+        from api_client import LocalApiClient
+        from api_discovery import discover_oryggi_api
 
 
 class GatewayAgentGUI:
@@ -687,8 +693,24 @@ class GatewayAgentGUI:
                     f"Connected to {config.database.database}", "success"
                 ))
 
-                # Create connection
-                connection = GatewayConnection(config.gateway, database)
+                # Initialize API client (auto-discover local Oryggi API)
+                api_client = None
+                try:
+                    api_url = discover_oryggi_api()
+                    if api_url:
+                        # Disable SSL verification for localhost (self-signed certs)
+                        is_localhost = "localhost" in api_url.lower() or "127.0.0.1" in api_url
+                        api_client = LocalApiClient(api_url, verify_ssl=not is_localhost)
+                        self.root.after(0, lambda: self.log_message(
+                            f"[API] Connected to Oryggi API: {api_url} (SSL verify: {not is_localhost})", "success"
+                        ))
+                except Exception as e:
+                    self.root.after(0, lambda: self.log_message(
+                        f"[API] No local Oryggi API found", "info"
+                    ))
+
+                # Create connection with API client
+                connection = GatewayConnection(config.gateway, database, api_client=api_client)
 
                 # Run the connection
                 loop = asyncio.new_event_loop()

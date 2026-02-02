@@ -604,6 +604,29 @@
             margin: 0;
         }
 
+        /* SQL Query Toggle - Hidden state */
+        body.sql-hidden .sql-query {
+            display: none;
+        }
+
+        /* SQL Toggle button indicator */
+        #sqlToggle.sql-visible .sql-show-icon {
+            color: var(--gold-primary);
+        }
+
+        #sqlToggle.sql-visible .sql-hide-icon {
+            display: none;
+        }
+
+        #sqlToggle:not(.sql-visible) .sql-show-icon {
+            display: none;
+        }
+
+        #sqlToggle:not(.sql-visible) .sql-hide-icon {
+            display: block;
+            opacity: 0.5;
+        }
+
         /* Results Table */
         .results-table-container {
             margin: 16px 0;
@@ -668,6 +691,65 @@
             font-size: 13px;
             color: var(--text-secondary);
             font-weight: 500;
+        }
+
+        /* Excel Export Button */
+        .export-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .export-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #1F4E79, #2E75B6);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .export-btn:hover {
+            background: linear-gradient(135deg, #163a5c, #1F4E79);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .export-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .export-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .export-btn.loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Metadata */
@@ -861,6 +943,182 @@
             stroke-width: 2.5;
         }
 
+        /* Voice Input Button */
+        .voice-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--border-radius-lg);
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .voice-btn:hover:not(:disabled):not(.recording) {
+            background: var(--bg-secondary);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .voice-btn.recording {
+            background: var(--error-color);
+            border-color: var(--error-color);
+            color: white;
+            animation: pulse-recording 1.5s infinite;
+        }
+
+        .voice-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .voice-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2;
+        }
+
+        .voice-btn .mic-icon {
+            display: block;
+        }
+
+        .voice-btn .stop-icon {
+            display: none;
+        }
+
+        .voice-btn.recording .mic-icon {
+            display: none;
+        }
+
+        .voice-btn.recording .stop-icon {
+            display: block;
+        }
+
+        /* Recording pulse animation */
+        @keyframes pulse-recording {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        /* Streaming Response Styles */
+        .response-text {
+            white-space: pre-wrap;
+            min-height: 1em;
+        }
+
+        .response-text.streaming::after {
+            content: '▋';
+            animation: blink 1s infinite;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .response-text.complete::after {
+            content: '';
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .status-indicator {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 12px;
+        }
+
+        .status-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        .streaming-message .sql-query,
+        .streaming-message .results-table-container,
+        .streaming-message .export-actions {
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Voice status indicator */
+        .voice-status {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-primary);
+            color: var(--bg-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-fast);
+            margin-bottom: 8px;
+        }
+
+        .voice-status::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--text-primary);
+        }
+
+        .voice-btn.recording .voice-status,
+        .voice-btn:hover:not(:disabled) .voice-status {
+            opacity: 1;
+        }
+
+        .voice-btn.recording .voice-status {
+            background: var(--error-color);
+        }
+
+        .voice-btn.recording .voice-status::after {
+            border-top-color: var(--error-color);
+        }
+
+        /* Listening placeholder animation */
+        .chat-input.listening::placeholder {
+            color: var(--error-color);
+        }
+
         /* Dark Mode */
         body.dark-mode {
             --bg-primary: #1a202c;
@@ -937,21 +1195,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
-                    <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#E6C200;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
-                        <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
-                        <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
-                    </svg>
-                    <div class="logo-text">
-                        <h1>OryggiAI</h1>
-                        <span class="logo-subtitle">Database Assistant</span>
-                    </div>
+                    <img src="../assets/oryggi-logo.svg" alt="Oryggi Logo" style="height: 40px; width: auto;">
                 </div>
             </div>
 
@@ -1033,6 +1277,14 @@
             <div class="chat-header">
                 <h2 class="chat-title">Chat</h2>
                 <div class="header-actions">
+                    <button class="action-btn" id="sqlToggle" title="Toggle SQL Query visibility">
+                        <svg class="sql-show-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        <svg class="sql-hide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        </svg>
+                    </button>
                     <button class="action-btn" id="darkModeToggle" title="Toggle dark mode">
                         <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -1092,6 +1344,18 @@
                 </div>
                 <div class="input-wrapper">
                     <textarea id="chatInput" class="chat-input" placeholder="Ask a question about your database..." rows="1"></textarea>
+                    <!-- Voice Input Button -->
+                    <button class="voice-btn" id="voiceBtn" title="Voice input">
+                        <span class="voice-status">Click to speak</span>
+                        <!-- Microphone icon -->
+                        <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                        </svg>
+                        <!-- Stop icon (shown when recording) -->
+                        <svg class="stop-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="6" width="12" height="12" rx="2" />
+                        </svg>
+                    </button>
                     <button class="send-btn" id="sendBtn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -1109,6 +1373,9 @@
 
         // Clarification tracking
         let pendingClarification = null; // { originalQuestion, clarificationAttempt }
+
+        // Session tracking for action confirmations
+        let currentSessionId = null;
 
         // Check authentication
         const token = localStorage.getItem('access_token');
@@ -1140,6 +1407,43 @@
             localStorage.setItem('darkMode', isDark);
             sunIcon.style.display = isDark ? 'none' : 'block';
             moonIcon.style.display = isDark ? 'block' : 'none';
+        });
+
+        // SQL Query visibility toggle
+        const sqlToggle = document.getElementById('sqlToggle');
+        const sqlShowIcon = sqlToggle.querySelector('.sql-show-icon');
+        const sqlHideIcon = sqlToggle.querySelector('.sql-hide-icon');
+
+        // Check saved preference - default is hidden (OFF)
+        const showSql = localStorage.getItem('showSqlQuery') === 'true';
+        if (showSql) {
+            sqlToggle.classList.add('sql-visible');
+            sqlShowIcon.style.display = 'block';
+            sqlHideIcon.style.display = 'none';
+        } else {
+            document.body.classList.add('sql-hidden');
+            sqlToggle.classList.remove('sql-visible');
+            sqlShowIcon.style.display = 'none';
+            sqlHideIcon.style.display = 'block';
+        }
+
+        sqlToggle.addEventListener('click', () => {
+            const isVisible = !document.body.classList.contains('sql-hidden');
+            if (isVisible) {
+                // Hide SQL queries
+                document.body.classList.add('sql-hidden');
+                sqlToggle.classList.remove('sql-visible');
+                sqlShowIcon.style.display = 'none';
+                sqlHideIcon.style.display = 'block';
+                localStorage.setItem('showSqlQuery', 'false');
+            } else {
+                // Show SQL queries
+                document.body.classList.remove('sql-hidden');
+                sqlToggle.classList.add('sql-visible');
+                sqlShowIcon.style.display = 'block';
+                sqlHideIcon.style.display = 'none';
+                localStorage.setItem('showSqlQuery', 'true');
+            }
         });
 
         // Load databases
@@ -1216,7 +1520,10 @@
             }
         });
 
-        // Send message
+        // Streaming enabled flag - can be toggled for fallback
+        let useStreaming = true;
+
+        // Send message with streaming support
         async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
@@ -1242,21 +1549,276 @@
             isLoading = true;
             document.getElementById('sendBtn').disabled = true;
 
-            try {
-                // Build request body - include clarification data if pending
-                const requestBody = {
-                    question: message,
-                    database_id: selectedDatabaseId
-                };
+            // Build request body
+            const requestBody = {
+                question: message,
+                database_id: selectedDatabaseId,
+                session_id: currentSessionId
+            };
 
-                // If user is responding to a clarification, include the context
-                if (pendingClarification) {
-                    requestBody.clarification_response = message;
-                    requestBody.original_unclear_question = pendingClarification.originalQuestion;
-                    requestBody.clarification_attempt = pendingClarification.clarificationAttempt;
-                    console.log('[CHAT] Sending clarification response:', requestBody);
+            // If user is responding to a clarification, include the context
+            if (pendingClarification) {
+                requestBody.clarification_response = message;
+                requestBody.original_unclear_question = pendingClarification.originalQuestion;
+                requestBody.clarification_attempt = pendingClarification.clarificationAttempt;
+            }
+
+            // Try streaming first, fallback to non-streaming on error
+            if (useStreaming) {
+                try {
+                    await sendMessageStreaming(message, requestBody);
+                    return;
+                } catch (streamError) {
+                    console.warn('[STREAM] Streaming failed, falling back to non-streaming:', streamError);
+                    useStreaming = false; // Disable streaming for this session
+                }
+            }
+
+            // Non-streaming fallback
+            await sendMessageNonStreaming(requestBody);
+        }
+
+        // Streaming message sender
+        async function sendMessageStreaming(message, requestBody) {
+            const container = document.getElementById('chatMessages');
+
+            // Create bot message placeholder with streaming class
+            const botDiv = document.createElement('div');
+            botDiv.className = 'message message-bot streaming-message';
+            botDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="status-indicator" id="streamStatus">Connecting...</div>
+                    <div class="answer response-text streaming" id="streamText"></div>
+                </div>
+            `;
+            container.appendChild(botDiv);
+            container.scrollTop = container.scrollHeight;
+
+            const statusEl = botDiv.querySelector('#streamStatus');
+            const textEl = botDiv.querySelector('#streamText');
+            const contentEl = botDiv.querySelector('.message-content');
+
+            let fullResponse = '';
+            let sqlQuery = null;
+            let results = null;
+            let resultCount = 0;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/mt/query/stream`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                document.getElementById('loadingIndicator').classList.remove('active');
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
                 }
 
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+
+                    // Process complete SSE messages
+                    const lines = buffer.split('\n\n');
+                    buffer = lines.pop(); // Keep incomplete message in buffer
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                handleStreamChunk(data, statusEl, textEl, contentEl, botDiv);
+
+                                // Collect data for final state
+                                if (data.type === 'start' && data.session_id) {
+                                    currentSessionId = data.session_id;
+                                }
+                                if (data.type === 'text_chunk' && data.content) {
+                                    fullResponse += data.content;
+                                }
+                                if (data.type === 'sql' && data.query) {
+                                    sqlQuery = data.query;
+                                }
+                                if (data.type === 'results' && data.data) {
+                                    results = data.data;
+                                    resultCount = data.count || data.data.length;
+                                }
+                                if (data.type === 'clarification') {
+                                    pendingClarification = {
+                                        originalQuestion: message,
+                                        clarificationAttempt: 1
+                                    };
+                                    handleClarificationStream(data, textEl, contentEl);
+                                }
+                                if (data.type === 'complete') {
+                                    pendingClarification = data.needs_clarification ? pendingClarification : null;
+                                }
+                                if (data.type === 'error') {
+                                    throw new Error(data.message);
+                                }
+                            } catch (parseError) {
+                                console.warn('[STREAM] Parse error:', parseError);
+                            }
+                        }
+                    }
+
+                    // Auto-scroll
+                    container.scrollTop = container.scrollHeight;
+                }
+
+                // Finalize message
+                finalizeStreamedMessage(botDiv, statusEl, textEl, contentEl, fullResponse, sqlQuery, results, resultCount, message);
+
+            } catch (error) {
+                console.error('[STREAM] Error:', error);
+                statusEl.style.display = 'none';
+                textEl.classList.remove('streaming');
+                textEl.classList.add('complete');
+                textEl.innerHTML = `<div class="error-box"><p>${escapeHtml(error.message || 'Connection failed')}</p></div>`;
+                throw error; // Rethrow for fallback
+            } finally {
+                isLoading = false;
+                document.getElementById('sendBtn').disabled = false;
+            }
+        }
+
+        // Handle individual stream chunks
+        function handleStreamChunk(data, statusEl, textEl, contentEl, botDiv) {
+            switch (data.type) {
+                case 'start':
+                    statusEl.textContent = 'Connected';
+                    break;
+                case 'status':
+                    statusEl.textContent = data.message;
+                    break;
+                case 'sql':
+                    // SQL will be added at the end
+                    statusEl.textContent = 'Query generated';
+                    break;
+                case 'text_chunk':
+                    textEl.textContent += data.content;
+                    break;
+                case 'text_complete':
+                    textEl.classList.remove('streaming');
+                    textEl.classList.add('complete');
+                    statusEl.style.display = 'none';
+                    break;
+                case 'results':
+                    statusEl.textContent = `Found ${data.count} result(s)`;
+                    break;
+                case 'complete':
+                    statusEl.style.display = 'none';
+                    textEl.classList.remove('streaming');
+                    textEl.classList.add('complete');
+                    break;
+            }
+        }
+
+        // Handle clarification response in stream
+        function handleClarificationStream(data, textEl, contentEl) {
+            textEl.textContent = data.question || '';
+            textEl.classList.remove('streaming');
+            textEl.classList.add('complete');
+
+            if (data.options && data.options.length > 0) {
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'clarification-options';
+                data.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'clarification-option';
+                    btn.textContent = opt;
+                    btn.onclick = () => selectClarificationOption(opt);
+                    optionsDiv.appendChild(btn);
+                });
+                contentEl.appendChild(optionsDiv);
+            }
+        }
+
+        // Finalize the streamed message with SQL and results
+        function finalizeStreamedMessage(botDiv, statusEl, textEl, contentEl, fullResponse, sqlQuery, results, resultCount, question) {
+            statusEl.style.display = 'none';
+            textEl.classList.remove('streaming');
+            textEl.classList.add('complete');
+
+            // Add SQL query if present
+            if (sqlQuery) {
+                const sqlDiv = document.createElement('div');
+                sqlDiv.className = 'sql-query';
+                sqlDiv.innerHTML = `
+                    <div class="sql-query-header">
+                        <span class="sql-label">SQL Query</span>
+                        <button class="copy-btn" onclick="copyToClipboard(\`${escapeHtml(sqlQuery)}\`)">Copy</button>
+                    </div>
+                    <pre>${escapeHtml(sqlQuery)}</pre>
+                `;
+                contentEl.appendChild(sqlDiv);
+            }
+
+            // Add results table if present
+            if (results && results.length > 0) {
+                const columns = Object.keys(results[0]);
+                const exportId = 'export_' + Date.now();
+
+                window.queryExportData = window.queryExportData || {};
+                window.queryExportData[exportId] = {
+                    question: question || 'Query Results',
+                    sql: sqlQuery || '',
+                    results: results,
+                    rowCount: resultCount
+                };
+
+                const resultsDiv = document.createElement('div');
+                resultsDiv.className = 'results-table-container';
+                resultsDiv.innerHTML = `
+                    <table class="results-table">
+                        <thead>
+                            <tr>${columns.map(col => `<th>${escapeHtml(col)}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody>
+                            ${results.slice(0, 50).map(row => `
+                                <tr>${columns.map(col => `<td>${escapeHtml(String(row[col] ?? ''))}</td>`).join('')}</tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="table-footer">${resultCount} row(s) returned${results.length > 50 ? ' (showing first 50)' : ''}</div>
+                `;
+                contentEl.appendChild(resultsDiv);
+
+                const exportDiv = document.createElement('div');
+                exportDiv.className = 'export-actions';
+                exportDiv.innerHTML = `
+                    <button class="export-btn" id="${exportId}" onclick="exportToExcel('${exportId}')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export to Excel
+                    </button>
+                `;
+                contentEl.appendChild(exportDiv);
+            }
+
+            // Remove streaming class from parent
+            botDiv.classList.remove('streaming-message');
+        }
+
+        // Non-streaming fallback
+        async function sendMessageNonStreaming(requestBody) {
+            try {
                 const response = await fetch(`${API_BASE}/api/chat/mt/query`, {
                     method: 'POST',
                     headers: {
@@ -1275,17 +1837,17 @@
 
                 const data = await response.json();
 
+                if (data.session_id) {
+                    currentSessionId = data.session_id;
+                }
+
                 if (data.success) {
-                    // Check if clarification is needed
                     if (data.needs_clarification) {
-                        // Store clarification state for next message
                         pendingClarification = {
-                            originalQuestion: data.original_unclear_question || message,
+                            originalQuestion: data.original_unclear_question || requestBody.question,
                             clarificationAttempt: data.clarification_attempt || 1
                         };
-                        console.log('[CHAT] Clarification needed:', pendingClarification);
 
-                        // Show clarification question with options if available
                         let clarificationHtml = data.clarification_question || data.answer;
                         if (data.clarification_options && data.clarification_options.length > 0) {
                             clarificationHtml += '<div class="clarification-options">';
@@ -1296,7 +1858,6 @@
                         }
                         addBotMessage(clarificationHtml, { isClarification: true });
                     } else {
-                        // Clear clarification state on successful query
                         pendingClarification = null;
                         addBotMessage(data.answer || 'Query executed.', {
                             sql: data.sql_query,
@@ -1305,12 +1866,12 @@
                         });
                     }
                 } else {
-                    pendingClarification = null; // Clear on error
+                    pendingClarification = null;
                     addBotMessage(data.error || data.answer || 'An error occurred.', { error: true });
                 }
             } catch (error) {
                 document.getElementById('loadingIndicator').classList.remove('active');
-                pendingClarification = null; // Clear on error
+                pendingClarification = null;
                 addBotMessage('Failed to connect to the server.', { error: true });
             } finally {
                 isLoading = false;
@@ -1363,6 +1924,16 @@
 
             if (options.results && options.results.length > 0) {
                 const columns = Object.keys(options.results[0]);
+                const exportId = 'export_' + Date.now();
+                // Store query data for export
+                window.queryExportData = window.queryExportData || {};
+                window.queryExportData[exportId] = {
+                    question: options.question || 'Query Results',
+                    sql: options.sql || '',
+                    results: options.results,
+                    rowCount: options.rowCount || options.results.length
+                };
+
                 html += `
                     <div class="results-table-container">
                         <table class="results-table">
@@ -1377,6 +1948,14 @@
                         </table>
                         <div class="table-footer">${options.rowCount || options.results.length} row(s) returned${options.results.length > 50 ? ' (showing first 50)' : ''}</div>
                     </div>
+                    <div class="export-actions">
+                        <button class="export-btn" id="${exportId}" onclick="exportToExcel('${exportId}')">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Export to Excel
+                        </button>
+                    </div>
                 `;
             }
 
@@ -1389,6 +1968,9 @@
         // Clear chat
         document.getElementById('clearChatBtn').addEventListener('click', () => {
             const container = document.getElementById('chatMessages');
+            // Reset session for new conversation
+            currentSessionId = null;
+            pendingClarification = null;
             container.innerHTML = `
                 <div class="welcome-card" id="welcomeCard">
                     <div class="welcome-icon">
@@ -1445,6 +2027,120 @@
             navigator.clipboard.writeText(text);
         }
 
+        // Export to Excel function
+        async function exportToExcel(exportId) {
+            const btn = document.getElementById(exportId);
+            const data = window.queryExportData?.[exportId];
+
+            if (!data) {
+                alert('Export data not found. Please try the query again.');
+                return;
+            }
+
+            // Show loading state
+            btn.disabled = true;
+            btn.classList.add('loading');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Generating...
+            `;
+
+            try {
+                const token = localStorage.getItem('access_token');
+                const userEmail = localStorage.getItem('email') || 'user';
+                let userRole = localStorage.getItem('role') || 'VIEWER';
+
+                // Map tenant roles to RBAC roles
+                if (userRole === 'owner' || userRole === 'admin') {
+                    userRole = 'ADMIN';
+                } else if (userRole === 'manager') {
+                    userRole = 'HR_MANAGER';
+                } else if (userRole === 'member') {
+                    userRole = 'HR_STAFF';
+                }
+
+                const response = await fetch('/api/reports/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? `Bearer ${token}` : ''
+                    },
+                    body: JSON.stringify({
+                        question: data.question,
+                        format: 'excel',
+                        user_id: userEmail,
+                        user_role: userRole,
+                        tenant_id: 'default',
+                        query_result: {
+                            success: true,
+                            result: {
+                                results: data.results,
+                                sql_query: data.sql,
+                                scoped_sql_query: data.sql
+                            }
+                        }
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success && result.report_path) {
+                    // Extract filename from path
+                    const filename = result.report_path.split(/[/\\]/).pop();
+
+                    // Create download link
+                    const downloadUrl = `/api/reports/download/${filename}`;
+
+                    // Trigger download
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    // Success feedback
+                    btn.innerHTML = `
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Downloaded!
+                    `;
+                    btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '';
+                        btn.disabled = false;
+                        btn.classList.remove('loading');
+                    }, 2000);
+                } else {
+                    throw new Error(result.error || 'Failed to generate report');
+                }
+            } catch (error) {
+                console.error('Export failed:', error);
+                btn.innerHTML = `
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Export Failed
+                `;
+                btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                    btn.classList.remove('loading');
+                }, 2000);
+
+                alert('Failed to export: ' + error.message);
+            }
+        }
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
@@ -1459,6 +2155,148 @@
         // Initialize
         loadDatabases();
         document.getElementById('chatInput').focus();
+
+        // ================================================
+        // Voice Input - Web Speech API Integration
+        // ================================================
+
+        // Check browser support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const voiceBtn = document.getElementById('voiceBtn');
+        const voiceStatus = voiceBtn.querySelector('.voice-status');
+        const chatInput = document.getElementById('chatInput');
+
+        let recognition = null;
+        let isListening = false;
+
+        // Initialize speech recognition if supported
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+
+            // Configure recognition
+            recognition.continuous = false;      // Single query mode
+            recognition.interimResults = true;   // Show live transcription
+            recognition.lang = 'en-US';          // English language
+            recognition.maxAlternatives = 1;     // Single best result
+
+            // Event: Recognition started
+            recognition.onstart = function() {
+                isListening = true;
+                voiceBtn.classList.add('recording');
+                voiceStatus.textContent = 'Listening...';
+                chatInput.classList.add('listening');
+                chatInput.placeholder = 'Listening... speak now';
+                console.log('[Voice] Recognition started');
+            };
+
+            // Event: Speech recognized
+            recognition.onresult = function(event) {
+                let finalTranscript = '';
+                let interimTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                // Show interim results while speaking
+                if (interimTranscript) {
+                    chatInput.value = interimTranscript;
+                    voiceStatus.textContent = 'Hearing...';
+                }
+
+                // Final result
+                if (finalTranscript) {
+                    chatInput.value = finalTranscript;
+                    voiceStatus.textContent = 'Done!';
+                    autoResize(chatInput);
+                    console.log('[Voice] Final transcript:', finalTranscript);
+                }
+            };
+
+            // Event: Recognition ended
+            recognition.onend = function() {
+                isListening = false;
+                voiceBtn.classList.remove('recording');
+                voiceStatus.textContent = 'Click to speak';
+                chatInput.classList.remove('listening');
+                chatInput.placeholder = 'Ask a question about your database...';
+                console.log('[Voice] Recognition ended');
+            };
+
+            // Event: Error occurred
+            recognition.onerror = function(event) {
+                console.error('[Voice] Error:', event.error);
+                isListening = false;
+                voiceBtn.classList.remove('recording');
+                chatInput.classList.remove('listening');
+                chatInput.placeholder = 'Ask a question about your database...';
+
+                // Handle specific errors
+                switch(event.error) {
+                    case 'not-allowed':
+                        voiceStatus.textContent = 'Mic blocked';
+                        alert('Microphone access denied. Please allow microphone access in your browser settings.');
+                        break;
+                    case 'no-speech':
+                        voiceStatus.textContent = 'No speech';
+                        setTimeout(() => { voiceStatus.textContent = 'Click to speak'; }, 2000);
+                        break;
+                    case 'audio-capture':
+                        voiceStatus.textContent = 'No mic found';
+                        voiceBtn.disabled = true;
+                        voiceBtn.title = 'No microphone detected';
+                        break;
+                    case 'network':
+                        voiceStatus.textContent = 'Network error';
+                        setTimeout(() => { voiceStatus.textContent = 'Click to speak'; }, 2000);
+                        break;
+                    case 'aborted':
+                        voiceStatus.textContent = 'Click to speak';
+                        break;
+                    default:
+                        voiceStatus.textContent = 'Error';
+                        setTimeout(() => { voiceStatus.textContent = 'Click to speak'; }, 2000);
+                }
+            };
+
+            // Event: Speech ended (auto-detected silence)
+            recognition.onspeechend = function() {
+                console.log('[Voice] Speech ended (silence detected)');
+                // Recognition will auto-stop since continuous=false
+            };
+
+            // Voice button click handler
+            voiceBtn.addEventListener('click', function() {
+                if (isListening) {
+                    // Stop recording
+                    recognition.stop();
+                    console.log('[Voice] Manually stopped');
+                } else {
+                    // Start recording
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        console.error('[Voice] Start error:', e);
+                        // May already be running, try stopping first
+                        recognition.stop();
+                    }
+                }
+            });
+
+            console.log('[Voice] Speech recognition initialized successfully');
+
+        } else {
+            // Browser doesn't support speech recognition
+            console.warn('[Voice] Speech recognition not supported in this browser');
+            voiceBtn.disabled = true;
+            voiceBtn.style.display = 'none'; // Hide the button entirely
+            voiceBtn.title = 'Voice input not supported in this browser. Try Chrome or Edge.';
+        }
     </script>
 </body>
 

@@ -326,8 +326,9 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-white" href="#">
-                <i class="bi bi-robot me-2"></i>AI Chatbot Admin
+            <a class="navbar-brand text-white d-flex align-items-center" href="#">
+                <img src="assets/oryggi-logo.svg" alt="Oryggi Logo" style="height: 32px; width: auto; filter: brightness(0) invert(1); margin-right: 10px;">
+                AI Chatbot Admin
             </a>
             <div class="d-flex align-items-center gap-3">
                 <span class="text-white-50 small" id="lastUpdate">Last updated: --</span>
@@ -480,7 +481,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">API Base URL</label>
-                        <input type="text" class="form-control" id="apiBaseUrl" value="http://103.197.77.163:3000">
+                        <input type="text" class="form-control" id="apiBaseUrl" value="">
+                        <small class="text-muted">Leave empty to use relative URLs (recommended)</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -495,7 +497,8 @@
     <script>
         // Configuration
         let API_KEY = localStorage.getItem('admin_api_key') || 'oryggi-admin-secret-key-2025';
-        let API_BASE = localStorage.getItem('admin_api_base') || 'http://103.197.77.163:3000';
+        // Use empty string for relative URLs (works with both HTTP and HTTPS via reverse proxy)
+        let API_BASE = localStorage.getItem('admin_api_base') || '';
 
         // State
         let tenantsData = [];
@@ -653,6 +656,14 @@
                                 <i class="bi bi-laptop me-1"></i>
                                 ${detail.connection_status.sessions[0]?.agent_hostname || 'Unknown'}
                                 (v${detail.connection_status.sessions[0]?.agent_version || '?'})
+                            </div>
+                            <div class="mt-1 d-flex gap-2">
+                                <span class="badge ${detail.connection_status.sessions[0]?.db_status === 'connected' ? 'bg-success' : 'bg-warning'}">
+                                    <i class="bi bi-database me-1"></i>DB: ${detail.connection_status.sessions[0]?.db_status || 'N/A'}
+                                </span>
+                                <span class="badge ${getApiStatusClass(detail.connection_status.sessions[0]?.api_status)}">
+                                    <i class="bi bi-plug me-1"></i>API: ${formatApiStatus(detail.connection_status.sessions[0]?.api_status)}
+                                </span>
                             </div>
                         ` : ''}
                     </div>
@@ -819,6 +830,19 @@
             if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
 
             return date.toLocaleDateString();
+        }
+
+        function getApiStatusClass(status) {
+            if (status === 'connected') return 'bg-success';
+            if (status === 'error') return 'bg-danger';
+            return 'bg-secondary';
+        }
+
+        function formatApiStatus(status) {
+            if (!status || status === 'not_configured') return 'Not Configured';
+            if (status === 'connected') return 'Connected';
+            if (status === 'error') return 'Error';
+            return status;
         }
     </script>
 </body>

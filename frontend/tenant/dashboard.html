@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
             /* Colors - Gold Theme (matching chat.html) */
@@ -510,8 +511,14 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Usage Chart Placeholder */
-        .chart-placeholder {
+        /* Usage Chart */
+        .chart-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+
+        .chart-loading {
             height: 200px;
             background: var(--bg-tertiary);
             border-radius: 8px;
@@ -520,6 +527,31 @@
             justify-content: center;
             color: var(--text-secondary);
             border: 1px dashed var(--border-color);
+        }
+
+        .usage-summary {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .usage-summary-item {
+            flex: 1;
+        }
+
+        .usage-summary-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .usage-summary-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
         }
 
         /* Loading State */
@@ -564,21 +596,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
-                    <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#E6C200;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
-                        <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
-                        <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
-                    </svg>
-                    <div class="logo-text">
-                        <h1>OryggiAI</h1>
-                        <span>Tenant Portal</span>
-                    </div>
+                    <img src="../assets/oryggi-logo.svg" alt="Oryggi Logo" style="height: 40px; width: auto;">
                 </div>
             </div>
 
@@ -769,8 +787,22 @@
                     </div>
                 </div>
                 <div class="section-content">
-                    <div class="chart-placeholder" id="usageChart">
-                        <span>Loading usage data...</span>
+                    <div class="chart-container">
+                        <canvas id="usageChart"></canvas>
+                    </div>
+                    <div class="usage-summary" id="usageSummary">
+                        <div class="usage-summary-item">
+                            <div class="usage-summary-value" id="summaryQueries">--</div>
+                            <div class="usage-summary-label">Total Queries</div>
+                        </div>
+                        <div class="usage-summary-item">
+                            <div class="usage-summary-value" id="summarySuccess">--%</div>
+                            <div class="usage-summary-label">Success Rate</div>
+                        </div>
+                        <div class="usage-summary-item">
+                            <div class="usage-summary-value" id="summaryTokens">--</div>
+                            <div class="usage-summary-label">Tokens Used</div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -779,6 +811,7 @@
 
     <script>
         const API_BASE = window.location.origin;
+        let usageChart = null;
 
         // Check authentication
         const token = localStorage.getItem('access_token');
@@ -810,6 +843,14 @@
             return response;
         }
 
+        // Format numbers with K/M suffix
+        function formatNumber(num) {
+            if (num === null || num === undefined) return '--';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toLocaleString();
+        }
+
         // Load user info
         function loadUserInfo() {
             const fullName = localStorage.getItem('full_name') || localStorage.getItem('email') || 'User';
@@ -820,12 +861,95 @@
             document.getElementById('userAvatar').textContent = fullName.charAt(0).toUpperCase();
         }
 
+        // Initialize usage chart
+        function initUsageChart(dailyData) {
+            const ctx = document.getElementById('usageChart').getContext('2d');
+
+            // Reverse to show oldest first
+            const reversedData = [...dailyData].reverse();
+
+            const labels = reversedData.map(d => {
+                const date = new Date(d.date);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+            const queries = reversedData.map(d => d.total_queries || 0);
+
+            if (usageChart) {
+                usageChart.destroy();
+            }
+
+            usageChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Queries',
+                        data: queries,
+                        borderColor: '#FFD700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#FFD700',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#0f172a',
+                            bodyColor: '#64748b',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 12,
+                            boxPadding: 6,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         // Load dashboard data
         async function loadDashboardData() {
             try {
                 // Load usage dashboard
                 const usageResponse = await apiCall('/api/usage/dashboard');
-                if (usageResponse.ok) {
+                if (usageResponse && usageResponse.ok) {
                     const data = await usageResponse.json();
 
                     // Update stats
@@ -833,23 +957,24 @@
                     document.getElementById('statSuccess').textContent = (data.today?.success_rate || 0) + '%';
                     document.getElementById('statCost').textContent = '$' + (data.today?.estimated_cost || 0).toFixed(4);
 
-                    // Update usage chart placeholder
-                    const chartEl = document.getElementById('usageChart');
+                    // Update summary
                     const summary = data.monthly_summary;
                     if (summary) {
-                        chartEl.innerHTML = `
-                            <div style="text-align: center;">
-                                <p style="margin-bottom: 0.5rem;">Total Queries: <strong>${summary.total_queries}</strong></p>
-                                <p style="margin-bottom: 0.5rem;">Success Rate: <strong>${summary.success_rate}%</strong></p>
-                                <p>Total Tokens: <strong>${summary.total_tokens?.toLocaleString() || 0}</strong></p>
-                            </div>
-                        `;
+                        document.getElementById('summaryQueries').textContent = formatNumber(summary.total_queries || 0);
+                        document.getElementById('summarySuccess').textContent = (summary.success_rate || 0) + '%';
+                        document.getElementById('summaryTokens').textContent = formatNumber(summary.total_tokens || 0);
+                    }
+
+                    // Initialize chart with daily trend data
+                    const dailyTrend = data.daily_trend || [];
+                    if (dailyTrend.length > 0) {
+                        initUsageChart(dailyTrend);
                     }
                 }
 
                 // Load databases
                 const dbResponse = await apiCall('/api/chat/mt/databases');
-                if (dbResponse.ok) {
+                if (dbResponse && dbResponse.ok) {
                     const data = await dbResponse.json();
                     const databases = data.databases || [];
 

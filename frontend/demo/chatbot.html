@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OryggiAI - Database Chat Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colors - Gold Theme */
+            --primary-gradient-start: #FFD700;
+            --primary-gradient-end: #E6C200;
+            --primary-color: #FFD700;
+            --primary-hover: #E6C200;
+            --primary-dark: #CCAD00;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #FFD700;
+
+            /* Backgrounds */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+
+            /* Text Colors */
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+
+            /* Borders */
+            --border-color: #e2e8f0;
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 20px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+
+            /* Sidebar */
+            --sidebar-width: 320px;
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+
+        .logo-icon-full {
+            width: 160px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        /* Database Selector Card */
+        .database-card {
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .database-card-label {
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.7);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .database-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .database-select:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        /* Example List */
+        .example-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .example-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+        }
+
+        .example-list li:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-hover);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .example-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        .example-list li:hover .example-icon {
+            opacity: 1;
+        }
+
+        .example-list li span {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* Session Info */
+        .session-info {
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            border-color: var(--primary-color);
+        }
+
+        .back-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg-primary);
+        }
+
+        .chat-header {
+            padding: 20px 32px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .action-btn:hover {
+            background: var(--error-color);
+            color: white;
+            border-color: var(--error-color);
+        }
+
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            max-width: 600px;
+            margin: 40px auto;
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            border-radius: var(--border-radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .welcome-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: white;
+        }
+
+        .welcome-card h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .welcome-card p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .welcome-features {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-xl);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .feature-badge svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--success-color);
+        }
+
+        /* Message Styles */
+        .message {
+            margin-bottom: 24px;
+            animation: messageSlideIn 0.3s ease;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message-user .message-bubble {
+            max-width: 70%;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: #000;
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 4px var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .message-bot {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .message-bot .message-content {
+            max-width: 85%;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .message-bot .answer {
+            font-size: 15px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            white-space: pre-wrap;
+        }
+
+        /* Employee Card */
+        .employee-card {
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-md);
+            padding: 20px;
+            margin: 16px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .employee-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .employee-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .employee-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .employee-code {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .employee-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .employee-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .status-active {
+            color: var(--success-color);
+        }
+
+        .status-inactive {
+            color: var(--error-color);
+        }
+
+        /* Confirmation Buttons */
+        .confirmation-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .confirm-btn {
+            padding: 12px 24px;
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+        }
+
+        .confirm-btn-yes {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+        }
+
+        .confirm-btn-yes:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .confirm-btn-no {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .confirm-btn-no:hover {
+            background: var(--error-color);
+            color: white;
+            border-color: var(--error-color);
+        }
+
+        /* Success Message */
+        .success-box {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-left: 4px solid var(--success-color);
+            border-radius: var(--border-radius-sm);
+            padding: 16px;
+            margin-top: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .success-box svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--success-color);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .success-box p {
+            color: #065f46;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* Processing Status */
+        .processing-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+        }
+
+        .processing-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .processing-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Loading Indicator */
+        .loading-indicator {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .loading-indicator.active {
+            display: flex;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Chat Input Area */
+        .chat-input-area {
+            padding: 24px 32px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: all var(--transition-fast);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 52px;
+            max-height: 150px;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .send-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--border-radius-lg);
+            background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+            border: none;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .send-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2.5;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-tertiary: #374151;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --text-tertiary: #94a3b8;
+            --border-color: #4a5568;
+        }
+
+        body.dark-mode .message-user .message-bubble {
+            background: linear-gradient(135deg, #4c51bf 0%, #667eea 100%);
+            color: white;
+        }
+
+        body.dark-mode .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        body.dark-mode .success-box p {
+            color: #6ee7b7;
+        }
+
+        body.dark-mode .processing-spinner {
+            border-color: var(--border-color);
+            border-top-color: var(--primary-color);
+        }
+
+        body.dark-mode .processing-text {
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            :root {
+                --sidebar-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 50vh;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .chat-messages {
+                padding: 20px 16px;
+            }
+
+            .chat-header,
+            .chat-input-area {
+                padding: 16px;
+            }
+
+            .message-user .message-bubble,
+            .message-bot .message-content {
+                max-width: 90%;
+            }
+
+            .welcome-card {
+                margin: 20px auto;
+            }
+
+            .welcome-card h2 {
+                font-size: 22px;
+            }
+
+            .employee-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="../assets/oryggi-logo.svg" alt="Oryggi Logo" class="logo-icon-full" style="height: 40px; width: auto;">
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Database Selector -->
+                <div class="database-card">
+                    <div class="database-card-label">Select Database</div>
+                    <select id="databaseSelect" class="database-select">
+                        <option value="oryggi">OryggiDB</option>
+                    </select>
+                </div>
+
+                <!-- Example Queries -->
+                <div class="section">
+                    <h3 class="section-title">Example Queries</h3>
+                    <ul class="example-list" id="exampleList">
+                        <li data-query="Deactivate employee 12345">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                            </svg>
+                            <span>Deactivate employee 12345</span>
+                        </li>
+                        <li data-query="Activate employee 67890">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Activate employee 67890</span>
+                        </li>
+                        <li data-query="Deactivate employee 54321">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                            </svg>
+                            <span>Deactivate employee 54321</span>
+                        </li>
+                        <li data-query="Activate employee 11111">
+                            <svg class="example-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Activate employee 11111</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Session Info -->
+                <div class="section">
+                    <h3 class="section-title">Session Info</h3>
+                    <div class="session-info">
+                        <div class="info-item">
+                            <span class="info-label">Database:</span>
+                            <span class="info-value">OryggiDB</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Gateway:</span>
+                            <span class="info-value" style="color: var(--success-color);">Connected</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">API Status:</span>
+                            <span class="info-value" style="color: var(--success-color);">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-info-card">
+                    <div class="user-avatar">AD</div>
+                    <div class="user-details">
+                        <div class="user-name">Admin User</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="alert('Sign out clicked')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="main-content">
+            <div class="chat-header">
+                <h2 class="chat-title">Chat</h2>
+                <div class="header-actions">
+                    <button class="action-btn" id="darkModeToggle" title="Toggle dark mode">
+                        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button class="action-btn" id="clearChatBtn" title="Clear chat">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-card" id="welcomeCard">
+                    <div class="welcome-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h2>Welcome to OryggiAI Database Assistant</h2>
+                    <p>Ask me anything about your database in natural language. I can help you query data, manage employees, and provide insights.</p>
+                    <div class="welcome-features">
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Natural Language Queries
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Employee Management
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Data Insights
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="loading-indicator" id="loadingIndicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="loading-text">Processing...</span>
+                </div>
+                <div class="input-wrapper">
+                    <textarea id="chatInput" class="chat-input" placeholder="Ask a question about your database..." rows="1"></textarea>
+                    <button class="send-btn" id="sendBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mock Employee Data
+        const mockEmployees = {
+            '12345': {
+                name: 'Rajesh Kumar',
+                ecode: '12345',
+                department: 'Information Technology',
+                status: 'Active',
+                designation: 'Senior Developer'
+            },
+            '67890': {
+                name: 'Priya Sharma',
+                ecode: '67890',
+                department: 'Human Resources',
+                status: 'Inactive',
+                designation: 'HR Manager'
+            },
+            '54321': {
+                name: 'Amit Patel',
+                ecode: '54321',
+                department: 'Finance',
+                status: 'Active',
+                designation: 'Financial Analyst'
+            },
+            '11111': {
+                name: 'Sneha Gupta',
+                ecode: '11111',
+                department: 'Marketing',
+                status: 'Inactive',
+                designation: 'Marketing Specialist'
+            },
+            '2345': {
+                name: 'Vikram Singh',
+                ecode: '2345',
+                department: 'Operations',
+                status: 'Active',
+                designation: 'Operations Manager'
+            }
+        };
+
+        let isLoading = false;
+        let pendingAction = null;
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = darkModeToggle.querySelector('.sun-icon');
+        const moonIcon = darkModeToggle.querySelector('.moon-icon');
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            sunIcon.style.display = isDark ? 'none' : 'block';
+            moonIcon.style.display = isDark ? 'block' : 'none';
+        });
+
+        // Example queries click
+        document.getElementById('exampleList').addEventListener('click', (e) => {
+            const li = e.target.closest('li');
+            if (li && li.dataset.query) {
+                document.getElementById('chatInput').value = li.dataset.query;
+                sendMessage();
+            }
+        });
+
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message || isLoading) return;
+
+            // Hide welcome
+            const welcome = document.getElementById('welcomeCard');
+            if (welcome) welcome.style.display = 'none';
+
+            // Add user message
+            addUserMessage(message);
+            input.value = '';
+            autoResize(input);
+
+            // Show loading
+            document.getElementById('loadingIndicator').classList.add('active');
+            isLoading = true;
+            document.getElementById('sendBtn').disabled = true;
+
+            // Simulate processing delay
+            await delay(800);
+
+            // Process the message
+            processMessage(message);
+
+            document.getElementById('loadingIndicator').classList.remove('active');
+            isLoading = false;
+            document.getElementById('sendBtn').disabled = false;
+        }
+
+        function processMessage(message) {
+            const lowerMessage = message.toLowerCase();
+
+            // Check for activate/deactivate commands
+            const deactivateMatch = lowerMessage.match(/deactivate\s+(?:employee\s+)?(\d+)/i);
+            const activateMatch = lowerMessage.match(/activate\s+(?:employee\s+)?(\d+)/i);
+
+            if (deactivateMatch) {
+                const ecode = deactivateMatch[1];
+                showEmployeeConfirmation(ecode, 'deactivate');
+            } else if (activateMatch) {
+                const ecode = activateMatch[1];
+                showEmployeeConfirmation(ecode, 'activate');
+            } else {
+                addBotMessage("I can help you activate or deactivate employees. Try commands like:\n\n- Deactivate employee 12345\n- Activate employee 67890");
+            }
+        }
+
+        function showEmployeeConfirmation(ecode, action) {
+            const employee = mockEmployees[ecode];
+
+            if (!employee) {
+                addBotMessage(`Employee with code ${ecode} not found in the system. Please check the employee code and try again.`);
+                return;
+            }
+
+            // Store pending action
+            pendingAction = { ecode, action, employee };
+
+            const actionText = action === 'deactivate' ? 'deactivate' : 'activate';
+            const statusClass = employee.status === 'Active' ? 'status-active' : 'status-inactive';
+
+            const content = `
+                <div class="answer">I found the employee. Please confirm the ${actionText} action:</div>
+                <div class="employee-card">
+                    <div class="employee-card-header">
+                        <div class="employee-avatar">${getInitials(employee.name)}</div>
+                        <div>
+                            <div class="employee-name">${escapeHtml(employee.name)}</div>
+                            <div class="employee-code">Employee Code: ${escapeHtml(employee.ecode)}</div>
+                        </div>
+                    </div>
+                    <div class="employee-details">
+                        <div class="employee-detail-item">
+                            <span class="detail-label">Department</span>
+                            <span class="detail-value">${escapeHtml(employee.department)}</span>
+                        </div>
+                        <div class="employee-detail-item">
+                            <span class="detail-label">Current Status</span>
+                            <span class="detail-value ${statusClass}">${escapeHtml(employee.status)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="answer" style="margin-bottom: 0;">Do you want to ${actionText} this employee?</div>
+                <div class="confirmation-buttons">
+                    <button class="confirm-btn confirm-btn-yes" onclick="confirmAction(true)">Yes, ${actionText}</button>
+                    <button class="confirm-btn confirm-btn-no" onclick="confirmAction(false)">No, Cancel</button>
+                </div>
+            `;
+
+            addBotMessageRaw(content);
+        }
+
+        async function confirmAction(confirmed) {
+            if (!pendingAction) return;
+
+            const { ecode, action, employee } = pendingAction;
+            pendingAction = null;
+
+            // Get the confirmation buttons container
+            const buttonsContainer = document.querySelector('.confirmation-buttons');
+
+            if (!confirmed) {
+                if (buttonsContainer) {
+                    buttonsContainer.innerHTML = '<span style="color: var(--text-secondary); font-weight: 600;">Cancelled</span>';
+                }
+                await delay(500);
+                addBotMessage(`Action cancelled. The employee ${employee.name} (${ecode}) was not ${action}d.`);
+                return;
+            }
+
+            // Show processing state on buttons
+            if (buttonsContainer) {
+                buttonsContainer.innerHTML = `
+                    <div class="processing-status">
+                        <div class="processing-spinner"></div>
+                        <span class="processing-text">Connecting to server...</span>
+                    </div>
+                `;
+            }
+
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const loadingText = loadingIndicator.querySelector('.loading-text');
+
+            // Show loading indicator
+            loadingIndicator.classList.add('active');
+
+            // Stage 1: Connecting to server
+            loadingText.textContent = 'Connecting to server...';
+            await delay(800);
+
+            // Stage 2: Validating employee
+            loadingText.textContent = 'Validating employee data...';
+            updateProcessingStatus('Validating employee data...');
+            await delay(600);
+
+            // Stage 3: Sending request to Gateway
+            loadingText.textContent = 'Sending request to Gateway Agent...';
+            updateProcessingStatus('Sending request to Gateway Agent...');
+            await delay(700);
+
+            // Stage 4: Processing at Oryggi API
+            loadingText.textContent = 'Processing at Oryggi API...';
+            updateProcessingStatus('Processing at Oryggi API...');
+            await delay(900);
+
+            // Stage 5: Updating database
+            loadingText.textContent = 'Updating database records...';
+            updateProcessingStatus('Updating database records...');
+            await delay(500);
+
+            // Stage 6: Finalizing
+            loadingText.textContent = 'Finalizing...';
+            updateProcessingStatus('Finalizing...');
+            await delay(400);
+
+            // Hide loading
+            loadingIndicator.classList.remove('active');
+            loadingText.textContent = 'Processing...';
+
+            // Update processing status to success
+            updateProcessingStatus('Completed!', true);
+
+            // Update mock data
+            mockEmployees[ecode].status = action === 'activate' ? 'Active' : 'Inactive';
+
+            // Small delay before showing success message
+            await delay(300);
+
+            // Show success message with response time
+            const totalTime = (800 + 600 + 700 + 900 + 500 + 400 + 300) / 1000;
+            const actionPastTense = action === 'activate' ? 'activated' : 'deactivated';
+            const successContent = `
+                <div class="success-box">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <p>Employee <strong>${escapeHtml(employee.name)}</strong> (${ecode}) has been successfully ${actionPastTense}.</p>
+                        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Response time: ${totalTime.toFixed(1)}s</p>
+                    </div>
+                </div>
+            `;
+
+            addBotMessageRaw(successContent);
+        }
+
+        function updateProcessingStatus(text, isComplete = false) {
+            const statusElement = document.querySelector('.processing-status');
+            if (statusElement) {
+                if (isComplete) {
+                    statusElement.innerHTML = `
+                        <svg style="width: 20px; height: 20px; stroke: var(--success-color);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span style="color: var(--success-color); font-weight: 600;">${text}</span>
+                    `;
+                } else {
+                    const spinner = statusElement.querySelector('.processing-spinner');
+                    const textEl = statusElement.querySelector('.processing-text');
+                    if (textEl) textEl.textContent = text;
+                }
+            }
+        }
+
+        function addUserMessage(text) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message message-user';
+            div.innerHTML = `<div class="message-bubble">${escapeHtml(text)}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message message-bot';
+            div.innerHTML = `
+                <div class="message-content">
+                    <div class="answer">${escapeHtml(text)}</div>
+                </div>
+            `;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addBotMessageRaw(html) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message message-bot';
+            div.innerHTML = `<div class="message-content">${html}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Clear chat
+        document.getElementById('clearChatBtn').addEventListener('click', () => {
+            const container = document.getElementById('chatMessages');
+            pendingAction = null;
+            // Reset mock employee statuses
+            mockEmployees['12345'].status = 'Active';
+            mockEmployees['67890'].status = 'Inactive';
+            mockEmployees['54321'].status = 'Active';
+            mockEmployees['11111'].status = 'Inactive';
+            mockEmployees['2345'].status = 'Active';
+
+            container.innerHTML = `
+                <div class="welcome-card" id="welcomeCard">
+                    <div class="welcome-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h2>Welcome to OryggiAI Database Assistant</h2>
+                    <p>Ask me anything about your database in natural language. I can help you query data, manage employees, and provide insights.</p>
+                    <div class="welcome-features">
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Natural Language Queries
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Employee Management
+                        </div>
+                        <div class="feature-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Data Insights
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Input handlers
+        document.getElementById('chatInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        document.getElementById('sendBtn').addEventListener('click', sendMessage);
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+        }
+
+        document.getElementById('chatInput').addEventListener('input', function() {
+            autoResize(this);
+        });
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Initialize
+        document.getElementById('chatInput').focus();
+    </script>
+</body>
+
+</html>

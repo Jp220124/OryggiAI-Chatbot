@@ -1082,21 +1082,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo-container">
-                <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" />
-                    <path d="M20 12L24 16H22V24H18V16H16L20 12Z" fill="white" />
-                    <rect x="15" y="26" width="10" height="2" rx="1" fill="white" />
-                </svg>
-                <div class="logo-text">
-                    <h1>OryggiAI</h1>
-                    <span>Tenant Portal</span>
-                </div>
+                <img src="../assets/oryggi-logo.svg" alt="Oryggi Logo" style="height: 40px; width: auto;">
             </div>
         </div>
 
@@ -1316,7 +1302,7 @@
                                     </svg>
                                 </div>
                                 <h4>OryggiAI Gateway Agent</h4>
-                                <p>Download and run with Python or Docker</p>
+                                <p>Windows Service Installer - Extract ZIP and run Install-Service.bat as Admin</p>
                                 <button class="btn btn-primary" onclick="downloadAgent()">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1325,7 +1311,7 @@
                                     </svg>
                                     Download Agent
                                 </button>
-                                <div class="version-badge">Version 1.0.0 | All Platforms</div>
+                                <div class="version-badge">Version 2.1.0 | Windows</div>
                             </div>
                         </div>
                     </div>
@@ -1391,7 +1377,7 @@
                                     </svg>
                                     <h4>One-Click Setup (Recommended)</h4>
                                 </div>
-                                <p class="download-section-desc">Download a pre-configured installer script. Just run it and enter your SQL Server password!</p>
+                                <p class="download-section-desc">Download a pre-configured installer. Just extract, run and enter your SQL Server password!</p>
 
                                 <div class="download-buttons">
                                     <button class="btn btn-success download-btn" onclick="downloadNativeInstaller()" style="background: linear-gradient(135deg, #48bb78, #38a169);">
@@ -1428,7 +1414,7 @@
                                         <line x1="12" y1="16" x2="12" y2="12"/>
                                         <line x1="12" y1="8" x2="12.01" y2="8"/>
                                     </svg>
-                                    <span>Your gateway token is pre-filled in the script. Just run it!</span>
+                                    <span>Your gateway token is pre-filled in the installer. Just run it!</span>
                                 </div>
                             </div>
                         </div>
@@ -1671,7 +1657,7 @@
         function downloadAgent() {
             // For now, show a message - the actual ZIP will be served from the server
             showToast('Downloading Gateway Agent...', 'info');
-            window.location.href = `${API_BASE}/api/gateway/download-agent`;
+            window.location.href = `${API_BASE}/api/gateway/download-installer-zip`;
         }
 
         // Load databases for dropdown
